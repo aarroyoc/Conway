@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Extensions.CommandLineUtils;
+using Avalonia;
 
 namespace Conway
 {
@@ -18,6 +19,10 @@ namespace Conway
             var inputFile = app.Option("-i|--input <inputfile>","Input file",CommandOptionType.SingleValue);
 
             app.OnExecute(()=>{
+                // arrancar gui
+                AppBuilder.Configure<App>().UsePlatformDetect().Start<MainWindow>();
+
+                // procesar entrada de comandos
                 try{
                     if(!inputFile.HasValue())
                         throw new Exception("Please, specify an input file");

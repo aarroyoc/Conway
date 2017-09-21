@@ -1,0 +1,7 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Conway">
+    <StackPanel Name="panel" HorizontalAlignment="Center">
+        <Button Name="boton" Content="Hazme click"></Button>
+    </StackPanel>
+</Window>
