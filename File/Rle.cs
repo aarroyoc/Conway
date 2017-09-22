@@ -37,6 +37,7 @@ namespace Conway.File {
             Regex regex = new Regex(@"^x = ([0-9]*), y = ([0-9]*)",RegexOptions.IgnoreCase);
 
             string[] lines = System.IO.File.ReadAllLines(path);
+            string rule = string.Empty;
             foreach(string line in lines){
                 if(line.StartsWith("#")){
                     char c = line.ToCharArray()[1];
@@ -60,8 +61,35 @@ namespace Conway.File {
                         y = -1;
                         throw new Exception("Error while reading RLE headers");
                     }
+                }else{
+                    rule += line;
                 }
             }
+            // TODO: parsear rule, añadir muertas al final de las líneas, mejorar código
+            string[] ruleLines = rule.Split('$');
+            var r = new Regex(@"([0-9]*)[bo]"); // contar cuantos grupos hay en cada match
+            foreach(var line in ruleLines){
+                foreach(Match m in r.Matches(line)){
+                    if(String.IsNullOrWhiteSpace(m.Groups[1].Value)){
+                        switch(m.Groups[0].Value){
+                            case "o": Console.WriteLine("Una viva");break;
+                            case "b": Console.WriteLine("Una muerta");break;
+                            default: throw new Exception("Corrupt file. Illegal character found");
+                        }
+                    }else{
+                        var array = m.Groups[0].Value.ToCharArray();
+                        int c = Int32.Parse(m.Groups[1].Value);
+                        char cell = array[array.Length - 1];
+                        switch(cell){
+                           case 'o': Console.WriteLine($"{c} vivas");break;
+                           case 'b': Console.WriteLine($"{c} muertas");break;
+                           default: throw new Exception("Corrupt file. Illegal character found"); 
+                        }
+                    }
+                }
+            }
+
+            // TODO: generar un ConwayMatrix correcto
             Console.WriteLine("Finishing reading the RLE file");
             if(x < 1 || y < 1)
                 throw new Exception("Corrupt file");
