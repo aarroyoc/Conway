@@ -20,7 +20,7 @@ namespace Conway
 
             app.OnExecute(()=>{
                 // arrancar gui
-                AppBuilder.Configure<App>().UsePlatformDetect().Start<MainWindow>();
+                AppBuilder.Configure<App>().UsePlatformDetect().Start<GUI.MainWindow>();
 
                 // procesar entrada de comandos
                 try{

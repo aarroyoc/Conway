@@ -7,7 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System.Threading;
 
-namespace Conway
+namespace Conway.GUI
 {
     public class MainWindow : Window
     {
@@ -32,11 +32,6 @@ namespace Conway
             AvaloniaXamlLoader.Load(this);
         }
 
-        public static ISolidColorBrush RandomColor(){
-            var r = new Random().Next(0,5);
-            var color = new ISolidColorBrush []{Brushes.Red,Brushes.Blue,Brushes.Green,Brushes.Yellow,Brushes.Purple};
-            return color[r];
-        }
 
         private void OnClick(object sender, RoutedEventArgs e)
         {
@@ -47,24 +42,6 @@ namespace Conway
                 this.Renderer.Dispose();
                 this.Renderer.AddDirty(conway);
             },null,0,1000/60);
-        }
-    }
-    public class ConwayCanvas : Control{
-        int x = 0;
-        int y = 0;
-        public override void Render(DrawingContext context)
-        {
-            x = 0;
-            y = 0;
-            for(int i=0;i<50*50;i++){
-                var rect = new Rect(x*10,y*10,10,10);
-                context.FillRectangle(MainWindow.RandomColor(),rect);
-                x++;
-                if(x==50){
-                    y++;
-                    x = 0;
-                }
-            }
         }
     }
 }
