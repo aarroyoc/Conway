@@ -9,6 +9,8 @@
     <PackageReference Include="Avalonia.Skia.Desktop" Version="0.5.1" />
     <PackageReference Include="Avalonia.Win32" Version="0.5.1" />
     <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
+    <PackageReference Include="xunit" Version="2.3.0-beta4-build3742" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta4-build3742" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
@@ -17,5 +19,9 @@
     <EmbeddedResource Include="**\*.xaml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Patterns Include="Patterns\*" />
   </ItemGroup>
+  <Target Name = "CopyFiles" AfterTargets="build">
+    <Copy DestinationFolder="$(OutputPath)\Patterns" SourceFiles="@(Patterns)" SkipUnchangedFiles = "false" />
+  </Target>
 </Project>
