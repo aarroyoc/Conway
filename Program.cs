@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Microsoft.Extensions.CommandLineUtils;
 using Avalonia;
 
@@ -26,8 +25,12 @@ namespace Conway
                 try{
                     if(!inputFile.HasValue())
                         throw new Exception("Please, specify an input file");
-                    if(!File.Exists(inputFile.Value()))
+                    if(!System.IO.File.Exists(inputFile.Value()))
                         throw new Exception("Please, check that the specified file exists");
+
+                    var matrix = new File.Rle(inputFile.Value()).ConwayMatrix;
+                    
+
                 }catch(Exception e){
                     Console.WriteLine($"Error: {e.Message}");
                 }
