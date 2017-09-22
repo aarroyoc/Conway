@@ -4,6 +4,9 @@ using System;
 using Avalonia.Media;
 
 namespace Conway.GUI{
+    /*
+    ConwayCanvas es la control que muestra la simulación en tiempo real
+     */
     public class ConwayCanvas : Control{
         public override void Render(DrawingContext context)
         {

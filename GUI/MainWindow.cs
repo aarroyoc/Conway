@@ -7,8 +7,14 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System.Threading;
 
+/*
+Conway.GUI contiene los elementos visuales
+ */
 namespace Conway.GUI
 {
+    /*
+    Ventana principal
+     */
     public class MainWindow : Window
     {
         Button boton;
