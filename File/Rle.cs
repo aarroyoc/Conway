@@ -12,7 +12,7 @@ namespace Conway.File {
     RLE es el formato "por defecto" de el juego de la vida. Esta clase permite cargar/guardar en este formato
     Documentación: http://www.conwaylife.com/w/index.php?title=Run_Length_Encoded
      */
-    public class Rle{
+    public class Rle : FileFormat{
 
         // constructor sin carga
         public Rle()
