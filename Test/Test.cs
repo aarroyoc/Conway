@@ -3,7 +3,7 @@ using Conway.File;
 using Conway.Matrix;
 
 namespace Conway.Test {
-    public class TestRle{
+    public class Test{
         [Fact]
         public void ReadHeader()
         {
