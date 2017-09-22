@@ -55,7 +55,7 @@ namespace Conway.File {
                     try{
                         x = Int32.Parse(g[1].Value);
                         y = Int32.Parse(g[2].Value);
-                    }catch(FormatException){
+                    }catch(Exception ex) when(ex is FormatException || ex is OverflowException){
                         x = -1;
                         y = -1;
                         throw new Exception("Error while reading RLE headers");
@@ -69,7 +69,10 @@ namespace Conway.File {
         }
         public void Save(string path)
         {
-
+            using (var writer = new StreamWriter(path))
+            {
+                writer.Write("SIN IMPLEMENTAR");
+            }
         }
     }
 }
