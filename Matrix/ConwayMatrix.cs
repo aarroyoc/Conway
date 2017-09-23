@@ -15,12 +15,10 @@ namespace Conway.Matrix {
         }
 
         public void Iterate(){
-            //Para que las casillas no afecten al resto, dejo los cambios en un buffer.
-            //Problemas: Las casillas fuera del tablero no se verifican, es decir si  [0,0].[0,1][0,2] están activas, [1,-1] debería activarse.
-
+         
             List<List<int>> Buffer=new List<List<int>>(); //Temporal
-            for(int x=0;x<this.matrix.Count;x++){
-                for (int y=0;y<this.matrix.Count;y++){
+            for(int x=-1;x<this.matrix.Count+1;x++){ //El x=-1 y el x<this... +1 es para que incluya la fila anterior a la primera y la fila posterior.
+                for (int y=-1;y<this.matrix.Count+1;y++){
                     bool alive=this[x,y];
 
                     int aliveNear=0;
@@ -65,11 +63,21 @@ namespace Conway.Matrix {
 
             }
         }
-
+        int filaExtra=0;
+        int columnaExtra=0;
         foreach(List<int> casilla in Buffer){
+            
             Console.WriteLine("CAMBIOOOOOOOO"+casilla[0]+" "+casilla[1] + "  ---> " + casilla[2]);
-            this.matrix[casilla[0]][casilla[1]]=Convert.ToBoolean(casilla[2]);
-        
+            this[casilla[0]+filaExtra,casilla[1]+columnaExtra]=Convert.ToBoolean(casilla[2]);
+
+            if (casilla[0]==-1){
+                filaExtra++;
+            } 
+            if (casilla[1]==-1){
+                columnaExtra+=1;
+            }
+
+
         }
 }
 

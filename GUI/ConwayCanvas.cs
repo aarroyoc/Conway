@@ -15,9 +15,10 @@ namespace Conway.GUI{
             if (matrix==null){ //TEMPORAL
                 this.matrix= new ConwayMatrix();
                 this.matrix.SetSize(8,8);
-                this.matrix[1,0]=true;
-                this.matrix[1,1]=true;
-                this.matrix[1,2]=true;
+               
+                this.matrix[0,0]=true;
+                this.matrix[0,1]=true;
+                this.matrix[0,2]=true;
                 this.Width=this.matrix.GetMatrix()[0].Count*10;
                 this.Height=this.matrix.GetMatrix().Count*10;
 
