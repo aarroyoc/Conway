@@ -29,6 +29,7 @@ namespace Conway
                         throw new Exception("Please, check that the specified file exists");
 
                     var matrix = new File.Rle(inputFile.Value()).ConwayMatrix;
+                    Console.WriteLine($"{matrix}");
                     
 
                 }catch(Exception e){

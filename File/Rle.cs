@@ -65,35 +65,55 @@ namespace Conway.File {
                     rule += line;
                 }
             }
-            // TODO: parsear rule, añadir muertas al final de las líneas, mejorar código
-            string[] ruleLines = rule.Split('$');
+
+            // comprobar si la cabecera ha sido leída correctamente
+            if(x < 1 || y < 1)
+                throw new Exception("Corrupt file");
+
+            ConwayMatrix = new ConwayMatrix();
+            ConwayMatrix.SetSize(y,x);
+
+            // lee y almacena en un ConwayMatrix los datos codificados en RLE
+            string[] ruleLines = rule.Split('$'); // cada línea en la matriz se separa por $
             var r = new Regex(@"([0-9]*)[bo]"); // contar cuantos grupos hay en cada match
-            foreach(var line in ruleLines){
+            int a = 0, b = 0;
+            // por cada línea aplicamos un regex de vivas/muertas y su números. Se procesan en orden
+            // al final se añaden celdas muertas hasta acabar la longitud de la matriz
+            foreach(var line in ruleLines){ 
                 foreach(Match m in r.Matches(line)){
+
+                    bool alive;
+                    int c = 1;
+
                     if(String.IsNullOrWhiteSpace(m.Groups[1].Value)){
                         switch(m.Groups[0].Value){
-                            case "o": Console.WriteLine("Una viva");break;
-                            case "b": Console.WriteLine("Una muerta");break;
+                            case "o": alive = true;break;
+                            case "b": alive = false;break;
                             default: throw new Exception("Corrupt file. Illegal character found");
                         }
                     }else{
                         var array = m.Groups[0].Value.ToCharArray();
-                        int c = Int32.Parse(m.Groups[1].Value);
+                        c = Int32.Parse(m.Groups[1].Value);
                         char cell = array[array.Length - 1];
                         switch(cell){
-                           case 'o': Console.WriteLine($"{c} vivas");break;
-                           case 'b': Console.WriteLine($"{c} muertas");break;
+                           case 'o': alive=true;break;
+                           case 'b': alive=false;break;
                            default: throw new Exception("Corrupt file. Illegal character found"); 
                         }
                     }
-                }
-            }
 
-            // TODO: generar un ConwayMatrix correcto
-            Console.WriteLine("Finishing reading the RLE file");
-            if(x < 1 || y < 1)
-                throw new Exception("Corrupt file");
-            Console.WriteLine($"X-> {x}\tY-> {y}");
+                    for(int i=0;i<c;i++){
+                        ConwayMatrix[b,a] = alive;
+                        a++;
+                    }
+                }
+                while(a<x){
+                    ConwayMatrix[b,a]=false;
+                    a++;
+                }
+                b++;
+                a = 0;
+            }
         }
         public void Save(string path)
         {
