@@ -9,9 +9,16 @@ namespace Conway.Matrix {
         {
             matrix = new List<List<bool>>();
         }
-        public List<List<bool>> GetMatrix(){
-            return this.matrix;
 
+        public int Width{ 
+            get{
+                return this.matrix[0].Count;
+            }
+        }
+        public int Height{
+            get{
+                return this.matrix.Count;
+            }
         }
 
         public void Iterate(){

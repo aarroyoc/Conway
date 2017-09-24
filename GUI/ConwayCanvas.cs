@@ -2,7 +2,8 @@ using Avalonia;
 using Avalonia.Controls;
 using System;
 using Avalonia.Media;
-using Conway.Matrix; 
+using Conway.Matrix;
+
 namespace Conway.GUI{
     /*
     ConwayCanvas es la control que muestra la simulación en tiempo real
@@ -19,8 +20,8 @@ namespace Conway.GUI{
                 this.matrix[0,0]=true;
                 this.matrix[0,1]=true;
                 this.matrix[0,2]=true;
-                this.Width=this.matrix.GetMatrix()[0].Count*10;
-                this.Height=this.matrix.GetMatrix().Count*10;
+                this.Width=this.matrix.Width*10;
+                this.Height=this.matrix.Height*10;
 
 
 
@@ -33,13 +34,13 @@ namespace Conway.GUI{
             }
            
 
-              for (int y=0;y<this.matrix.GetMatrix().Count;y++){
+              for (int y=0;y<this.matrix.Height;y++){
                 ;
-                    for (int x=0;x<this.matrix.GetMatrix()[0].Count;x++){
+                    for (int x=0;x<this.matrix.Width;x++){
                         var rect=new Rect(x*10,y*10,10,10);
                      
                      
-                        if (this.matrix.GetMatrix()[y][x]==true){
+                        if (this.matrix[y,x]==true){
                                 context.FillRectangle(Brushes.Black,rect);
                             
                         }
