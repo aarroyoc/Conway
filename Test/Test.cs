@@ -4,16 +4,7 @@ using Conway.Matrix;
 
 namespace Conway.Test {
     public class Test{
-        [Fact]
-        public void ReadHeader()
-        {
-            var rle = new Rle();
-            rle.Load(@"Patterns/glider.rle");
-        }
-        [Fact]
-        public void GliderMatrix()
-        {
-            string glider=@"........................X...........
+                    string glider=@"........................X...........
 ......................X.X...........
 ............XX......XX............XX
 ...........X...X....XX............XX
@@ -23,6 +14,23 @@ XX........X...X.XX....X.X...........
 ...........X...X....................
 ............XX......................
 ";
+        [Fact]
+        public void ReadHeader()
+        {
+            var rle = new Rle();
+            rle.Load(@"Patterns/glider.rle");
+        }
+
+        [Fact]
+        public void GliderVaca()
+        {
+            var vaca = new Vaca("Patterns/Glider.vaca");
+            Assert.Equal(glider,vaca.ConwayMatrix.ToString());
+        }
+
+        [Fact]
+        public void GliderMatrix()
+        {
             var rle = new Rle();
             rle.Load(@"Patterns/glider.rle");
             Assert.Equal(glider,rle.ConwayMatrix.ToString());
