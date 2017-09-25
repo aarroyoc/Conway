@@ -5,6 +5,10 @@ namespace Conway.File {
     public class Vaca : IFileFormat{
         public ConwayMatrix ConwayMatrix {get; set;}
 
+        public Vaca()
+        {
+            
+        }
         public Vaca(string path)
         {
             Load(path);
@@ -27,7 +31,16 @@ namespace Conway.File {
 
         public void Save(string path)
         {
-
+            var x = ConwayMatrix.Width;
+            var y = ConwayMatrix.Height;
+            var n = System.Environment.NewLine;
+            var matrix = ConwayMatrix.ToString();
+            string text = $"{x}{n}{y}{n}{matrix}";
+            try{
+                System.IO.File.WriteAllText(path,text);
+            }catch(Exception e){
+                Console.WriteLine($"ERROR while saving file: {e}");
+            }
         }
     }
 }

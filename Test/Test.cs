@@ -29,6 +29,27 @@ XX........X...X.XX....X.X...........
         }
 
         [Fact]
+        public void SaveVaca()
+        {
+            string test = @"3
+3
+X..
+.X.
+..X
+";
+            var vaca = new Vaca();
+            vaca.ConwayMatrix = new ConwayMatrix();
+            vaca.ConwayMatrix[0,0] = true;
+            vaca.ConwayMatrix[1,1] = true;
+            vaca.ConwayMatrix[2,2] = true;
+            var file = System.IO.Path.GetTempFileName();
+            vaca.Save(file);
+
+            Assert.Equal(System.IO.File.ReadAllText(file),test);
+
+        }
+
+        [Fact]
         public void GliderMatrix()
         {
             var rle = new Rle();
