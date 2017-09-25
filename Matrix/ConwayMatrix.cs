@@ -34,16 +34,12 @@ namespace Conway.Matrix {
                         if (!(z==0 & i==0)){
                             aliveNear+=Convert.ToInt32(this[x+i,y+z]); //Posible optimización pequeña: En el momento en el que 
                                                                             //Alivenear>3, salir del bucle
-                        if (x==0 & y==1){
-                            Console.WriteLine("0,1 PRUEBA "+i+" "+ z + "-->"+ Convert.ToInt32(this[x+i,y+z]));
-                        }
+                    
                         }
 
                     }
                 }    
-                if (x==0 & y==1){
-                    Console.WriteLine("0,1"+aliveNear+"¿Alive?"+alive);
-                }
+
                 if (alive==true){
                     if (aliveNear!=3 & aliveNear!=2){
                         List<int> temp=new List<int>{
@@ -53,15 +49,12 @@ namespace Conway.Matrix {
                     }
                 }
                 else{
-                      if (x==0 & y==1){
-                         Console.WriteLine("dasdsadasdfñlasfñljasdfñls"+aliveNear+"¿Alive?"+alive);
-                      }
                       if (aliveNear==3){
                         List<int> temp=new List<int>{
                             x,y,1 //(x,y, estado al que va a pasar)
                         };
                         Buffer.Add(temp);
-                        Console.WriteLine("UNA CASILLA HA PASADO A LA VIDAAAAAAAAAA");
+                       
                
 
                 }  
@@ -74,7 +67,7 @@ namespace Conway.Matrix {
         int columnaExtra=0;
         foreach(List<int> casilla in Buffer){
             
-            Console.WriteLine("CAMBIOOOOOOOO"+casilla[0]+" "+casilla[1] + "  ---> " + casilla[2]);
+        
             this[casilla[0]+filaExtra,casilla[1]+columnaExtra]=Convert.ToBoolean(casilla[2]);
 
             if (casilla[0]==-1){
@@ -103,7 +96,7 @@ namespace Conway.Matrix {
             var sb = string.Empty;
             foreach(var c in matrix){
                 foreach(var e in c){
-                    sb += e ? "X" : "."; //¿?
+                    sb += e ? "X" : ".";
                 }
                 sb += System.Environment.NewLine;
             }
@@ -160,6 +153,80 @@ namespace Conway.Matrix {
                     matrix[x+xplus][y+yplus] = value;
                 }
             }
+        }
+        public ConwayMatrix LimitMatrix(int x1,int y1,int x2,int y2){
+            //Requisitos: x1,y1 menores que x2,y2 respectivamente.
+            //Podría generalizarse fácilmente, pero como solo tiene un único uso no es necesario.
+            var limitedMatrix=new ConwayMatrix();
+
+            limitedMatrix.SetSize(x2-x1+1,y2-y1+1);
+
+            int x=0;//Establecen las coordenadas de la nueva matriz
+            int y=0; 
+            
+            for (int i=x1;i<x2+1;i++){
+                y=0;
+              
+                for (int j=y1;j<y2+1;j++){
+                 
+                    limitedMatrix[x,y]=this[i,j];
+                    y++;    
+
+                }
+                 x++;
+            }
+
+            Console.WriteLine("FINAAAAAAL");
+            Console.WriteLine(limitedMatrix.ToString());
+          ;
+            return new ConwayMatrix(); //TODO
+        }
+
+         public FinalDataStruct GetFinalResult(){ //Cambiar por Structs
+            int celdasVivas=0;
+            int filaMinima=this.Height; //filaminima nunca va a ser mayor que la altura de la matriz.
+            int filaMaxima=0;
+            int columnaMinima=this.Width; 
+            int columnaMaxima=0;
+          
+            FinalDataStruct data = new FinalDataStruct();
+
+            for(int x=0;x<this.Height;x++){ 
+            //filas
+        
+        
+                for (int y=0;y<this.Width;y++){
+                    //Columnas
+                    
+                    bool alive=this[x,y];
+                    if (alive==true){
+                       
+                        celdasVivas++;
+                        if (y<columnaMinima){
+                            columnaMinima=y;
+                        }
+                        if (y>columnaMaxima){
+                            columnaMaxima=y;
+                        }
+                        if (x<filaMinima){
+                            filaMinima=x;
+                        }
+                        if (x>filaMaxima){
+                            filaMaxima=x;
+                        }
+                    }
+                }
+            }
+             
+            
+            data.CeldasVivas=celdasVivas;
+            data.LimitedMatrix= this.LimitMatrix(filaMinima,columnaMinima,filaMaxima,columnaMaxima);
+           
+           
+            return data; //TODO
+
+
+
         }
     }
 }

@@ -41,13 +41,17 @@ namespace Conway.GUI
 
         private void OnClick(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Clicado!");
+            conway.Iterate();
+            this.Renderer.Dispose();
+            this.Renderer.AddDirty(conway);
+            /* 
+            
             this.Renderer.DrawFps = true;
 
             timer = new Timer((a)=>{
                 this.Renderer.Dispose();
                 this.Renderer.AddDirty(conway);
-            },null,0,1000/60);
+            },null,0,1000/60);*/
         }
     }
 }

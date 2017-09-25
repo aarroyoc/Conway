@@ -29,8 +29,10 @@ namespace Conway
                         throw new Exception("Please, check that the specified file exists");
 
                     var matrix = new File.Rle(inputFile.Value()).ConwayMatrix;
+                
                     Console.WriteLine($"{matrix}");
-                    
+                    Console.WriteLine("Matriz sin bordes:");
+                    Console.WriteLine(matrix.GetFinalResult());    
 
                 }catch(Exception e){
                     Console.WriteLine($"Error: {e.Message}");
