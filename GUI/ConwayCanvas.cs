@@ -13,6 +13,8 @@ namespace Conway.GUI{
         public override void Render(DrawingContext context){
 
             if (matrix==null){ //TEMPORAL
+                this.matrix=new File.Rle("Patterns/10cellinfinitegrowth.rle").ConwayMatrix;
+                 /* 
                 this.matrix= new ConwayMatrix();
                 this.matrix.SetSize(3,8);
                
@@ -31,6 +33,7 @@ namespace Conway.GUI{
                 
                 Console.WriteLine(this.matrix.ToString());
                 this.matrix.GetFinalResult();
+                */
             }
            
 
@@ -54,7 +57,7 @@ namespace Conway.GUI{
                  }
           }
         }
-       
+    
         public void Iterate(){
             this.matrix.Iterate();
         }

@@ -24,10 +24,10 @@ namespace Conway.Matrix {
         public void Iterate(){
          
             List<List<int>> Buffer=new List<List<int>>(); //Temporal
-            for(int x=-1;x<this.matrix.Count+1;x++){ //El x=-1 y el x<this... +1 es para que incluya la fila anterior a la primera y la fila posterior.
-                for (int y=-1;y<this.matrix.Count+1;y++){
+            for(int x=-1;x<this.Height+1;x++){ //El x=-1 y el x<this... +1 es para que incluya la fila anterior a la primera y la fila posterior.
+                for (int y=-1;y<this.Width+1;y++){
                     bool alive=this[x,y];
-
+                
                     int aliveNear=0;
                 for (int i=-1;i<2;i++){
                     for (int z=-1;z<2;z++){

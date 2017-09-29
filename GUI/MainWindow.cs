@@ -17,12 +17,17 @@ namespace Conway.GUI
      */
     public class MainWindow : Window
     {
+        
         Button boton;
         StackPanel panel;
         ConwayCanvas conway;
         Timer timer;
         public MainWindow()
         {
+            
+    
+           
+            
             InitializeComponent();
             conway = new ConwayCanvas();
             conway.Width = 500;

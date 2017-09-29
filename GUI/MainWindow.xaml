@@ -2,10 +2,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Conway">
 
-<ScrollViewer VerticalScrollBarVisibility="Auto">
-    <StackPanel Name="panel" HorizontalAlignment="Center">
+<DockPanel Name="Root">
+<Menu DockPanel.Dock="Top"> <!-- TODO -->
+        <MenuItem Header="_File">
+            <MenuItem Header="_Open"/>
+            <MenuItem Header="_Close"/>
+            <MenuItem Header="_Save"/>
+        </MenuItem>
+    </Menu>
+    
+<Grid>
+        <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="28" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*" />
+        <ColumnDefinition Width="3*" />
+    </Grid.ColumnDefinitions>
+
+<StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
+           <Button Name="botoasdn" Content="Hazme click"></Button>
+            <Button Name="aassadds" Content="NADA" Width="40" Height="24"></Button>
+
+</StackPanel>
+    
+<ScrollViewer Grid.Row="0" Grid.Column="1"  VerticalScrollBarVisibility="Auto">
+    <StackPanel Grid.Row="0" Grid.Column="1" Name="panel" HorizontalAlignment="Center">
             <Button Name="boton" Content="Hazme click"></Button>
+            <Button Name="aasds" Content="NADA" Width="40" Height="24"></Button>
         </StackPanel>
 </ScrollViewer>
     
+</Grid>
+</DockPanel>
 </Window>
