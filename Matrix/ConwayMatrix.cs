@@ -70,10 +70,11 @@ namespace Conway.Matrix {
         
             this[casilla[0]+filaExtra,casilla[1]+columnaExtra]=Convert.ToBoolean(casilla[2]);
 
-            if (casilla[0]==-1){
+            if (casilla[0]+filaExtra==-1){
+                
                 filaExtra++;
             } 
-            if (casilla[1]==-1){
+            if (casilla[1]+columnaExtra==-1){
                 columnaExtra+=1;
             }
 
@@ -220,7 +221,7 @@ namespace Conway.Matrix {
             data.LimitedMatrix= this.LimitMatrix(filaMinima,columnaMinima,filaMaxima,columnaMaxima);
            
            
-            return data; //TODO
+            return data; 
 
 
 

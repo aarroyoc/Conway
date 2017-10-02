@@ -34,7 +34,7 @@ namespace Conway.GUI
             conway.Height = 500;
             panel = this.Find<StackPanel>("panel");
             panel.Children.Add(conway);
-            boton = this.Find<Button>("boton");
+            boton = this.Find<Button>("Run");
             boton.Click += OnClick;
         }
 
