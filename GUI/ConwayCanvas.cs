@@ -20,9 +20,6 @@ namespace Conway.GUI{
             this.matrix = new File.Rle(@"Patterns\gosperglidergun.rle").ConwayMatrix;
         }
 
-
-
-        private bool Iterating = false;
         // zoom, deslizador, velocidad, mostrar iteraciones
         public override void Render(DrawingContext context){
             int blocks_w = (int)this.Width / TILE_WIDTH;
