@@ -21,7 +21,9 @@ namespace Conway.GUI
         Button boton;
         StackPanel panel;
         ConwayCanvas conway;
-        Timer timer;
+        Thread thread;
+
+        public bool ThreadAlive = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,6 +34,7 @@ namespace Conway.GUI
             panel.Children.Add(conway);
             boton = this.Find<Button>("boton");
             boton.Click += OnClick;
+            this.Closed += OnClosed;
         }
 
         private void InitializeComponent()
@@ -48,11 +51,16 @@ namespace Conway.GUI
             
             this.Renderer.DrawFps = true;
 
-            timer = new Timer((a)=>{
-                conway.Iterate();
-                this.Renderer.Dispose();
-                this.Renderer.AddDirty(conway);
-            },null,0,1000/10);
+            this.ThreadAlive = true;
+            var iterate = new IterateThread(conway,this);
+            thread = new Thread(iterate.Iterate);
+            thread.Start();
+        }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            this.ThreadAlive = false;
+            thread.Join();
         }
     }
 }
