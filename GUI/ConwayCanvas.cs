@@ -9,11 +9,19 @@ namespace Conway.GUI{
      */
     public class ConwayCanvas : Control{
 
-        private  ConwayMatrix matrix=null;
+        public  ConwayMatrix matrix=null; //TEMPORAL; pasar a private 
         public override void Render(DrawingContext context){
 
             if (matrix==null){ //TEMPORAL
                 this.matrix=new File.Rle("Patterns/10cellinfinitegrowth.rle").ConwayMatrix;
+               
+                
+                int temp=0;
+                while (temp<500){
+                    this.matrix.Iterate();
+                    Console.WriteLine("Iterate" + temp);
+                    temp++;
+                }
                  /* 
                 this.matrix= new ConwayMatrix();
                 this.matrix.SetSize(3,8);
@@ -36,7 +44,8 @@ namespace Conway.GUI{
                 */
             }
            
-
+            this.Width=10*this.matrix.Width;
+            this.Height=10*this.matrix.Height; //Modifica dinámicamente el tamaño para que el ScrollViewer funcione correctamente
               for (int y=0;y<this.matrix.Height;y++){
                 ;
                     for (int x=0;x<this.matrix.Width;x++){

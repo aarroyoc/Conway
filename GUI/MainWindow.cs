@@ -29,6 +29,8 @@ namespace Conway.GUI
            
             
             InitializeComponent();
+            var printy=this.Find<Button>("Print");
+
             conway = new ConwayCanvas();
             conway.Width = 500;
             conway.Height = 500;
@@ -36,6 +38,8 @@ namespace Conway.GUI
             panel.Children.Add(conway);
             boton = this.Find<Button>("Run");
             boton.Click += OnClick;
+
+            printy.Click+=GetData;
         }
 
         private void InitializeComponent()
@@ -43,9 +47,13 @@ namespace Conway.GUI
             AvaloniaXamlLoader.Load(this);
         }
 
-
+        private void GetData(object sender, RoutedEventArgs e){
+            Console.WriteLine("TAMAÑO DE LA MATRIZ: " + this.conway.matrix.Width + this.conway.matrix.Height);
+            Console.WriteLine(this.conway.matrix.ToString());
+        }
         private void OnClick(object sender, RoutedEventArgs e)
         {
+       
             conway.Iterate();
             this.Renderer.Dispose();
             this.Renderer.AddDirty(conway);

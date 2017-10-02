@@ -41,24 +41,23 @@
         <StackPanel  Grid.Row="1" Grid.Column="0">
            <Button  Name="Run" Content="RUN"   ></Button>
             <Slider  Width="{Binding Path=ActualWidth, ElementName=DivLeft}"/> <!-- AJusta el tamaño del Slider al tamaño del padre DivLeft-->
-            
-            <Button Name="Step" Content="Step" Width="180" ></Button>
+            <Button Name="Print" Content="Print" ></Button>
+            <Button Name="Step" Content="Step"  ></Button>
             <Button Name="Restart" Content="Restart"  ></Button>
              <Button Name="Clear" Content="Clear" ></Button>
-            <Button Name="Print" Content="Clear" ></Button>
+          
         </StackPanel>
 
 </StackPanel>
 
- 
-<ScrollViewer Grid.Row="0" Grid.Column="1"  VerticalScrollBarVisibility="Auto" Name="DivRight">
-
+<DockPanel Grid.Row="0" Grid.Column="1" Name="DivRight">
     <Grid>
         <Grid.RowDefinitions>
         <RowDefinition Height="20" />
         <RowDefinition Height="*"  /> 
     </Grid.RowDefinitions>
     
+
     <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="1000"> <!-- Rectangulo blanco interior-->
         <Rectangle.Fill>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -66,22 +65,21 @@
             </LinearGradientBrush>
         </Rectangle.Fill>
     </Rectangle>
-
+    
      <DockPanel VerticalAlignment="Top" Grid.Row="0" Grid.Column="1"> 
         
            <TextBlock>Iterations: </TextBlock>
         
     </DockPanel>
-       
-    <StackPanel Grid.Row="1" Grid.Column="0" Name="panel" VerticalAlignment="Center" HorizontalAlignment="Center"> <!-- TODO: Buscar como dejar fijo el panel en el centro del GRID-->
-            
+     <ScrollViewer   VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >
+    <StackPanel  Name="panel" > <!-- TODO: Buscar como dejar fijo el panel en el centro del GRID-->   
     </StackPanel>
-
+    </ScrollViewer>
     </Grid>
    
 
   
-</ScrollViewer>
+</DockPanel>
 
 
 </Grid>
