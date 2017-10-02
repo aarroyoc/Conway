@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.CommandLineUtils;
 using Avalonia;
+using Conway.Matrix;
 
 namespace Conway
 {
@@ -33,8 +34,15 @@ namespace Conway
                     var iter = Int32.Parse(iterations.Value());
 
                     // TODO: ser capaz de detectar el formato correcto
-                    var matrix = new File.Rle(inputFile.Value()).ConwayMatrix;
-
+                    
+                    ConwayMatrix matrix = null;
+                    try{
+                        matrix = new File.Rle(inputFile.Value()).ConwayMatrix;
+                    }catch(Exception){
+                        matrix = new File.Vaca(inputFile.Value()).ConwayMatrix;
+                    };
+                    if(matrix == null)
+                        throw new Exception("File format error");
                     Console.WriteLine($"{matrix}");
                     var sw = Stopwatch.StartNew();
                     for(var i=0;i<iter;i++){
