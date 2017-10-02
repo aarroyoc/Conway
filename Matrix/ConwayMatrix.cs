@@ -176,10 +176,7 @@ namespace Conway.Matrix {
                  x++;
             }
 
-            Console.WriteLine("FINAAAAAAL");
-            Console.WriteLine(limitedMatrix.ToString());
-          ;
-            return new ConwayMatrix(); //TODO
+            return limitedMatrix;
         }
 
          public FinalDataStruct GetFinalResult(){ //Cambiar por Structs
