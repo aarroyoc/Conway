@@ -10,52 +10,32 @@ namespace Conway.GUI{
     public class ConwayCanvas : Control{
 
         private  ConwayMatrix matrix=null;
+
+        public ConwayCanvas()
+        {
+            this.matrix = new File.Rle(@"Patterns\biloaf3.rle").ConwayMatrix;
+        }
+
+        const int TILE_HEIGHT = 10;
+        const int TILE_WIDTH = 10;
+        // zoom, deslizador, velocidad
         public override void Render(DrawingContext context){
-
-            if (matrix==null){ //TEMPORAL
-                this.matrix=new File.Rle("Patterns/10cellinfinitegrowth.rle").ConwayMatrix;
-                 /* 
-                this.matrix= new ConwayMatrix();
-                this.matrix.SetSize(3,8);
-               
-                this.matrix[0,0]=true;
-                this.matrix[0,1]=true;
-                this.matrix[0,2]=true;
-                this.Width=this.matrix.Width*10;
-                this.Height=this.matrix.Height*10;
-
-
-
-                Console.WriteLine(this.matrix.ToString());
-
-
-                //this.matrix.Iterate();
-                
-                Console.WriteLine(this.matrix.ToString());
-                this.matrix.GetFinalResult();
-                */
-            }
-           
-
-              for (int y=0;y<this.matrix.Height;y++){
-                ;
-                    for (int x=0;x<this.matrix.Width;x++){
-                        var rect=new Rect(x*10,y*10,10,10);
-                     
-                     
-                        if (this.matrix[y,x]==true){
-                                context.FillRectangle(Brushes.Black,rect);
-                            
-                        }
-                        else{
-
-                            context.FillRectangle(Brushes.Red,rect);
-                        }
-                       
-    
+            int blocks_w = (int)this.Width / TILE_WIDTH;
+            int blocks_h = (int)this.Height / TILE_HEIGHT;
             
-                 }
-          }
+            context.FillRectangle(Brushes.Black,new Rect(0,0,this.Width,this.Height));
+
+            for(var i=0;i<blocks_w;i++){
+                for(var j=0;j<blocks_h;j++){
+                    if(this.matrix[j+this.matrix.OffsetX-(blocks_w/3),i+this.matrix.OffsetY-(blocks_h/3)]){
+                        
+                    }else{
+                        var rect = new Rect(i*TILE_WIDTH+1,j*TILE_HEIGHT+1,TILE_WIDTH-1,TILE_HEIGHT-1);
+                        context.FillRectangle(Brushes.White,rect);
+                    }
+                }
+            }
+
         }
     
         public void Iterate(){

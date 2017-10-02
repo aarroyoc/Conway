@@ -8,7 +8,13 @@ namespace Conway.Matrix {
         public ConwayMatrix()
         {
             matrix = new List<List<bool>>();
+            this.OffsetX = 0;
+            this.OffsetY = 0;
         }
+
+        public int OffsetX {get; set;}
+
+        public int OffsetY {get; set;}
 
         public int Width{ 
             get{
@@ -124,7 +130,8 @@ namespace Conway.Matrix {
                     Console.WriteLine($"X: {x}\tCount: {matrix.Count}");
                     if(x<0){
                         // insert
-                        matrix.Insert(0,new List<bool>()); 
+                        matrix.Insert(0,new List<bool>());
+                        this.OffsetX++;
                         // crear Y
                         for(int j=0;j<matrix[1].Count;j++){ 
                             matrix[0].Add(false);          
@@ -140,6 +147,7 @@ namespace Conway.Matrix {
                         }
                     }
                     if(y<0){
+                        this.OffsetY++;
                         foreach(var m in matrix){
                             m.Insert(0,false);
                         }
