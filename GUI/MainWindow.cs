@@ -28,8 +28,6 @@ namespace Conway.GUI
         {
             InitializeComponent();
             conway = new ConwayCanvas();
-            conway.Width = 500;
-            conway.Height = 500;
             panel = this.Find<StackPanel>("panel");
             panel.Children.Add(conway);
             boton = this.Find<Button>("boton");
@@ -42,25 +40,42 @@ namespace Conway.GUI
             AvaloniaXamlLoader.Load(this);
         }
 
+        protected override void HandleResized(Size size)
+        {
+            base.HandleResized(size);
+            conway.Width = size.Width * 0.8 - 20;
+            conway.Height = size.Height - 20;
+
+        }
+
 
         private void OnClick(object sender, RoutedEventArgs e)
         {
-            
-            this.Renderer.Dispose();
-            this.Renderer.AddDirty(conway);
-            
-            this.Renderer.DrawFps = true;
+            if(this.ThreadAlive){
+                this.ThreadAlive = false;
+                if(thread!=null)
+                    thread.Join();
+                boton.Content = "Ejecutar";
+            }else{
+                this.Renderer.Dispose();
+                this.Renderer.AddDirty(conway);
+                
+                this.Renderer.DrawFps = true;
 
-            this.ThreadAlive = true;
-            var iterate = new IterateThread(conway,this);
-            thread = new Thread(iterate.Iterate);
-            thread.Start();
+                this.ThreadAlive = true;
+                var iterate = new IterateThread(conway,this);
+                thread = new Thread(iterate.Iterate);
+                thread.Start();
+                boton.Content = "Parar";
+            }
+
         }
 
         private void OnClosed(object sender, EventArgs e)
         {
             this.ThreadAlive = false;
-            thread.Join();
+            if(thread!=null)
+                thread.Join();
         }
     }
 }
