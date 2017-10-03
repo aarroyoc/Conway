@@ -51,7 +51,7 @@ namespace Conway.GUI
 
         private void OnClick(object sender, RoutedEventArgs e)
         {
-            if(this.ThreadAlive){
+            if(this.ThreadAlive || !conway.HasMatrix()){
                 this.ThreadAlive = false;
                 if(thread!=null)
                     thread.Join();
