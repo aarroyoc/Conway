@@ -25,6 +25,21 @@ namespace Conway.GUI{
             return this.matrix != null;
         }
 
+        public void LoadFile(string file)
+        {
+            ConwayMatrix matrix = null;
+            try{
+                matrix = new File.Rle(file).ConwayMatrix;
+            }catch(Exception){
+                try{
+                    matrix = new File.Vaca(file).ConwayMatrix;
+                }catch(Exception){
+
+                }
+            };
+            this.matrix = matrix;
+        }
+
         // zoom, deslizador, velocidad, mostrar iteraciones
         public override void Render(DrawingContext context){
             if(this.matrix != null)

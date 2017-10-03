@@ -16,7 +16,9 @@
             <ColumnDefinition Width="0.8*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Margin="10" Name="controls" Grid.Column="0">
-            <Button Name="boton" Content="Ejecutar"></Button>
+            <Button Name="exec" Content="Ejecutar"></Button>
+            <Separator Margin="10"/>
+            <Button Name="load" Content="Cargar patrón"></Button>
         </StackPanel>
         <StackPanel Margin="10" Name="panel" HorizontalAlignment="Center" Grid.Column="1">
             

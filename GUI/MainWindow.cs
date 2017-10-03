@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -6,6 +7,7 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System.Threading;
+using System.Threading.Tasks;
 
 /*
 Conway.GUI contiene los elementos visuales
@@ -19,6 +21,7 @@ namespace Conway.GUI
     {
         
         Button boton;
+        Button load;
         StackPanel panel;
         ConwayCanvas conway;
         Thread thread;
@@ -30,8 +33,10 @@ namespace Conway.GUI
             conway = new ConwayCanvas();
             panel = this.Find<StackPanel>("panel");
             panel.Children.Add(conway);
-            boton = this.Find<Button>("boton");
+            boton = this.Find<Button>("exec");
             boton.Click += OnClick;
+            load = this.Find<Button>("load");
+            load.Click += LoadPattern;
             this.Closed += OnClosed;
         }
 
@@ -69,6 +74,23 @@ namespace Conway.GUI
                 boton.Content = "Parar";
             }
 
+        }
+        private async void LoadPattern(object sender, RoutedEventArgs e)
+        {
+            var filter = new FileDialogFilter{
+                Extensions = new List<string>() {"rle","vaca"},
+                Name = "Patrones",
+            };
+            var dlg = new OpenFileDialog{
+                Title = "Abrir patrón",
+                AllowMultiple = false,
+                Filters = new List<FileDialogFilter>() {filter},
+            };
+            var files = await dlg.ShowAsync(this);
+            var file = files[0];
+            conway.LoadFile(file);
+            this.Renderer.AddDirty(conway);
+            this.Renderer.Dispose();
         }
 
         private void OnClosed(object sender, EventArgs e)
