@@ -16,8 +16,7 @@ namespace Conway.GUI{
 
         public ConwayCanvas()
         {
-            //this.matrix = new File.Rle(@"Patterns\biloaf3.rle").ConwayMatrix;
-            //this.matrix = new File.Rle(@"Patterns\gosperglidergun.rle").ConwayMatrix;
+
         }
 
         public bool HasMatrix()
@@ -49,15 +48,13 @@ namespace Conway.GUI{
                 
                 context.FillRectangle(Brushes.Black,new Rect(0,0,this.Width,this.Height));
 
-                lock(this.matrix){
-                    for(var i=0;i<blocks_w;i++){
-                        for(var j=0;j<blocks_h;j++){
-                            if(this.matrix[j+this.matrix.OffsetX,i+this.matrix.OffsetY]){
-                                
-                            }else{
-                                var rect = new Rect(i*TILE_WIDTH+1,j*TILE_HEIGHT+1,TILE_WIDTH-1,TILE_HEIGHT-1);
-                                context.FillRectangle(Brushes.White,rect);
-                            }
+                for(var i=0;i<blocks_w;i++){
+                    for(var j=0;j<blocks_h;j++){
+                        if(this.matrix[j+this.matrix.OffsetX,i+this.matrix.OffsetY]){
+                            
+                        }else{
+                            var rect = new Rect(i*TILE_WIDTH+1,j*TILE_HEIGHT+1,TILE_WIDTH-1,TILE_HEIGHT-1);
+                            context.FillRectangle(Brushes.White,rect);
                         }
                     }
                 }
