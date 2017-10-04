@@ -87,10 +87,14 @@ namespace Conway.GUI
                 Filters = new List<FileDialogFilter>() {filter},
             };
             var files = await dlg.ShowAsync(this);
-            var file = files[0];
-            conway.LoadFile(file);
-            this.Renderer.AddDirty(conway);
-            this.Renderer.Dispose();
+            try{
+                var file = files[0];
+                conway.LoadFile(file);
+                this.Renderer.AddDirty(conway);
+                this.Renderer.Dispose();
+            }catch(Exception){
+                
+            }
         }
 
         private void OnClosed(object sender, EventArgs e)
