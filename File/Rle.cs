@@ -76,6 +76,7 @@ namespace Conway.File {
             // lee y almacena en un ConwayMatrix los datos codificados en RLE
             string[] ruleLines = rule.Split('$'); // cada línea en la matriz se separa por $
             var r = new Regex(@"([0-9]*)[bo]"); // contar cuantos grupos hay en cada match
+            var end = new Regex(@"([0-9]*)$"); // comprobar saltos de linea
             int a = 0, b = 0;
             // por cada línea aplicamos un regex de vivas/muertas y su números. Se procesan en orden
             // al final se añaden celdas muertas hasta acabar la longitud de la matriz
@@ -107,12 +108,27 @@ namespace Conway.File {
                         a++;
                     }
                 }
+
                 while(a<x){
                     ConwayMatrix[b,a]=false;
                     a++;
                 }
                 b++;
                 a = 0;
+                try{
+                    Match m = end.Matches(line)[0];
+                    int ln = Int32.Parse(m.Groups[1].Value) - 1;
+                    for(var i=0;i<ln;i++){
+                        while(a<x){
+                            ConwayMatrix[b,a] = false;
+                            a++;
+                        }
+                        b++;
+                        a = 0;
+                    }
+                }catch(Exception){
+
+                }
             }
         }
         public void Save(string path)
