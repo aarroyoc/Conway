@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Conway.Matrix {
 
-    public class ConwayMatrix{
+    public class ConwayMatrix : ICloneable {
         private List<List<bool>> matrix;
         public ConwayMatrix()
         {
@@ -25,6 +25,19 @@ namespace Conway.Matrix {
             get{
                 return this.matrix.Count;
             }
+        }
+
+        public object Clone()
+        {
+            var c = new ConwayMatrix();
+            var m = new List<List<bool>>();
+            foreach(var l in this.matrix){
+                m.Add(new List<bool>(l));
+            }
+            c.matrix = m;
+            c.OffsetX = this.OffsetX;
+            c.OffsetY = this.OffsetY;
+            return c;
         }
 
         public void Iterate(){
