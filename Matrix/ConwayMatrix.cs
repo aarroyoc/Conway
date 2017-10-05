@@ -125,9 +125,9 @@ namespace Conway.Matrix {
         {
             // fuera de la matriz siempre están muertas las celdas
             get{
-                try{
+                if(x >= 0 && y >= 0 && x < matrix.Count && y < matrix[0].Count){
                     return matrix[x][y];
-                }catch(ArgumentOutOfRangeException){
+                }else{
                     return false;
                 }
             }
