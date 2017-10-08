@@ -6,6 +6,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Input;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,6 +32,7 @@ namespace Conway.GUI
         {
             InitializeComponent();
             conway = new ConwayCanvas();
+            conway.PointerPressed += ClickRenderCanvas;
             panel = this.Find<StackPanel>("panel");
             panel.Children.Add(conway);
             boton = this.Find<Button>("exec");
@@ -73,7 +75,15 @@ namespace Conway.GUI
                 thread.Start();
                 boton.Content = "Parar";
             }
+        }
 
+        private void ClickRenderCanvas(object sender, PointerPressedEventArgs e)
+        {
+            if(!this.ThreadAlive){
+                this.conway.OnClick(sender,e);
+                this.Renderer.AddDirty(conway);
+                this.Renderer.Dispose();
+            }
         }
         private async void LoadPattern(object sender, RoutedEventArgs e)
         {

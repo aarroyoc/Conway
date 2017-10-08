@@ -1,9 +1,9 @@
 using Avalonia;
+using Avalonia.Input;
 using Avalonia.Controls;
 using System;
 using Avalonia.Media;
 using Conway.Matrix;
-using System.Diagnostics;
 
 namespace Conway.GUI{
     /*
@@ -87,6 +87,19 @@ namespace Conway.GUI{
 
             }
         }
+
+        public void OnClick(object sender, PointerPressedEventArgs e)
+        {
+            int x = (int)e.GetPosition(this).X;
+            int y = (int)e.GetPosition(this).Y;
+            lock(this.matrix){
+                this.matrix[y/10+this.matrix.OffsetX,x/10+this.matrix.OffsetY] = !this.matrix[y/10+this.matrix.OffsetX,x/10+this.matrix.OffsetY];
+            }
+            lock(this.ready){
+                this.ready[y/10+this.ready.OffsetX,x/10+this.ready.OffsetY] = !this.ready[y/10+this.ready.OffsetX,x/10+this.ready.OffsetY];
+            }
+        }
+
         public void Iterate(){
             lock(this.matrix){
                 this.matrix.Iterate();
