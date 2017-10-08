@@ -16,7 +16,9 @@ namespace Conway.GUI{
 
         private ConwayMatrix matrix=null;
         private ConwayMatrix ready = null;
-
+        
+        private int last_x = -1;
+        private int last_y = -1;
         public ConwayCanvas()
         {
 
@@ -94,18 +96,23 @@ namespace Conway.GUI{
             }
         }
 
-        public void OnClick(object sender, PointerPressedEventArgs e)
+        public void OnClick(object sender, PointerEventArgs e)
         {
             if(this.matrix == null || this.ready == null)
                 return;
-            int x = (int)e.GetPosition(this).X;
-            int y = (int)e.GetPosition(this).Y;
+            int x = (int)e.GetPosition(this).X / TILE_WIDTH;
+            int y = (int)e.GetPosition(this).Y / TILE_HEIGHT;
+            
+            if(x == last_x && y == last_y)
+                return;
             lock(this.matrix){
-                this.matrix[y/10+this.matrix.OffsetX,x/10+this.matrix.OffsetY] = !this.matrix[y/10+this.matrix.OffsetX,x/10+this.matrix.OffsetY];
+                this.matrix[y+this.matrix.OffsetX,x+this.matrix.OffsetY] = !this.matrix[y+this.matrix.OffsetX,x+this.matrix.OffsetY];
             }
             lock(this.ready){
-                this.ready[y/10+this.ready.OffsetX,x/10+this.ready.OffsetY] = !this.ready[y/10+this.ready.OffsetX,x/10+this.ready.OffsetY];
+                this.ready[y+this.ready.OffsetX,x+this.ready.OffsetY] = !this.ready[y+this.ready.OffsetX,x+this.ready.OffsetY];
             }
+            last_x = x;
+            last_y = y;
         }
 
         public void Iterate(){

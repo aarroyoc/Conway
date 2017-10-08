@@ -29,11 +29,14 @@ namespace Conway.GUI
         Thread thread;
 
         public bool ThreadAlive = false;
+        private bool ClickEnabled = false;
         public MainWindow()
         {
             InitializeComponent();
             conway = new ConwayCanvas();
-            conway.PointerPressed += ClickRenderCanvas;
+            conway.PointerPressed += ClickStart;
+            conway.PointerMoved += ClickRenderCanvas;
+            conway.PointerReleased += ClickEnd;
             panel = this.Find<StackPanel>("panel");
             panel.Children.Add(conway);
             boton = this.Find<Button>("exec");
@@ -80,13 +83,23 @@ namespace Conway.GUI
             }
         }
 
-        private void ClickRenderCanvas(object sender, PointerPressedEventArgs e)
+        private void ClickStart(object sender, PointerEventArgs e)
         {
-            if(!this.ThreadAlive){
+            this.ClickEnabled = true;
+            ClickRenderCanvas(sender,e);
+        }
+        private void ClickRenderCanvas(object sender, PointerEventArgs e)
+        {
+            if(!this.ThreadAlive && this.ClickEnabled){
                 this.conway.OnClick(sender,e);
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();
             }
+        }
+
+        private void ClickEnd(object sender, PointerEventArgs e)
+        {
+            this.ClickEnabled = false;
         }
         private async void LoadPattern(object sender, RoutedEventArgs e)
         {
