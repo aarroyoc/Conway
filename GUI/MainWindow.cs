@@ -23,6 +23,7 @@ namespace Conway.GUI
         
         Button boton;
         Button load;
+        Button nuevo;
         StackPanel panel;
         ConwayCanvas conway;
         Thread thread;
@@ -37,6 +38,8 @@ namespace Conway.GUI
             panel.Children.Add(conway);
             boton = this.Find<Button>("exec");
             boton.Click += OnClick;
+            nuevo = this.Find<Button>("new");
+            nuevo.Click += NewPattern;
             load = this.Find<Button>("load");
             load.Click += LoadPattern;
             this.Closed += OnClosed;
@@ -105,6 +108,13 @@ namespace Conway.GUI
             }catch(Exception){
                 
             }
+        }
+
+        private void NewPattern(object sender, RoutedEventArgs e)
+        {
+            conway.New();
+            this.Renderer.AddDirty(conway);
+            this.Renderer.Dispose();
         }
 
         private void OnClosed(object sender, EventArgs e)

@@ -27,6 +27,12 @@ namespace Conway.GUI{
             return this.matrix != null;
         }
 
+        public void New()
+        {
+            this.matrix = new ConwayMatrix();
+            this.ready = new ConwayMatrix();
+        }
+
         public void LoadFile(string file)
         {
             ConwayMatrix matrix = null;
@@ -90,6 +96,8 @@ namespace Conway.GUI{
 
         public void OnClick(object sender, PointerPressedEventArgs e)
         {
+            if(this.matrix == null || this.ready == null)
+                return;
             int x = (int)e.GetPosition(this).X;
             int y = (int)e.GetPosition(this).Y;
             lock(this.matrix){

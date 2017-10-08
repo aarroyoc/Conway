@@ -18,6 +18,7 @@
         <StackPanel Margin="10" Name="controls" Grid.Column="0">
             <Button Name="exec" Content="Ejecutar"></Button>
             <Separator Margin="10"/>
+            <Button Name="new" Content="Nuevo patrón"></Button>
             <Button Name="load" Content="Cargar patrón"></Button>
             <!-- Nuevo, Siguiente paso, Guardar, Velocidad -->
         </StackPanel>
