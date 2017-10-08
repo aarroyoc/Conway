@@ -125,7 +125,7 @@ namespace Conway.Matrix {
         {
             // fuera de la matriz siempre están muertas las celdas
             get{
-                if(x >= 0 && y >= 0 && x < matrix.Count && y < matrix[0].Count){
+                if(x >= 0 && y >= 0 && x < matrix.Count && y < matrix[x].Count){
                     return matrix[x][y];
                 }else{
                     return false;
@@ -140,38 +140,32 @@ namespace Conway.Matrix {
                     // hacer crecer la matriz
                     int xplus = 0;
                     int yplus = 0;
-                    Console.WriteLine($"X: {x}\tCount: {matrix.Count}");
-                    if(x<0){
+                    if(x<0 || y<0){
                         // insert
                         matrix.Insert(0,new List<bool>());
                         this.OffsetX++;
+                        this.OffsetY++;
                         // crear Y
                         for(int j=0;j<matrix[1].Count;j++){ 
                             matrix[0].Add(false);          
                         }
+                        foreach(var m in matrix){
+                            m.Insert(0,false);
+                        }
                         xplus = 1;
-                    }else if(x==matrix.Count){ 
-                        Console.WriteLine("Ampliando X");
+                        yplus = 1;
+                    }else{
                         // add
                         matrix.Add(new List<bool>());
                         // crear y
                         for(int j =0;j<matrix[0].Count;j++){
-                            matrix[x].Add(false);
+                            matrix[matrix.Count-1].Add(false);
                         }
-                    }
-                    if(y<0){
-                        this.OffsetY++;
-                        foreach(var m in matrix){
-                            m.Insert(0,false);
-                        }
-                        yplus = 1;
-                    }else if(y == matrix[0].Count){
-                        Console.WriteLine("Ampliando Y");
                         foreach(var m in matrix){
                             m.Add(false);
                         }
                     }
-                    matrix[x+xplus][y+yplus] = value;
+                    this[x+xplus,y+yplus] = value;
                 }
             }
         }
