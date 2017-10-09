@@ -19,8 +19,18 @@
             <Button Name="exec" Content="Ejecutar"></Button>
             <Separator Margin="10"/>
             <Button Name="new" Content="Nuevo patrón"></Button>
+            <Separator Margin="5"/>
             <Button Name="load" Content="Cargar patrón"></Button>
-            <!-- Nuevo, Siguiente paso, Guardar, Velocidad -->
+            <!-- Siguiente paso, Guardar, Velocidad, Iteraciones, Desplazarse -->
+            <Separator Margin="20"/>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button Name="left" Content="←"></Button>
+                <StackPanel>
+                    <Button Name="up" Content="↑"></Button>
+                    <Button Name="down" Content="↓"></Button>
+                </StackPanel>
+                <Button Name="right" Content="→"></Button>
+            </StackPanel>
         </StackPanel>
         <StackPanel Margin="10" Name="panel" HorizontalAlignment="Center" Grid.Column="1">
             

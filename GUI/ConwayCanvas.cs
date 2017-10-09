@@ -19,6 +19,10 @@ namespace Conway.GUI{
         
         private int last_x = -1;
         private int last_y = -1;
+
+        private int desp_x = 0;
+        private int desp_y = 0;
+
         public ConwayCanvas()
         {
 
@@ -63,7 +67,7 @@ namespace Conway.GUI{
 
                     for(var i=0;i<blocks_w;i++){
                         for(var j=0;j<blocks_h;j++){
-                            if(this.ready[j+this.ready.OffsetX,i+this.ready.OffsetY]){
+                            if(this.ready[j+this.ready.OffsetX+desp_x,i+this.ready.OffsetY+desp_y]){
                                 
                             }else{
                                 var rect = new Rect(i*TILE_WIDTH+1,j*TILE_HEIGHT+1,TILE_WIDTH-1,TILE_HEIGHT-1);
@@ -106,13 +110,19 @@ namespace Conway.GUI{
             if(x == last_x && y == last_y)
                 return;
             lock(this.matrix){
-                this.matrix[y+this.matrix.OffsetX,x+this.matrix.OffsetY] = !this.matrix[y+this.matrix.OffsetX,x+this.matrix.OffsetY];
+                this.matrix[y+this.matrix.OffsetX+desp_x,x+this.matrix.OffsetY+desp_y] = !this.matrix[y+this.matrix.OffsetX+desp_x,x+this.matrix.OffsetY+desp_y];
             }
             lock(this.ready){
-                this.ready[y+this.ready.OffsetX,x+this.ready.OffsetY] = !this.ready[y+this.ready.OffsetX,x+this.ready.OffsetY];
+                this.ready[y+this.ready.OffsetX+desp_x,x+this.ready.OffsetY+desp_y] = !this.ready[y+this.ready.OffsetX+desp_x,x+this.ready.OffsetY+desp_y];
             }
             last_x = x;
             last_y = y;
+        }
+
+        public void Move(int x, int y)
+        {
+            desp_x += x;
+            desp_y += y;
         }
 
         public void Iterate(){

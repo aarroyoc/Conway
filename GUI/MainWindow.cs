@@ -24,6 +24,7 @@ namespace Conway.GUI
         Button boton;
         Button load;
         Button nuevo;
+        Button up, left, down, right;
         StackPanel panel;
         ConwayCanvas conway;
         Thread thread;
@@ -45,6 +46,16 @@ namespace Conway.GUI
             nuevo.Click += NewPattern;
             load = this.Find<Button>("load");
             load.Click += LoadPattern;
+
+            up = this.Find<Button>("up");
+            up.Click += GoUp;
+            left = this.Find<Button>("left");
+            left.Click += GoLeft;
+            down = this.Find<Button>("down");
+            down.Click += GoDown;
+            right = this.Find<Button>("right");
+            right.Click += GoRight;
+
             this.Closed += OnClosed;
         }
 
@@ -101,6 +112,33 @@ namespace Conway.GUI
         {
             this.ClickEnabled = false;
         }
+
+        private void GoUp(object sender, RoutedEventArgs e)
+        {
+            conway.Move(-1,0);
+            this.Renderer.AddDirty(conway);
+            this.Renderer.Dispose();
+        }
+        private void GoDown(object sender, RoutedEventArgs e)
+        {
+            conway.Move(1,0);
+            this.Renderer.AddDirty(conway);
+            this.Renderer.Dispose();
+
+        }
+        private void GoLeft(object sender, RoutedEventArgs e)
+        {
+            conway.Move(0,-1);
+            this.Renderer.AddDirty(conway);
+            this.Renderer.Dispose();
+        }
+        private void GoRight(object sender, RoutedEventArgs e)
+        {
+            conway.Move(0,1);
+            this.Renderer.AddDirty(conway);
+            this.Renderer.Dispose();
+        }
+
         private async void LoadPattern(object sender, RoutedEventArgs e)
         {
             var filter = new FileDialogFilter{
