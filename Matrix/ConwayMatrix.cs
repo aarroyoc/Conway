@@ -12,6 +12,8 @@ namespace Conway.Matrix {
             this.OffsetY = 0;
         }
 
+        public int Iterations = 0;
+
         public int OffsetX {get; set;}
 
         public int OffsetY {get; set;}
@@ -41,7 +43,7 @@ namespace Conway.Matrix {
         }
 
         public void Iterate(){
-         
+            this.Iterations++;
             List<List<int>> Buffer=new List<List<int>>(); //Temporal
             for(int x=-1;x<this.Height+1;x++){ //El x=-1 y el x<this... +1 es para que incluya la fila anterior a la primera y la fila posterior.
                 for (int y=-1;y<this.Width+1;y++){

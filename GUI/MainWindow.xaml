@@ -31,6 +31,9 @@
                 </StackPanel>
                 <Button Name="right" Content="→"></Button>
             </StackPanel>
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Name="iterations">Iteraciones: 0</TextBlock>
+            </StackPanel>
         </StackPanel>
         <StackPanel Margin="10" Name="panel" HorizontalAlignment="Center" Grid.Column="1">
             

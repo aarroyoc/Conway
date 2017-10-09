@@ -125,6 +125,11 @@ namespace Conway.GUI{
             desp_y += y;
         }
 
+        public int Iterations { get{
+            return matrix.Iterations;
+        }
+        }
+
         public void Iterate(){
             lock(this.matrix){
                 this.matrix.Iterate();

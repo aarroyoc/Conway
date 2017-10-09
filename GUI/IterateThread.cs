@@ -1,3 +1,5 @@
+using Avalonia.Threading;
+using System;
 
 namespace Conway.GUI {
     class IterateThread {
@@ -14,6 +16,12 @@ namespace Conway.GUI {
                 canvas.Iterate();
                 window.Renderer.Dispose();
                 window.Renderer.AddDirty(canvas);
+                Dispatcher.UIThread.InvokeAsync(new Action(
+                    delegate()
+                    {
+                        window.iterations.Text =$"Iteraciones: {canvas.Iterations}";
+                    }
+                ));
                 //Thread.Sleep(100);
             }
         }

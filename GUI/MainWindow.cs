@@ -25,12 +25,14 @@ namespace Conway.GUI
         Button load;
         Button nuevo;
         Button up, left, down, right;
+        public TextBlock iterations;
         StackPanel panel;
         ConwayCanvas conway;
         Thread thread;
 
         public bool ThreadAlive = false;
         private bool ClickEnabled = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -55,6 +57,8 @@ namespace Conway.GUI
             down.Click += GoDown;
             right = this.Find<Button>("right");
             right.Click += GoRight;
+
+            iterations = this.Find<TextBlock>("iterations");
 
             this.Closed += OnClosed;
         }
