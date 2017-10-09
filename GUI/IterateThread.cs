@@ -16,8 +16,6 @@ namespace Conway.GUI {
         public void Iterate()
         {
             while(window.ThreadAlive){
-                window.Renderer.Dispose();
-                window.Renderer.AddDirty(canvas);
                 canvas.Iterate();
                 window.Renderer.Dispose();
                 window.Renderer.AddDirty(canvas);
@@ -27,7 +25,8 @@ namespace Conway.GUI {
                         window.iterations.Text =$"Iteraciones: {canvas.Iterations}";
                     }
                 ));
-                Thread.Sleep(this.speed*50);
+                if(this.speed != 0)
+                    Thread.Sleep(this.speed*50);
             }
         }
     }

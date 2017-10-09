@@ -34,7 +34,8 @@
             <Separator Margin="10"/>
             <TextBlock>Selector de velocidad: </TextBlock>
               <DropDown Name="speedSelector" SelectedIndex="0" >
-                <DropDownItem > 1</DropDownItem>
+                <DropDownItem> 0</DropDownItem>
+                <DropDownItem> 1</DropDownItem>
                 <DropDownItem> 2</DropDownItem>
                 <DropDownItem> 3</DropDownItem>
                 <DropDownItem> 4</DropDownItem>
