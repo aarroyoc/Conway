@@ -31,6 +31,21 @@
                 </StackPanel>
                 <Button Name="right" Content="→"></Button>
             </StackPanel>
+            <Separator Margin="10"/>
+            <TextBlock>Selector de velocidad: </TextBlock>
+              <DropDown Name="speedSelector" SelectedIndex="0" >
+                <DropDownItem > 1</DropDownItem>
+                <DropDownItem> 2</DropDownItem>
+                <DropDownItem> 3</DropDownItem>
+                <DropDownItem> 4</DropDownItem>
+                <DropDownItem> 5</DropDownItem>
+                <DropDownItem> 6</DropDownItem>
+                <DropDownItem> 7</DropDownItem>
+                <DropDownItem> 8</DropDownItem>
+                <DropDownItem> 9</DropDownItem>
+                <DropDownItem> 10</DropDownItem>
+            </DropDown>
+             <Separator Margin="10"/>
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock Name="iterations">Iteraciones: 0</TextBlock>
             </StackPanel>

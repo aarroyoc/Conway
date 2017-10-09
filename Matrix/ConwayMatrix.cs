@@ -237,7 +237,7 @@ namespace Conway.Matrix {
             data.LimitedMatrix= this.LimitMatrix(filaMinima,columnaMinima,filaMaxima,columnaMaxima);
            
            
-            return data; //TODO
+            return data; 
 
 
 

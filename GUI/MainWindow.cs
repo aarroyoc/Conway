@@ -30,6 +30,8 @@ namespace Conway.GUI
         ConwayCanvas conway;
         Thread thread;
 
+        DropDown speedSelector;
+
         public bool ThreadAlive = false;
         private bool ClickEnabled = false;
 
@@ -49,8 +51,11 @@ namespace Conway.GUI
             load = this.Find<Button>("load");
             load.Click += LoadPattern;
 
+            this.speedSelector=this.Find<DropDown>("speedSelector");
+       
             up = this.Find<Button>("up");
             up.Click += GoUp;
+        
             left = this.Find<Button>("left");
             left.Click += GoLeft;
             down = this.Find<Button>("down");
@@ -61,6 +66,8 @@ namespace Conway.GUI
             iterations = this.Find<TextBlock>("iterations");
 
             this.Closed += OnClosed;
+
+            //conway.LoadFile("Patterns/3enginecordership.rle"); //Temporal, para que pueda ejeutarlo en Fedora
         }
 
         private void InitializeComponent()
@@ -73,6 +80,7 @@ namespace Conway.GUI
             base.HandleResized(size);
             conway.Width = size.Width * 0.8 - 20;
             conway.Height = size.Height - 20;
+            this.Renderer.AddDirty(conway);
 
         }
 
@@ -91,7 +99,8 @@ namespace Conway.GUI
                 this.Renderer.DrawFps = true;
 
                 this.ThreadAlive = true;
-                var iterate = new IterateThread(conway,this);
+                int selectedSpeed=Int32.Parse((String)this.speedSelector.GetValue(DropDown.SelectionBoxItemProperty));
+                var iterate = new IterateThread(conway,this,selectedSpeed);
                 thread = new Thread(iterate.Iterate);
                 thread.Start();
                 boton.Content = "Parar";
