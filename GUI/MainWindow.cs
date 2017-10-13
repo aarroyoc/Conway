@@ -22,8 +22,11 @@ namespace Conway.GUI
     {
         
         Button boton;
+        Button next;
         Button load;
         Button nuevo;
+
+        Button save;
         Button up, left, down, right;
         public TextBlock iterations;
         StackPanel panel;
@@ -46,10 +49,14 @@ namespace Conway.GUI
             panel.Children.Add(conway);
             boton = this.Find<Button>("exec");
             boton.Click += OnClick;
+            next = this.Find<Button>("next");
+            next.Click += NextStep;
             nuevo = this.Find<Button>("new");
             nuevo.Click += NewPattern;
             load = this.Find<Button>("load");
             load.Click += LoadPattern;
+            save = this.Find<Button>("save");
+            save.Click += SavePattern;
 
             this.speedSelector=this.Find<DropDown>("speedSelector");
        
@@ -104,6 +111,16 @@ namespace Conway.GUI
                 thread = new Thread(iterate.Iterate);
                 thread.Start();
                 boton.Content = "Parar";
+            }
+        }
+
+        private void NextStep(object sender, RoutedEventArgs e)
+        {
+            if(!this.ThreadAlive && conway.HasMatrix()){
+                conway.Iterate();
+                iterations.Text =$"Iteraciones: {conway.Iterations}";
+                this.Renderer.AddDirty(conway);
+                this.Renderer.Dispose();
             }
         }
 
@@ -172,6 +189,28 @@ namespace Conway.GUI
             }catch(Exception){
                 
             }
+        }
+
+        private async void SavePattern(object sender, RoutedEventArgs e)
+        {
+            if(!conway.HasMatrix())
+                return;
+            var filter = new FileDialogFilter{
+                Extensions = new List<string>() {"vaca"},
+                Name = "Patrones",
+            };
+            var dlg = new SaveFileDialog{
+                Title = "Guardar patrón",
+                Filters = new List<FileDialogFilter>(){filter},
+            };
+            var file = await dlg.ShowAsync(this);
+            if(String.IsNullOrEmpty(file))
+                return;
+            if(!file.EndsWith(".vaca")){
+                file += ".vaca";
+            }
+            conway.SaveFile(file);
+
         }
 
         private void NewPattern(object sender, RoutedEventArgs e)

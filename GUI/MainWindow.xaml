@@ -3,13 +3,6 @@
         Title="Conway">
 
 <DockPanel Name="Root">
-    <Menu DockPanel.Dock="Top"> <!-- TODO -->
-        <MenuItem Header="_File">
-            <MenuItem Header="_Open"/>
-            <MenuItem Header="_Close"/>
-            <MenuItem Header="_Save"/>
-        </MenuItem>
-    </Menu>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.2*"/>
@@ -17,11 +10,14 @@
         </Grid.ColumnDefinitions>
         <StackPanel Margin="10" Name="controls" Grid.Column="0">
             <Button Name="exec" Content="Ejecutar"></Button>
+            <Separator Margin="5"/>
+            <Button Name="next" Content="Siguiente"></Button>
             <Separator Margin="10"/>
             <Button Name="new" Content="Nuevo patrón"></Button>
             <Separator Margin="5"/>
             <Button Name="load" Content="Cargar patrón"></Button>
-            <!-- Siguiente paso, Guardar, Velocidad, Iteraciones, Desplazarse -->
+            <Separator Margin="5"/>
+            <Button Name="save" Content="Guardar patrón"></Button>
             <Separator Margin="20"/>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button Name="left" Content="←"></Button>

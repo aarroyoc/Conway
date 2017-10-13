@@ -3,7 +3,7 @@
 ## Building
 
 ```
-git clone https://github.com/AdrianArroyoCalle/Conway
+git clone https://github.com/aarroyoc/Conway
 cd Conway
 dotnet restore
 dotnet build

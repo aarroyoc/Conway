@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using System;
 using Avalonia.Media;
 using Conway.Matrix;
+using Conway.File;
 
 namespace Conway.GUI{
     /*
@@ -53,6 +54,13 @@ namespace Conway.GUI{
             };
             this.matrix = matrix;
             this.ready = (ConwayMatrix)this.matrix.Clone();
+        }
+
+        public void SaveFile(string file)
+        {
+            var vaca = new Vaca();
+            vaca.ConwayMatrix = matrix;
+            vaca.Save(file);
         }
 
         // zoom, deslizador, velocidad, mostrar iteraciones
