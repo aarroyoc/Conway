@@ -138,6 +138,12 @@ namespace Conway.GUI{
         }
         }
 
+        public int LiveCells {
+            get{
+                return matrix.GetFinalResult().CeldasVivas;
+            }
+        }
+
         public void Iterate(){
             lock(this.matrix){
                 this.matrix.Iterate();

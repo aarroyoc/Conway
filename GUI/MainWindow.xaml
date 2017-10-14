@@ -45,7 +45,14 @@
              <Separator Margin="10"/>
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock Name="iterations">Iteraciones: 0</TextBlock>
+                <TextBlock Name="alive">Celdas vivas: 0</TextBlock>
             </StackPanel>
+            <Separator Margin="10"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Name="iter-n">500</TextBox>
+                <Button Name="iter-n-do" Content="Iterar 500 veces"></Button>
+            </StackPanel>
+            <TextBlock Name="iter-time" >Tiempo: 0</TextBlock>
         </StackPanel>
         <StackPanel Margin="10" Name="panel" HorizontalAlignment="Center" Grid.Column="1">
             

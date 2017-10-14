@@ -29,6 +29,10 @@ namespace Conway.GUI
         Button save;
         Button up, left, down, right;
         public TextBlock iterations;
+        public TextBlock alive;
+        Button iterButton;
+        TextBox iterBox;
+        public TextBlock iterBlock;
         StackPanel panel;
         ConwayCanvas conway;
         Thread thread;
@@ -71,6 +75,13 @@ namespace Conway.GUI
             right.Click += GoRight;
 
             iterations = this.Find<TextBlock>("iterations");
+            alive = this.Find<TextBlock>("alive");
+
+            iterButton = this.Find<Button>("iter-n-do");
+            iterButton.Click += IterN;
+            iterBox = this.Find<TextBox>("iter-n");
+            iterBox.TextInput += TextIter;
+            iterBlock = this.Find<TextBlock>("iter-time");
 
             this.KeyDown += MoveKey;
             this.Closed += OnClosed;
@@ -120,8 +131,25 @@ namespace Conway.GUI
             if(!this.ThreadAlive && conway.HasMatrix()){
                 conway.Iterate();
                 iterations.Text =$"Iteraciones: {conway.Iterations}";
+                alive.Text = $"Celdas vivas: {conway.LiveCells}";
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();
+            }
+        }
+
+        private void IterN(object sender, RoutedEventArgs e)
+        {
+            if(!this.ThreadAlive && conway.HasMatrix())
+            {
+                int n = 0;
+                if(Int32.TryParse(iterBox.Text, out n)){
+                    this.ThreadAlive = true;
+                    int selectedSpeed=Int32.Parse((String)this.speedSelector.GetValue(DropDown.SelectionBoxItemProperty));
+                    var iterate = new IterateThread(conway,this,selectedSpeed,n);
+                    thread = new Thread(iterate.Iterate);
+                    thread.Start();
+                }
+
             }
         }
 
@@ -134,6 +162,7 @@ namespace Conway.GUI
         {
             if(!this.ThreadAlive && this.ClickEnabled){
                 this.conway.OnClick(sender,e);
+                alive.Text = $"Celdas vivas: {conway.LiveCells}";
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();
             }
@@ -199,6 +228,8 @@ namespace Conway.GUI
             try{
                 var file = files[0];
                 conway.LoadFile(file);
+                iterations.Text =$"Iteraciones: {conway.Iterations}";
+                alive.Text = $"Celdas vivas: {conway.LiveCells}";
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();
             }catch(Exception){
@@ -231,6 +262,7 @@ namespace Conway.GUI
         private void NewPattern(object sender, RoutedEventArgs e)
         {
             conway.New();
+            alive.Text = $"Celdas vivas: {0}";
             this.Renderer.AddDirty(conway);
             this.Renderer.Dispose();
         }
@@ -240,6 +272,18 @@ namespace Conway.GUI
             this.ThreadAlive = false;
             if(thread!=null)
                 thread.Join();
+        }
+
+        private void TextIter(object sender, TextInputEventArgs e)
+        {
+            try{
+                var n = Int32.Parse(iterBox.Text);
+                iterButton.Content = $"Iterar {n} veces";
+                iterButton.IsEnabled = true;
+            }catch(Exception){
+                iterButton.Content = "(Inserta un número)";
+                iterButton.IsEnabled = false;
+            }
         }
     }
 }
