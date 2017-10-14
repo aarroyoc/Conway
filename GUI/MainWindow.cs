@@ -114,8 +114,6 @@ namespace Conway.GUI
             }else{
                 this.Renderer.Dispose();
                 this.Renderer.AddDirty(conway);
-                
-                this.Renderer.DrawFps = true;
 
                 this.ThreadAlive = true;
                 int selectedSpeed=Int32.Parse((String)this.speedSelector.GetValue(DropDown.SelectionBoxItemProperty));
