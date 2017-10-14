@@ -1,87 +1,55 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Conway" Background="#f1f1f1"
-        >
+        Title="Conway">
 
 <DockPanel Name="Root">
-<Menu DockPanel.Dock="Top"> <!-- TODO -->
-        <MenuItem Header="_File">
-            <MenuItem Header="_Open"/>
-            <MenuItem Header="_Close"/>
-            <MenuItem Header="_Save"/>
-        </MenuItem>
-    </Menu>
-    
-<Grid >
-     
-   
-    <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto" MaxWidth="180" />
-        <ColumnDefinition Width="*"  /> <!-- El asterisco significa el resto del espacio libre-->
-    
-    </Grid.ColumnDefinitions>
-
-
-  
-
-<StackPanel Name="DivLeft" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" >
-         <StackPanel.Styles>
-    <Style Selector="Button">
-      <Setter Property="Button.Background" Value="Gray"/> <!--  Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" -->
-      <Setter Property="Button.BorderThickness" Value="0"/>
-    </Style>
-  </StackPanel.Styles>
-  
     <Grid>
-        <Grid.RowDefinitions>
-        <RowDefinition Height="20" />
-        <RowDefinition Height="*"  /> 
-    </Grid.RowDefinitions >
-    </Grid>
-        <StackPanel  Grid.Row="1" Grid.Column="0">
-           <Button  Name="Run" Content="RUN"   ></Button>
-            <Slider  Width="{Binding Path=ActualWidth, ElementName=DivLeft}"/> <!-- AJusta el tamaño del Slider al tamaño del padre DivLeft-->
-            <Button Name="Print" Content="Print" ></Button>
-            <Button Name="Step" Content="Step"  ></Button>
-            <Button Name="Restart" Content="Restart"  ></Button>
-             <Button Name="Clear" Content="Clear" ></Button>
-          
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition Width="0.8*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="10" Name="controls" Grid.Column="0">
+            <Button Name="exec" Content="Ejecutar"></Button>
+            <Separator Margin="5"/>
+            <Button Name="next" Content="Siguiente"></Button>
+            <Separator Margin="10"/>
+            <Button Name="new" Content="Nuevo patrón"></Button>
+            <Separator Margin="5"/>
+            <Button Name="load" Content="Cargar patrón"></Button>
+            <Separator Margin="5"/>
+            <Button Name="save" Content="Guardar patrón"></Button>
+            <Separator Margin="20"/>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button Name="left" Content="←"></Button>
+                <StackPanel>
+                    <Button Name="up" Content="↑"></Button>
+                    <Button Name="down" Content="↓"></Button>
+                </StackPanel>
+                <Button Name="right" Content="→"></Button>
+            </StackPanel>
+            <Separator Margin="10"/>
+            <TextBlock>Selector de velocidad: </TextBlock>
+              <DropDown Name="speedSelector" SelectedIndex="0" >
+                <DropDownItem> 0</DropDownItem>
+                <DropDownItem> 1</DropDownItem>
+                <DropDownItem> 2</DropDownItem>
+                <DropDownItem> 3</DropDownItem>
+                <DropDownItem> 4</DropDownItem>
+                <DropDownItem> 5</DropDownItem>
+                <DropDownItem> 6</DropDownItem>
+                <DropDownItem> 7</DropDownItem>
+                <DropDownItem> 8</DropDownItem>
+                <DropDownItem> 9</DropDownItem>
+                <DropDownItem> 10</DropDownItem>
+            </DropDown>
+             <Separator Margin="10"/>
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Name="iterations">Iteraciones: 0</TextBlock>
+            </StackPanel>
         </StackPanel>
-
-</StackPanel>
-
-<DockPanel Grid.Row="0" Grid.Column="1" Name="DivRight">
-    <Grid>
-        <Grid.RowDefinitions>
-        <RowDefinition Height="20" />
-        <RowDefinition Height="*"  /> 
-    </Grid.RowDefinitions>
-    
-
-    <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="1000"> <!-- Rectangulo blanco interior-->
-        <Rectangle.Fill>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="White" Offset="1" />
-            </LinearGradientBrush>
-        </Rectangle.Fill>
-    </Rectangle>
-    
-     <DockPanel VerticalAlignment="Top" Grid.Row="0" Grid.Column="1"> 
-        
-           <TextBlock>Iterations: </TextBlock>
-        
-    </DockPanel>
-     <ScrollViewer   VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" >
-    <StackPanel  Name="panel" > <!-- TODO: Buscar como dejar fijo el panel en el centro del GRID-->   
-    </StackPanel>
-    </ScrollViewer>
+        <StackPanel Margin="10" Name="panel" HorizontalAlignment="Center" Grid.Column="1">
+            
+        </StackPanel>
     </Grid>
-   
-
-  
-</DockPanel>
-
-
-</Grid>
 </DockPanel>
 </Window>

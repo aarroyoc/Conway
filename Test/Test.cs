@@ -25,7 +25,7 @@ XX........X...X.XX....X.X...........
         public void GliderVaca()
         {
             var vaca = new Vaca("Patterns/Glider.vaca");
-            Assert.Equal(glider,vaca.ConwayMatrix.ToString());
+            Assert.Equal(glider,vaca.ConwayMatrix.GetFinalResult().LimitedMatrix.ToString());
         }
 
         [Fact]
@@ -54,7 +54,7 @@ X..
         {
             var rle = new Rle();
             rle.Load(@"Patterns/glider.rle");
-            Assert.Equal(glider,rle.ConwayMatrix.ToString());
+            Assert.Equal(glider,rle.ConwayMatrix.GetFinalResult().LimitedMatrix.ToString());
         }
 
         [Fact]
@@ -70,6 +70,10 @@ X..
 ....................X.X.................
 .....................X..................
 .....................X..................
+........................................
+........................................
+........................................
+........................................
 ..X..X....X..X..........................
 XXX..XXXXXX..XXX........................
 ..X..X....X..X..........................
@@ -79,14 +83,10 @@ XXX..XXXXXX..XXX........................
 ................................X....X..
 ..............................XX.XXXX.XX
 ................................X....X..
-........................................
-........................................
-........................................
-........................................
 ";
             var rle = new Rle();
             rle.Load("Patterns/6bits.rle");
-            Assert.Equal(sixbits,rle.ConwayMatrix.ToString());
+            Assert.Equal(sixbits,rle.ConwayMatrix.GetFinalResult().LimitedMatrix.ToString());
         }
 
         [Fact]
@@ -131,11 +131,11 @@ XXX..XXXXXX..XXX........................
             matrix[4,4] = true;
             Assert.Equal(test2,matrix.ToString());
             matrix[-1,-1] = true;
-            Assert.Equal(test3,matrix.ToString());
+            Assert.Equal(test3,matrix.GetFinalResult().LimitedMatrix.ToString());
             matrix[4,6] = true;
-            Assert.Equal(test4,matrix.ToString());
+            Assert.Equal(test4,matrix.GetFinalResult().LimitedMatrix.ToString());
             matrix[6,4] = true;
-            Assert.Equal(test5,matrix.ToString());
+            Assert.Equal(test5,matrix.GetFinalResult().LimitedMatrix.ToString());
         }
     }
 }

@@ -3,12 +3,20 @@ using System.Collections.Generic;
 
 namespace Conway.Matrix {
 
-    public class ConwayMatrix{
+    public class ConwayMatrix : ICloneable {
         private List<List<bool>> matrix;
         public ConwayMatrix()
         {
             matrix = new List<List<bool>>();
+            this.OffsetX = 0;
+            this.OffsetY = 0;
         }
+
+        public int Iterations = 0;
+
+        public int OffsetX {get; set;}
+
+        public int OffsetY {get; set;}
 
         public int Width{ 
             get{
@@ -21,8 +29,21 @@ namespace Conway.Matrix {
             }
         }
 
+        public object Clone()
+        {
+            var c = new ConwayMatrix();
+            var m = new List<List<bool>>();
+            foreach(var l in this.matrix){
+                m.Add(new List<bool>(l));
+            }
+            c.matrix = m;
+            c.OffsetX = this.OffsetX;
+            c.OffsetY = this.OffsetY;
+            return c;
+        }
+
         public void Iterate(){
-         
+            this.Iterations++;
             List<List<int>> Buffer=new List<List<int>>(); //Temporal
             for(int x=-1;x<this.Height+1;x++){ //El x=-1 y el x<this... +1 es para que incluya la fila anterior a la primera y la fila posterior.
                 for (int y=-1;y<this.Width+1;y++){
@@ -71,7 +92,6 @@ namespace Conway.Matrix {
             this[casilla[0]+filaExtra,casilla[1]+columnaExtra]=Convert.ToBoolean(casilla[2]);
 
             if (casilla[0]+filaExtra==-1){
-                
                 filaExtra++;
             } 
             if (casilla[1]+columnaExtra==-1){
@@ -107,9 +127,9 @@ namespace Conway.Matrix {
         {
             // fuera de la matriz siempre están muertas las celdas
             get{
-                try{
+                if(x >= 0 && y >= 0 && x < matrix.Count && y < matrix[x].Count){
                     return matrix[x][y];
-                }catch(ArgumentOutOfRangeException){
+                }else{
                     return false;
                 }
             }
@@ -122,36 +142,32 @@ namespace Conway.Matrix {
                     // hacer crecer la matriz
                     int xplus = 0;
                     int yplus = 0;
-                    Console.WriteLine($"X: {x}\tCount: {matrix.Count}");
-                    if(x<0){
+                    if(x<0 || y<0){
                         // insert
-                        matrix.Insert(0,new List<bool>()); 
+                        matrix.Insert(0,new List<bool>());
+                        this.OffsetX++;
+                        this.OffsetY++;
                         // crear Y
                         for(int j=0;j<matrix[1].Count;j++){ 
                             matrix[0].Add(false);          
                         }
+                        foreach(var m in matrix){
+                            m.Insert(0,false);
+                        }
                         xplus = 1;
-                    }else if(x==matrix.Count){ 
-                        Console.WriteLine("Ampliando X");
+                        yplus = 1;
+                    }else{
                         // add
                         matrix.Add(new List<bool>());
                         // crear y
                         for(int j =0;j<matrix[0].Count;j++){
-                            matrix[x].Add(false);
+                            matrix[matrix.Count-1].Add(false);
                         }
-                    }
-                    if(y<0){
-                        foreach(var m in matrix){
-                            m.Insert(0,false);
-                        }
-                        yplus = 1;
-                    }else if(y == matrix[0].Count){
-                        Console.WriteLine("Ampliando Y");
                         foreach(var m in matrix){
                             m.Add(false);
                         }
                     }
-                    matrix[x+xplus][y+yplus] = value;
+                    this[x+xplus,y+yplus] = value;
                 }
             }
         }
