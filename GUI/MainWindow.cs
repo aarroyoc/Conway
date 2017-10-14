@@ -72,6 +72,7 @@ namespace Conway.GUI
 
             iterations = this.Find<TextBlock>("iterations");
 
+            this.KeyDown += MoveKey;
             this.Closed += OnClosed;
 
             //conway.LoadFile("Patterns/3enginecordership.rle"); //Temporal, para que pueda ejeutarlo en Fedora
@@ -141,6 +142,20 @@ namespace Conway.GUI
         private void ClickEnd(object sender, PointerEventArgs e)
         {
             this.ClickEnabled = false;
+        }
+
+        private void MoveKey(object sender, KeyEventArgs e)
+        {
+            switch(e.Key){
+                case Key.Up:
+                case Key.W: GoUp(null,null);break;
+                case Key.Down:
+                case Key.S: GoDown(null,null);break;
+                case Key.Left:
+                case Key.A: GoLeft(null,null);break;
+                case Key.Right:
+                case Key.D: GoRight(null,null);break;
+            }
         }
 
         private void GoUp(object sender, RoutedEventArgs e)
