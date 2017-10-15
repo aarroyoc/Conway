@@ -1,3 +1,5 @@
+/* Arroyo Calle, Adrián
+Bazaco Velasco, Daniel*/
 using Conway.Matrix;
 
 namespace Conway.File {

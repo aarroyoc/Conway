@@ -1,3 +1,5 @@
+/* Arroyo Calle, Adrián
+Bazaco Velasco, Daniel*/
 using System;
 using System.Collections.Generic;
 using Avalonia;

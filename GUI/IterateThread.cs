@@ -1,3 +1,5 @@
+/* Arroyo Calle, Adrián
+Bazaco Velasco, Daniel*/
 using Avalonia.Threading;
 using System;
 using System.Threading;

@@ -1,3 +1,5 @@
+/* Arroyo Calle, Adrián
+Bazaco Velasco, Daniel*/
 using Xunit;
 using Conway.File;
 using Conway.Matrix;
