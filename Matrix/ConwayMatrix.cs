@@ -16,9 +16,9 @@ namespace Conway.Matrix {
 
         public int Iterations = 0;
 
-        public int OffsetX {get; set;}
+        public int OffsetX = 0;
 
-        public int OffsetY {get; set;}
+        public int OffsetY = 0;
 
         public int Width{ 
             get{
@@ -47,6 +47,8 @@ namespace Conway.Matrix {
         public void Iterate(){
             this.Iterations++;
             var buffer = (ConwayMatrix)Clone();
+            var x_off = buffer.OffsetX;
+            var y_off = buffer.OffsetY;
             for(var x=-1;x<matrix.Count+1;x++){
                 for(var y=-1;y<matrix[0].Count+1;y++){
                     var s = Convert.ToInt32(this[x-1,y-1]);
@@ -60,16 +62,17 @@ namespace Conway.Matrix {
 
                     if(this[x,y]){
                         if(!(s == 2 || s == 3)){
-                            buffer[x+buffer.OffsetX-this.OffsetX,y+buffer.OffsetY-this.OffsetY]=false;
+                            buffer[x+buffer.OffsetX-this.OffsetX,y+buffer.OffsetY-this.OffsetY] = false;
                         }
                     }
                     if(!this[x,y] && (s == 3)){
-                        buffer[x+buffer.OffsetX-this.OffsetX,y+buffer.OffsetY-this.OffsetY] = true;
+                            buffer[x+buffer.OffsetX-this.OffsetY,y+buffer.OffsetY-this.OffsetY] = true;
                     }
                 }
             }
-
             this.matrix = buffer.matrix;
+            this.OffsetX = buffer.OffsetX;
+            this.OffsetY = buffer.OffsetY;
 
         }
 
