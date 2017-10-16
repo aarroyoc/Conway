@@ -46,63 +46,32 @@ namespace Conway.Matrix {
 
         public void Iterate(){
             this.Iterations++;
-            List<List<int>> Buffer=new List<List<int>>(); //Temporal
-            for(int x=-1;x<this.Height+1;x++){ //El x=-1 y el x<this... +1 es para que incluya la fila anterior a la primera y la fila posterior.
-                for (int y=-1;y<this.Width+1;y++){
-                    bool alive=this[x,y];
-                
-                    int aliveNear=0;
-                for (int i=-1;i<2;i++){
-                    for (int z=-1;z<2;z++){
-                        if (!(z==0 & i==0)){
-                            aliveNear+=Convert.ToInt32(this[x+i,y+z]); //Posible optimización pequeña: En el momento en el que 
-                                                                            //Alivenear>3, salir del bucle
-                    
+            var buffer = (ConwayMatrix)Clone();
+            for(var x=-1;x<matrix.Count+1;x++){
+                for(var y=-1;y<matrix[0].Count+1;y++){
+                    var s = Convert.ToInt32(this[x-1,y-1]);
+                    s += Convert.ToInt32(this[x-1,y]);
+                    s += Convert.ToInt32(this[x-1,y+1]);
+                    s += Convert.ToInt32(this[x,y-1]);
+                    s += Convert.ToInt32(this[x,y+1]);
+                    s += Convert.ToInt32(this[x+1,y-1]);
+                    s += Convert.ToInt32(this[x+1,y]);
+                    s += Convert.ToInt32(this[x+1,y+1]);
+
+                    if(this[x,y]){
+                        if(!(s == 2 || s == 3)){
+                            buffer[x+buffer.OffsetX-this.OffsetX,y+buffer.OffsetY-this.OffsetY]=false;
                         }
-
                     }
-                }    
-
-                if (alive==true){
-                    if (aliveNear!=3 & aliveNear!=2){
-                        List<int> temp=new List<int>{
-                            x,y,0 //(x,y, estado al que va a pasar)
-                        };
-                      Buffer.Add(temp);
+                    if(!this[x,y] && (s == 3)){
+                        buffer[x+buffer.OffsetX-this.OffsetX,y+buffer.OffsetY-this.OffsetY] = true;
                     }
                 }
-                else{
-                      if (aliveNear==3){
-                        List<int> temp=new List<int>{
-                            x,y,1 //(x,y, estado al que va a pasar)
-                        };
-                        Buffer.Add(temp);
-                       
-               
-
-                }  
-
-                }
-
-            }
-        }
-        int filaExtra=0;
-        int columnaExtra=0;
-        foreach(List<int> casilla in Buffer){
-            
-        
-            this[casilla[0]+filaExtra,casilla[1]+columnaExtra]=Convert.ToBoolean(casilla[2]);
-
-            if (casilla[0]+filaExtra==-1){
-                filaExtra++;
-            } 
-            if (casilla[1]+columnaExtra==-1){
-                columnaExtra+=1;
             }
 
+            this.matrix = buffer.matrix;
 
         }
-}
 
 
         public void SetSize(int x, int y)
