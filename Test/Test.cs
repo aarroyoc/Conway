@@ -1,9 +1,7 @@
-/* Arroyo Calle, Adrián
-Bazaco Velasco, Daniel*/
 using Xunit;
 using Conway.File;
 using Conway.Matrix;
-
+using Quadtree;
 namespace Conway.Test {
     public class Test{
                     string glider=@"........................X...........
@@ -90,7 +88,37 @@ XXX..XXXXXX..XXX........................
             rle.Load("Patterns/6bits.rle");
             Assert.Equal(sixbits,rle.ConwayMatrix.GetFinalResult().LimitedMatrix.ToString());
         }
+        [Fact]
+        public void testEqualQuadtree(){
+            Cuadrante unoNW=Cuadrante.crear(1);
+            Cuadrante unoNE=Cuadrante.crear(0);
+            Cuadrante unoSW=Cuadrante.crear(1);
+            Cuadrante unoSE=Cuadrante.crear(0);
 
+            Cuadrante dosNW=Cuadrante.crear(1);
+            Cuadrante dosNE=Cuadrante.crear(0);
+            Cuadrante dosSW=Cuadrante.crear(1);
+            Cuadrante dosSE=Cuadrante.crear(0);
+
+            Cuadrante uno=Cuadrante.crear(unoNW,unoNE,unoSW,unoSE);
+             Cuadrante dos=Cuadrante.crear(dosNW,dosNE,dosSW,dosSE);
+            Assert.Equal(uno,dos);
+
+
+            Almacen almacen=new Almacen();
+            almacen.add(uno,dos);
+            Assert.Equal(almacen.get(uno),dos);
+
+            Cuadrante tresNW=Cuadrante.crear(1);
+            Cuadrante tresNE=Cuadrante.crear(0);
+            Cuadrante tresSW=Cuadrante.crear(1);
+            Cuadrante tresSE=Cuadrante.crear(0);
+
+            Cuadrante tres=Cuadrante.crear(tresNW,tresNE,tresSW,tresSE);
+            Assert.Equal(almacen.get(tres),dos);
+
+        }
+       
         [Fact]
         public void TestMatrix()
         {
