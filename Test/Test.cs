@@ -2,6 +2,7 @@ using Xunit;
 using Conway.File;
 using Conway.Matrix;
 using Quadtree;
+using System;
 namespace Conway.Test {
     public class Test{
                     string glider=@"........................X...........
@@ -89,6 +90,14 @@ XXX..XXXXXX..XXX........................
             Assert.Equal(sixbits,rle.ConwayMatrix.GetFinalResult().LimitedMatrix.ToString());
         }
         [Fact]
+        public void testSetPixelQuadtree(){
+            Cuadrante test=Cuadrante.crearVacio(3);
+            Cuadrante verif=test.setPixel(2,2,1);
+            Assert.Equal(1,verif.getPixel(2,2));
+            Assert.Equal(test.nivel,verif.nivel);
+            
+        }
+        [Fact]
         public void testEqualQuadtree(){
             Cuadrante unoNW=Cuadrante.crear(1);
             Cuadrante unoNE=Cuadrante.crear(0);
@@ -100,11 +109,11 @@ XXX..XXXXXX..XXX........................
             Cuadrante dosSW=Cuadrante.crear(1);
             Cuadrante dosSE=Cuadrante.crear(0);
 
+         
             Cuadrante uno=Cuadrante.crear(unoNW,unoNE,unoSW,unoSE);
              Cuadrante dos=Cuadrante.crear(dosNW,dosNE,dosSW,dosSE);
             Assert.Equal(uno,dos);
-
-
+            
             Almacen almacen=new Almacen();
             almacen.add(uno,dos);
             Assert.Equal(almacen.get(uno),dos);
@@ -118,7 +127,229 @@ XXX..XXXXXX..XXX........................
             Assert.Equal(almacen.get(tres),dos);
 
         }
+
+    [Fact]
+    public void TestGeneracionNivel2(){
+        Cuadrante unoNW=Cuadrante.crear(1);
+        Cuadrante unoNE=Cuadrante.crear(1);
+        Cuadrante unoSW=Cuadrante.crear(0);
+        Cuadrante unoSE=Cuadrante.crear(0);
+
+      
+        Cuadrante dosNW=Cuadrante.crear(0);
+        Cuadrante dosNE=Cuadrante.crear(0);
+        Cuadrante dosSW=Cuadrante.crear(1);
+        Cuadrante dosSE=Cuadrante.crear(1);
+
+         
+        Cuadrante uno=Cuadrante.crear(unoNW,unoNE,unoSW,unoSE);
+        Cuadrante dos=Cuadrante.crear(dosNW,dosNE,dosSW,dosSE);
+
+        Cuadrante total=Cuadrante.crear(uno,uno,dos,dos);
+
+        Cuadrante gen=total.generacion2();
+        
+        Assert.Equal(1,gen.getPixel(0,0));
+        Assert.Equal(1,gen.getPixel(0,1));
+        Assert.Equal(1,gen.getPixel(1,0));
+        Assert.Equal(1,gen.getPixel(1,1));
+        Assert.Equal(1,gen.nivel);
+
+    }
+    [Fact]
+    public void TestExpandir(){
+        Cuadrante test=Cuadrante.crearVacio(1);
+        test=test.setPixel(0,0,1);
+        test=test.setPixel(0,1,1);
+        test=test.setPixel(1,0,1);
+        test=test.setPixel(1,1,1);
+    
+        Cuadrante expandido=test.expandir();
+
+
+        int nivel=(int)Math.Pow(2,expandido.nivel);
+
+        Assert.Equal(test.nivel+1,expandido.nivel);
+        Assert.Equal(0,expandido.getPixel(0,0));
+        Assert.Equal(0,expandido.getPixel(0,nivel-1));
+        Assert.Equal(0,expandido.getPixel(nivel-1,0));
+        Assert.Equal(0,expandido.getPixel(nivel-1,nivel-1));
+
+        
+    }
+    [Fact]
+    public void TestdivideEn9Cuadrados(){
+        Cuadrante uno=Cuadrante.crearVacio(2);
+        
+        uno=uno.setPixel(1,1,1);
+        uno=uno.setPixel(2,2,1); 
+        uno=uno.setPixel(2,1,1);
+        uno=uno.setPixel(1,2,1);
        
+        Cuadrante vacio=Cuadrante.crearVacio(2);
+        Cuadrante total=Cuadrante.crear(uno,uno,uno,uno);
+         
+        Cuadrante primero= total.divideEn9Cuadrados()[0];
+        Cuadrante tercero=total.divideEn9Cuadrados()[2];
+        Cuadrante septimo=total.divideEn9Cuadrados()[6];
+        Cuadrante noveno=total.divideEn9Cuadrados()[8]; 
+        Assert.Equal(1,tercero.getPixel(0,0));
+        Assert.Equal(1,tercero.getPixel(0,1));
+        Assert.Equal(1,tercero.getPixel(1,0));
+        Assert.Equal(1,tercero.getPixel(1,1));
+        
+        Assert.Equal(1,primero.getPixel(0,0));
+        Assert.Equal(1,primero.getPixel(0,1));
+        Assert.Equal(1,primero.getPixel(1,0));
+        Assert.Equal(1,primero.getPixel(1,1));
+
+        Assert.Equal(1,septimo.getPixel(0,0));
+        Assert.Equal(1,septimo.getPixel(0,1));
+        Assert.Equal(1,septimo.getPixel(1,0));
+        Assert.Equal(1,septimo.getPixel(1,1));
+        
+
+        Assert.Equal(1,noveno.getPixel(0,0));
+        Assert.Equal(1,noveno.getPixel(0,1));
+        Assert.Equal(1,noveno.getPixel(1,0));
+        Assert.Equal(1,noveno.getPixel(1,1));
+       
+        
+        uno=Cuadrante.crearVacio(2);
+        Cuadrante dos=Cuadrante.crearVacio(2);
+        uno=uno.setPixel(3,1,1);
+        uno=uno.setPixel(3,2,1);
+        uno=uno.setPixel(1,3,1);
+        uno=uno.setPixel(2,3,1);
+
+        dos=dos.setPixel(0,1,1);
+        dos=dos.setPixel(0,2,1);
+        dos=dos.setPixel(1,3,1);
+        dos=dos.setPixel(2,3,1);
+        
+        Cuadrante tres=Cuadrante.crearVacio(2);
+        tres=tres.setPixel(1,0,1);
+        tres=tres.setPixel(2,0,1);
+        tres=tres.setPixel(3,1,1);
+        tres=tres.setPixel(3,2,1);
+
+        Cuadrante cuatro=Cuadrante.crearVacio(2);
+        cuatro=cuatro.setPixel(1,0,1);
+        cuatro=cuatro.setPixel(2,0,1);
+        cuatro=cuatro.setPixel(0,1,1);
+        cuatro=cuatro.setPixel(0,2,1);
+
+        total=Cuadrante.crear(uno,dos,tres,cuatro);
+        Cuadrante segundo= total.divideEn9Cuadrados()[1];
+        Cuadrante cuarto= total.divideEn9Cuadrados()[3];
+        Cuadrante sexto=total.divideEn9Cuadrados()[5];
+        Cuadrante octavo=total.divideEn9Cuadrados()[7]; 
+        
+        
+        Assert.Equal(1,segundo.getPixel(0,0));
+        Assert.Equal(1,segundo.getPixel(0,1));
+        Assert.Equal(1,segundo.getPixel(1,0));
+        Assert.Equal(1,segundo.getPixel(1,1));
+
+        Assert.Equal(1,octavo.getPixel(0,0));
+        Assert.Equal(1,octavo.getPixel(0,1));
+        Assert.Equal(1,octavo.getPixel(1,0));
+        Assert.Equal(1,octavo.getPixel(1,1));
+
+        Assert.Equal(1,sexto.getPixel(0,0));
+        Assert.Equal(1,sexto.getPixel(0,1));
+        Assert.Equal(1,sexto.getPixel(1,0));
+        Assert.Equal(1,sexto.getPixel(1,1));
+
+        Assert.Equal(1,cuarto.getPixel(0,0));
+        Assert.Equal(1,cuarto.getPixel(0,1));
+        Assert.Equal(1,cuarto.getPixel(1,0));
+        Assert.Equal(1,cuarto.getPixel(1,1));
+
+        uno=Cuadrante.crearVacio(2);
+        dos=Cuadrante.crearVacio(2);
+        tres=Cuadrante.crearVacio(2);
+        cuatro=Cuadrante.crearVacio(2);
+
+        uno=uno.setPixel(3,3,1);
+        dos=dos.setPixel(0,3,1);
+        tres=tres.setPixel(3,0,1);
+        cuatro=cuatro.setPixel(0,0,1);
+
+        total=Cuadrante.crear(uno,dos,tres,cuatro);
+  
+        Cuadrante quinto= total.divideEn9Cuadrados()[4];
+
+        Assert.Equal(1,quinto.getPixel(0,0));
+        Assert.Equal(1,quinto.getPixel(0,1));
+        Assert.Equal(1,quinto.getPixel(1,0));
+        Assert.Equal(1,quinto.getPixel(1,1));
+
+    }
+
+    [Fact]
+       public void TestCuadranteEquals(){
+              Cuadrante unoNW=Cuadrante.crear(1);
+            Cuadrante unoNE=Cuadrante.crear(0);
+            Cuadrante unoSW=Cuadrante.crear(0);
+            Cuadrante unoSE=Cuadrante.crear(0);
+            Cuadrante uno=Cuadrante.crear(unoNW,unoNE,unoSW,unoSE);
+
+            Cuadrante vacio= Cuadrante.crearVacio(1);
+
+            Cuadrante verificar=Cuadrante.crear(uno,vacio,vacio,vacio);
+
+            Assert.Equal(1,verificar.getPixel(0,0));
+            Assert.Equal(0,verificar.getPixel(0,1));
+            Assert.Equal(0,verificar.getPixel(0,2));
+
+            Cuadrante dosNW=Cuadrante.crear(0);
+            Cuadrante dosNE=Cuadrante.crear(0);
+            Cuadrante dosSW=Cuadrante.crear(0);
+            Cuadrante dosSE=Cuadrante.crear(1);
+            Cuadrante dos=Cuadrante.crear(dosNW,dosNE,dosSW,dosSE);
+
+            Cuadrante verificar2=Cuadrante.crear(vacio,vacio,vacio,dos);
+            Assert.Equal(1,verificar2.getPixel(3,3));
+            for (int i=0;i<4;i++){
+                for (int j=0;j<4;j++){
+                    if (i==j & j==3){
+                          Assert.Equal(1,verificar2.getPixel(i,j));
+                    }else{
+                        Assert.Equal(0,verificar2.getPixel(i,j));
+                    }
+                }
+            }
+
+       }
+
+
+        [Fact]
+        public void TestGeneracion(){
+            Cuadrante unoNW=Cuadrante.crear(1);
+            Cuadrante unoNE=Cuadrante.crear(1);
+            Cuadrante unoSW=Cuadrante.crear(0);
+            Cuadrante unoSE=Cuadrante.crear(0);
+
+            Cuadrante uno=Cuadrante.crear(unoNW,unoNE,unoSW,unoSE);
+
+            Cuadrante primeraExpansion=uno.expandir();
+              Cuadrante segundaExpansion=primeraExpansion.expandir();
+            uno.print();
+            
+            segundaExpansion=segundaExpansion.setPixel(5,3,1);
+            Cuadrante generado=segundaExpansion.generacion();
+            primeraExpansion.print();
+            segundaExpansion.print();
+           
+            Assert.True(segundaExpansion.isCentrado());
+            generado.print();
+            //uno.expandir().generacion().print();
+
+
+
+
+        }
         [Fact]
         public void TestMatrix()
         {
