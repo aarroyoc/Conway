@@ -1,4 +1,6 @@
 using  System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Quadtree{
 class Cuadrante{
@@ -174,6 +176,35 @@ class Cuadrante{
 
 
     }
+
+    public static Cuadrante crear(bool[][] m){
+        var matrix = new Cuadrante[m.Length][];
+        for(var i=0;i<m.Length;i++){
+            matrix[i] = new Cuadrante[m.Length];
+            for(var j=0;j<m.Length;j++){
+                matrix[i][j]=new Cuadrante(Convert.ToInt32(m[i][j]));
+            }
+        }
+
+        while(matrix.Length != 1){
+            var buffer = new Cuadrante[matrix.Length/2][];
+            for(var i=0;i<matrix.Length/2;i++){
+                buffer[i] = new Cuadrante[matrix.Length/2];
+            }
+
+            for(var i=0;i<matrix.Length;i+=2){
+                for(var j=0;j<matrix.Length;j+=2){
+                    var nw = matrix[j][i];
+                    var ne = matrix[j][i+1];
+                    var sw = matrix[j+1][i];
+                    var se = matrix[j+1][i+1];
+                    buffer[j/2][i/2] = new Cuadrante(nw,ne,sw,se);
+                }
+            }
+            matrix = buffer;
+        }
+        return matrix[0][0];
+    }
     public Cuadrante generacion2() { 
         // ¿ Se pierde información? TODO
         // Si solo necesitamos los 4 puntos centrales, se puede reducir para que solo calcule
@@ -242,6 +273,19 @@ class Cuadrante{
             Console.WriteLine();
 
         }
+    }
+
+    public override String ToString(){
+        String str = "";
+        long numCasillas = (int)Math.Pow(2,nivel);
+        for (int i=0;i<numCasillas;i++){
+            for (int j=0;j<numCasillas;j++){
+                str+=$"{this.getPixel(j,i)}";
+            }
+            str += "\n";
+
+        }
+        return str;
     }
     public Cuadrante generacion(){
         if (nivel==2){

@@ -350,6 +350,48 @@ XXX..XXXXXX..XXX........................
 
 
         }
+
+        [Fact]
+        public void TestCrearMatrix()
+        {
+            string test = @"00000000
+00100000
+00100000
+00100000
+00000000
+00000000
+00000000
+00000000
+";
+            var matrix = new bool[][]{
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,true,false,false,false,false,false},
+                new bool[]{false,false,true,false,false,false,false,false},
+                new bool[]{false,false,true,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false}
+            };
+
+            string test2 = @"0000
+0010
+0010
+0010
+";
+            var matrix2 = new bool[][]{
+                new bool[]{false,false,false,false},
+                new bool[]{false,false,true,false},
+                new bool[]{false,false,true,false},
+                new bool[]{false,false,true,false}
+            };
+            Cuadrante cuadrante = Cuadrante.crear(matrix);
+            Assert.Equal(test,cuadrante.ToString());
+
+            Cuadrante cuadrante2 = Cuadrante.crear(matrix2);
+            Assert.Equal(test2,cuadrante2.ToString());
+            
+        }
         [Fact]
         public void TestMatrix()
         {
