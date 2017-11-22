@@ -10,7 +10,7 @@ class Cuadrante{
 
     public readonly Cuadrante nw,ne, sw,se;
 
-    public readonly Cuadrante res;
+    public Cuadrante res;
     protected Cuadrante(int valor){
         //Crea un cuadrante de nivel 0 
         if (Cuadrante.almacen==null){
@@ -81,7 +81,7 @@ class Cuadrante{
             }
         else{
 
-            //TODO: verificar si el pixel es válido (está dentro del nivel)
+          
             
              if (x<numCasillas/2){
                  if (y<numCasillas/2){
@@ -116,6 +116,62 @@ class Cuadrante{
 
 
     }
+    public Cuadrante generacionEtapa4(){
+          if (nivel==2){
+            return this.generacion2();
+        }
+        if (this.res!=null){
+            return this.res;
+        }
+
+   
+          
+        Cuadrante[] lista= this.divideEn9CuadradosEtapa4();
+
+        
+        Cuadrante uno= Cuadrante.crear(lista[0],lista[1],lista[3],lista[4]).generacionEtapa4();
+        Cuadrante dos= Cuadrante.crear(lista[1],lista[2],lista[4],lista[5]).generacionEtapa4();
+        Cuadrante tres= Cuadrante.crear(lista[3],lista[4],lista[6],lista[7]).generacionEtapa4();
+        Cuadrante cuatro=Cuadrante.crear(lista[4],lista[5],lista[7],lista[8]).generacionEtapa4();
+
+        Cuadrante generado=Cuadrante.crear(uno,dos,tres,cuatro);
+        this.res=generado; 
+
+        
+
+        
+        return generado; //TODO
+
+    }
+
+    public Cuadrante[] divideEn9CuadradosEtapa4(){
+        Cuadrante[] lista=new Cuadrante[9];
+
+           
+        lista[0]=this.nw.generacionEtapa4();
+        Cuadrante temp=Cuadrante.crear(this.nw.ne,this.ne.nw,this.nw.se,this.ne.sw);
+        lista[1]=temp.generacionEtapa4();
+        lista[2]=this.ne.generacionEtapa4();
+        temp=Cuadrante.crear(this.nw.sw,this.nw.se,this.sw.nw,this.sw.ne);
+        lista[3]=temp.generacionEtapa4();
+        temp=Cuadrante.crear(this.nw.se,this.ne.sw,this.sw.ne,this.se.nw);
+        lista[4]=temp.generacionEtapa4();
+        temp=Cuadrante.crear(this.ne.sw,this.ne.se,this.se.nw,this.se.ne);
+        lista[5]=temp.generacionEtapa4();
+        lista[6]=this.sw.generacionEtapa4();
+        temp=Cuadrante.crear(this.sw.ne,this.se.nw,this.sw.se,this.se.ne);
+        lista[7]=temp.generacionEtapa4();
+        lista[8]=this.se.generacionEtapa4();
+
+
+
+        return lista;
+
+   
+
+
+    }
+
     public long getPixel(long x, long y){
         /* X= Columnas Y=Filas */
         if (this.nivel==0){
@@ -305,12 +361,7 @@ class Cuadrante{
         Cuadrante cuatro=Cuadrante.crear(lista[4],lista[5],lista[7],lista[8]).generacion();
 
         Cuadrante generado=Cuadrante.crear(uno,dos,tres,cuatro);
-        //this.res=generado; //TODO
-
-        Cuadrante NWAlmacen=Cuadrante.almacen.get(this.nw);
-        Cuadrante NEAlmacen=Cuadrante.almacen.get(this.ne);
-        Cuadrante SWAlmacen=Cuadrante.almacen.get(this.sw);
-        Cuadrante SEAlmacen=Cuadrante.almacen.get(this.se);
+     
 
         
 

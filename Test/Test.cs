@@ -3,6 +3,7 @@ using Conway.File;
 using Conway.Matrix;
 using Quadtree;
 using System;
+
 namespace Conway.Test {
     public class Test{
                     string glider=@"........................X...........
@@ -127,6 +128,33 @@ XXX..XXXXXX..XXX........................
             Assert.Equal(almacen.get(tres),dos);
 
         }
+    [Fact]
+    public void testGeneracionEtapa4(){
+       var matrix = new bool[][]{
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                 new bool[]{false,false,true,true,true,false,false,false},
+                new bool[]{false,false,false,true,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false}
+            };
+
+
+        Cuadrante test=Cuadrante.crear(matrix);
+        Console.WriteLine("Antes de expandir");
+        test.print(); 
+        Console.WriteLine("Nivel:" +test.nivel);
+        Console.WriteLine("Empezando test etapa 4");
+        
+        test=test.expandir();
+        test=test.generacionEtapa4();
+        
+        test.print();
+     Console.WriteLine("Acabando test etapa 4");
+     Console.WriteLine("Nivel final:" +test.nivel);
+    }
 
     [Fact]
     public void TestGeneracionNivel2(){
