@@ -145,6 +145,25 @@ namespace Conway.Matrix {
                 }
             }
         }
+        public bool[][] GetMatrix()
+        {
+            var e=0;
+            while(Math.Pow(2,e)<Math.Max(this.matrix.Count,this.matrix[0].Count)){
+                e++;
+            }
+            int n = (int)Math.Pow(2,e);
+            bool[][] m = new bool[n][];
+            for(var i=0;i<m.Length;i++){
+                m[i] = new bool[n];
+            }
+            for(var i=0;i<n;i++){
+                for(var j=0;j<n;j++){
+                    m[i][j] = this[i,j];
+                }
+            }
+
+            return m;
+        }
         public ConwayMatrix LimitMatrix(int x1,int y1,int x2,int y2){
             //Requisitos: x1,y1 menores que x2,y2 respectivamente.
             //Podría generalizarse fácilmente, pero como solo tiene un único uso no es necesario.

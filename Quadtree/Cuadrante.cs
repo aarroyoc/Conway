@@ -338,7 +338,7 @@ class Cuadrante{
             for (int j=0;j<numCasillas;j++){
                 str+=$"{this.getPixel(j,i)}";
             }
-            str += "\n";
+            str += System.Environment.NewLine;
 
         }
         return str;

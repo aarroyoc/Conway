@@ -7,5 +7,6 @@ namespace Conway.File {
         ConwayMatrix ConwayMatrix {get; set;}
         void Load(string path);
         void Save(string path);
+        bool[][] GetMatrix();
     }
 }

@@ -140,5 +140,9 @@ namespace Conway.File {
                 writer.Write("SIN IMPLEMENTAR");
             }
         }
+        public bool[][] GetMatrix()
+        {
+            return ConwayMatrix.GetMatrix();
+        }
     }
 }

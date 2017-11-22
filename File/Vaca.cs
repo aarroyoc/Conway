@@ -44,5 +44,10 @@ namespace Conway.File {
                 Console.WriteLine($"ERROR while saving file: {e}");
             }
         }
+
+        public bool[][] GetMatrix()
+        {
+            return ConwayMatrix.GetMatrix();
+        }
     }
 }
