@@ -159,11 +159,11 @@ class Cuadrante{
         temp=Cuadrante.crear(this.ne.sw,this.ne.se,this.se.nw,this.se.ne);
         lista[5]=temp.generacionEtapa4();
         lista[6]=this.sw.generacionEtapa4();
-        temp=Cuadrante.crear(this.sw.ne,this.se.nw,this.sw.se,this.se.ne);
+        temp=Cuadrante.crear(this.sw.ne,this.se.nw,this.sw.se,this.se.sw);
         lista[7]=temp.generacionEtapa4();
         lista[8]=this.se.generacionEtapa4();
 
-
+  
 
         return lista;
 
@@ -272,52 +272,81 @@ class Cuadrante{
             return this.generacion();
         }
 
-        Cuadrante buffer=new Cuadrante(this.nw,this.ne,this.sw,this.se);
-        int celdasVivasCerca=0;
-        bool alive=false;
-        for (int i=0;i<4;i++){
-            for (int j=0;j<4;j++){
+        //Console.WriteLine("Se ha ejecutado generación nivel 2");
+                Cuadrante nw2=nw.se;
+                Cuadrante ne2=ne.sw;
+                Cuadrante sw2=sw.ne;
+                Cuadrante se2=se.nw;
+       
+                int celdasVivasCerca=0;
+       
+                celdasVivasCerca=Convert.ToInt32(this.nw.nw.celdasVivas)+Convert.ToInt32(this.nw.ne.celdasVivas)+Convert.ToInt32(this.nw.sw.celdasVivas);
+                celdasVivasCerca+=Convert.ToInt32(ne.nw.celdasVivas)+Convert.ToInt32(ne.sw.celdasVivas);
+                celdasVivasCerca+=Convert.ToInt32(se.nw.celdasVivas);
+                celdasVivasCerca+=Convert.ToInt32(sw.nw.celdasVivas)+Convert.ToInt32(sw.ne.celdasVivas);
+               
+                if (nw.se.celdasVivas==1 & !(celdasVivasCerca==2 | celdasVivasCerca==3)){
+                   nw2=Cuadrante.crear(0);
+                }
+                if (!(nw.se.celdasVivas==1) &  celdasVivasCerca==3){ 
+                    nw2=Cuadrante.crear(1);
+                }
+
+                celdasVivasCerca=Convert.ToInt32(this.ne.nw.celdasVivas)+Convert.ToInt32(this.ne.ne.celdasVivas)+Convert.ToInt32(this.ne.se.celdasVivas);
+                // Console.WriteLine("Celdas vivas de ne Fase 1: " + celdasVivasCerca);
+                celdasVivasCerca+=Convert.ToInt32(nw.se.celdasVivas)+Convert.ToInt32(nw.ne.celdasVivas);
+                //Console.WriteLine("Celdas vivas de ne Fase 2: " + celdasVivasCerca);
+                celdasVivasCerca+=Convert.ToInt32(sw.ne.celdasVivas);
+                //Console.WriteLine("Celdas vivas de ne Fase 3: " + celdasVivasCerca);
+                celdasVivasCerca+=Convert.ToInt32(se.ne.celdasVivas)+Convert.ToInt32(se.nw.celdasVivas);
+                //Console.WriteLine("Celdas vivas de ne: " + celdasVivasCerca);
+                if (ne.sw.celdasVivas==1 & !(celdasVivasCerca==2 | celdasVivasCerca==3)){
+                   ne2=Cuadrante.crear(0);
+                }
+                if (!(ne.sw.celdasVivas==1) &  celdasVivasCerca==3){ 
+                    ne2=Cuadrante.crear(1);
+                }
 
 
-                if (this.getPixel(i,j)==1){
-                    alive=true;
-                  
-                }   
-                  
-                for (int z=-1;z<2;z++){
-                    for (int w=-1;w<2;w++){
-                        if (i+z>=0 && w+j>=0 && i+z<=3 && w+j<=3){
-                            if (this.getPixel(i+z,w+j)==1 && !(z==0 & w==0)){
-                            celdasVivasCerca++;
-                         }
-                        }
-                       
-                    }
-                }
-                 /*if (alive){
-                      Console.WriteLine($"casilla {i},{j} celdas vivas: {celdasVivasCerca}");
-                 }
-                Console.WriteLine($"Analizando la casilla ({i},{j}. CeldasVivasCerca: {celdasVivasCerca})"); */
-                if (alive & !(celdasVivasCerca==2 | celdasVivasCerca==3)){
-                    buffer=buffer.setPixel(i,j,0);
-                  
-                }
-                if (!alive &  celdasVivasCerca==3){ 
-                    buffer=buffer.setPixel(i,j,1);
+                celdasVivasCerca=Convert.ToInt32(this.sw.nw.celdasVivas)+Convert.ToInt32(this.sw.sw.celdasVivas)+Convert.ToInt32(this.sw.se.celdasVivas);
+               
+                celdasVivasCerca+=Convert.ToInt32(se.nw.celdasVivas)+Convert.ToInt32(se.sw.celdasVivas);
+               
+                celdasVivasCerca+=Convert.ToInt32(ne.sw.celdasVivas);
+              
+                 celdasVivasCerca+=Convert.ToInt32(nw.se.celdasVivas)+Convert.ToInt32(nw.sw.celdasVivas);
+
                  
+                if (sw.ne.celdasVivas==1 & !(celdasVivasCerca==2 | celdasVivasCerca==3)){
+                   sw2=Cuadrante.crear(0);
+                }
+                if (!(sw.ne.celdasVivas==1) &  celdasVivasCerca==3){ 
+                    sw2=Cuadrante.crear(1);
                 }
 
-                alive=false;
-                celdasVivasCerca=0;
-            }
 
+                celdasVivasCerca=Convert.ToInt32(this.se.ne.celdasVivas)+Convert.ToInt32(this.se.sw.celdasVivas)+Convert.ToInt32(this.se.se.celdasVivas);
+                celdasVivasCerca+=Convert.ToInt32(ne.sw.celdasVivas)+Convert.ToInt32(ne.se.celdasVivas);
+                celdasVivasCerca+=Convert.ToInt32(nw.se.celdasVivas);
+                celdasVivasCerca+=Convert.ToInt32(sw.se.celdasVivas)+Convert.ToInt32(sw.ne.celdasVivas);
+
+                if (se.nw.celdasVivas==1 & !(celdasVivasCerca==2 | celdasVivasCerca==3)){
+                   se2=Cuadrante.crear(0);
+                }
+                if (!(se.nw.celdasVivas==1) &  celdasVivasCerca==3){ 
+                    se2=Cuadrante.crear(1);
+                }
+                
+            
+        Cuadrante central=Cuadrante.crear(nw2,ne2,sw2,se2);
+        return central; 
+           
         }
 
     
-        Cuadrante central=Cuadrante.crear(buffer.nw.se,buffer.ne.sw,buffer.sw.ne,buffer.se.nw);
-        return central; //TODO
+       
 
-     }
+     
     //Metodo temporal, borrarlo antes de entregar la práctica TODO
     public void print(){
         
@@ -356,6 +385,10 @@ class Cuadrante{
         Cuadrante[] lista= this.divideEn9Cuadrados();
 
         Cuadrante uno= Cuadrante.crear(lista[0],lista[1],lista[3],lista[4]).generacion();
+        //Console.WriteLine("Se va a generar el 1:");
+        // Cuadrante.crear(lista[0],lista[1],lista[3],lista[4]).print();
+       // Console.WriteLine("Se ha generado el 1, y su resultado es: ****************");
+       // uno.print();
         Cuadrante dos= Cuadrante.crear(lista[1],lista[2],lista[4],lista[5]).generacion();
         Cuadrante tres= Cuadrante.crear(lista[3],lista[4],lista[6],lista[7]).generacion();
         Cuadrante cuatro=Cuadrante.crear(lista[4],lista[5],lista[7],lista[8]).generacion();
@@ -381,10 +414,18 @@ class Cuadrante{
         temp=Cuadrante.crear(this.ne.sw,this.ne.se,this.se.nw,this.se.ne);
         lista[5]=temp.getCuadranteCentral();
         lista[6]=this.sw.getCuadranteCentral();
-        temp=Cuadrante.crear(this.sw.ne,this.se.nw,this.sw.se,this.se.ne);
+        temp=Cuadrante.crear(this.sw.ne,this.se.nw,this.sw.se,this.se.sw); //ANOTAR ESTE ERROR PARA DIVIDEEN9CUADRADOSETAPA4
         lista[7]=temp.getCuadranteCentral();
         lista[8]=this.se.getCuadranteCentral();
 
+        /* 
+        Console.WriteLine("Dividiendo esto en 9 cuadrados:");
+        //this.print();
+        Console.WriteLine("Se ha dividido en 9 cuadrados, son estos:");
+        for (int i=0;i<9;i++){
+            Console.WriteLine("imprimiento el cuadrado " + i);
+            lista[i].print();
+        }*/
         return lista;
     }
 

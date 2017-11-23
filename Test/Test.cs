@@ -3,6 +3,7 @@ using Conway.File;
 using Conway.Matrix;
 using Quadtree;
 using System;
+using Conway.GUI;
 
 namespace Conway.Test {
     public class Test{
@@ -128,7 +129,101 @@ XXX..XXXXXX..XXX........................
             Assert.Equal(almacen.get(tres),dos);
 
         }
-    [Fact]
+    //[Fact] 
+    public void segundoTestGeneracionEtapa2(){
+        ConwayCanvas conway=new ConwayCanvas();
+       
+
+          File.Rle testmatrix = new File.Rle("Patterns/3enginecordership.rle");
+        bool[][] matrix=testmatrix.GetMatrix();
+        Console.WriteLine("Iniciando segundo test Generacion etapa 2");
+        Cuadrante test=Cuadrante.crear(matrix);
+        Console.WriteLine("Antes de expandir");
+        test.print(); 
+     
+         
+          test=test.expandir();
+        for (int i=0;i<50;i++){
+            
+        
+               
+                test=test.expandir();
+            
+            
+            //Console.WriteLine("ITERACION " + (i+1));
+            
+            test=test.generacion();
+        }    
+        
+        
+        
+
+        
+        Console.WriteLine("EXPANDIDO ********************************+++++++++++");
+        test.print();
+         Console.WriteLine("Acabando test etapa 2");
+        Console.WriteLine("Nivel final:" +test.nivel);
+        Console.WriteLine("Finalizando segundo test Generacion etapa 4");
+
+    }
+    //[Fact] 
+    public void segundoTestGeneracionEtapa4(){
+        ConwayCanvas conway=new ConwayCanvas();
+       
+
+          File.Rle testmatrix = new File.Rle("Patterns/3enginecordership.rle");
+        bool[][] matrix=testmatrix.GetMatrix();
+        Console.WriteLine("Iniciando segundo test Generacion etapa 4");
+        Cuadrante test=Cuadrante.crear(matrix);
+        Console.WriteLine("Antes de expandir");
+        test.print(); 
+     
+
+        
+        test=test.expandir();
+        test=test.expandir();
+           Console.WriteLine("Nivel:" +test.nivel);
+        test=test.generacionEtapa4();
+        
+        test.print();
+         Console.WriteLine("Acabando test etapa 4");
+        Console.WriteLine("Nivel final:" +test.nivel);
+        Console.WriteLine("Finalizando segundo test Generacion etapa 4");
+
+    }
+   
+   // [Fact]
+    public void testGeneracionEtapa2Basico(){
+       var matrix = new bool[][]{
+                new bool[]{false,false,true,true,true,false,false,false},
+                new bool[]{false,false,false,true,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                 new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,true,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false}
+            };
+
+        
+        Cuadrante test=Cuadrante.crear(matrix);
+        Console.WriteLine("Antes de expandir");
+        test.print(); 
+        Console.WriteLine("Nivel:" +test.nivel);
+        Console.WriteLine("Empezando test etapa 2 básico");
+        
+        test=test.expandir();
+        test=test.expandir();
+        Console.WriteLine("Antes de empezar a generar");
+        test.print();
+        test=test.generacion();
+        
+        test.print();
+     Console.WriteLine("Acabando test etapa  2 básico");
+     Console.WriteLine("Nivel final:" +test.nivel);
+    }
+
+   // [Fact]
     public void testGeneracionEtapa4(){
        var matrix = new bool[][]{
                 new bool[]{false,false,false,false,false,false,false,false},
@@ -141,7 +236,7 @@ XXX..XXXXXX..XXX........................
                 new bool[]{false,false,false,false,false,false,false,false}
             };
 
-
+        
         Cuadrante test=Cuadrante.crear(matrix);
         Console.WriteLine("Antes de expandir");
         test.print(); 
@@ -156,27 +251,33 @@ XXX..XXXXXX..XXX........................
      Console.WriteLine("Nivel final:" +test.nivel);
     }
 
-    [Fact]
+    //[Fact]
     public void TestGeneracionNivel2(){
-        Cuadrante unoNW=Cuadrante.crear(1);
-        Cuadrante unoNE=Cuadrante.crear(1);
-        Cuadrante unoSW=Cuadrante.crear(0);
-        Cuadrante unoSE=Cuadrante.crear(0);
-
-      
-        Cuadrante dosNW=Cuadrante.crear(0);
-        Cuadrante dosNE=Cuadrante.crear(0);
-        Cuadrante dosSW=Cuadrante.crear(1);
-        Cuadrante dosSE=Cuadrante.crear(1);
-
-         
-        Cuadrante uno=Cuadrante.crear(unoNW,unoNE,unoSW,unoSE);
-        Cuadrante dos=Cuadrante.crear(dosNW,dosNE,dosSW,dosSE);
-
-        Cuadrante total=Cuadrante.crear(uno,uno,dos,dos);
-
-        Cuadrante gen=total.generacion2();
+          var matrix2 = new bool[][]{
+               new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,true,false,false,false},
+                 new bool[]{false,false,false,false,true,false,false,false},
+                new bool[]{false,false,false,false,false,true,false,false},
+                new bool[]{false,false,false,false,false,false,false,false},
+                new bool[]{false,false,false,false,false,false,false,false}
+               
+            };
+            var matrix= new bool[][]{
+               new bool[]{false,true,false,false},
+                new bool[]{false,true,false,false},
+                new bool[]{false,false,true,false},
+                new bool[]{false,false,false,false}
+               
+            };
         
+        Cuadrante test=Cuadrante.crear(matrix);
+        //test=test.expandir();
+        Cuadrante gen=test.generacion2();
+        test.print();
+
+        gen.print();
         Assert.Equal(1,gen.getPixel(0,0));
         Assert.Equal(1,gen.getPixel(0,1));
         Assert.Equal(1,gen.getPixel(1,0));
@@ -352,7 +453,7 @@ XXX..XXXXXX..XXX........................
        }
 
 
-        [Fact]
+        //[Fact]
         public void TestGeneracion(){
             Cuadrante unoNW=Cuadrante.crear(1);
             Cuadrante unoNE=Cuadrante.crear(1);
