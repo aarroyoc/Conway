@@ -14,7 +14,7 @@ class Cuadrante{
     protected Cuadrante(int valor){
         //Crea un cuadrante de nivel 0 
         if (Cuadrante.almacen==null){
-            Cuadrante.almacen=new Almacen();
+            Cuadrante.almacen=new Almacen(16,0.6);
         }
 
 
@@ -32,7 +32,7 @@ class Cuadrante{
     protected Cuadrante(Cuadrante nw, Cuadrante ne, Cuadrante sw, Cuadrante se){
         //TODO: Verificar que nw, ne, sw, se tienen el mismo nivel 
         if (Cuadrante.almacen==null){
-            Cuadrante.almacen=new Almacen();
+            Cuadrante.almacen=new Almacen(16,0.6);
         }
         if (nw.nivel==ne.nivel && ne.nivel==sw.nivel && sw.nivel==se.nivel){
         this.nw=nw;
@@ -116,6 +116,17 @@ class Cuadrante{
 
 
     }
+    // buscar o crear cuadrante
+    private Cuadrante buscarSiguiente(Cuadrante nw, Cuadrante ne, Cuadrante sw, Cuadrante se){
+        var c = Cuadrante.crear(nw,ne,sw,se);
+        var next = almacen.get(c);
+        if(next!=null){
+            return next;
+        }
+        next = c.generacionEtapa4();
+        almacen.add(c,next);
+        return next;
+    }
     public Cuadrante generacionEtapa4(){
           if (nivel==2){
             return this.generacion2();
@@ -129,10 +140,10 @@ class Cuadrante{
         Cuadrante[] lista= this.divideEn9CuadradosEtapa4();
 
         
-        Cuadrante uno= Cuadrante.crear(lista[0],lista[1],lista[3],lista[4]).generacionEtapa4();
-        Cuadrante dos= Cuadrante.crear(lista[1],lista[2],lista[4],lista[5]).generacionEtapa4();
-        Cuadrante tres= Cuadrante.crear(lista[3],lista[4],lista[6],lista[7]).generacionEtapa4();
-        Cuadrante cuatro=Cuadrante.crear(lista[4],lista[5],lista[7],lista[8]).generacionEtapa4();
+        Cuadrante uno= buscarSiguiente(lista[0],lista[1],lista[3],lista[4]);
+        Cuadrante dos= buscarSiguiente(lista[1],lista[2],lista[4],lista[5]);
+        Cuadrante tres= buscarSiguiente(lista[3],lista[4],lista[6],lista[7]);
+        Cuadrante cuatro=buscarSiguiente(lista[4],lista[5],lista[7],lista[8]);
 
         Cuadrante generado=Cuadrante.crear(uno,dos,tres,cuatro);
         this.res=generado; 
@@ -429,7 +440,7 @@ class Cuadrante{
         return lista;
     }
 
-    private Cuadrante getCuadranteCentral(){
+    public Cuadrante getCuadranteCentral(){
         if (this.nivel<2){ 
             throw new System.ArgumentException($"Los cuadrantes de nivel 0 y 1 no tienen Cuadrante Central" );
         }

@@ -116,7 +116,7 @@ XXX..XXXXXX..XXX........................
              Cuadrante dos=Cuadrante.crear(dosNW,dosNE,dosSW,dosSE);
             Assert.Equal(uno,dos);
             
-            Almacen almacen=new Almacen();
+            Almacen almacen=new Almacen(16,0.6);
             almacen.add(uno,dos);
             Assert.Equal(almacen.get(uno),dos);
 
@@ -129,7 +129,7 @@ XXX..XXXXXX..XXX........................
             Assert.Equal(almacen.get(tres),dos);
 
         }
-    //[Fact] 
+    [Fact] 
     public void segundoTestGeneracionEtapa2(){
         ConwayCanvas conway=new ConwayCanvas();
        
@@ -166,7 +166,7 @@ XXX..XXXXXX..XXX........................
         Console.WriteLine("Finalizando segundo test Generacion etapa 4");
 
     }
-    //[Fact] 
+    [Fact] 
     public void segundoTestGeneracionEtapa4(){
         ConwayCanvas conway=new ConwayCanvas();
        
@@ -191,8 +191,8 @@ XXX..XXXXXX..XXX........................
         Console.WriteLine("Finalizando segundo test Generacion etapa 4");
 
     }
-   
-   // [Fact]
+    
+    [Fact]
     public void testGeneracionEtapa2Basico(){
        var matrix = new bool[][]{
                 new bool[]{false,false,true,true,true,false,false,false},
@@ -223,7 +223,7 @@ XXX..XXXXXX..XXX........................
      Console.WriteLine("Nivel final:" +test.nivel);
     }
 
-   // [Fact]
+    [Fact]
     public void testGeneracionEtapa4(){
        var matrix = new bool[][]{
                 new bool[]{false,false,false,false,false,false,false,false},
@@ -251,7 +251,7 @@ XXX..XXXXXX..XXX........................
      Console.WriteLine("Nivel final:" +test.nivel);
     }
 
-    //[Fact]
+    [Fact]
     public void TestGeneracionNivel2(){
           var matrix2 = new bool[][]{
                new bool[]{false,false,false,false,false,false,false,false},
@@ -453,7 +453,7 @@ XXX..XXXXXX..XXX........................
        }
 
 
-        //[Fact]
+        [Fact]
         public void TestGeneracion(){
             Cuadrante unoNW=Cuadrante.crear(1);
             Cuadrante unoNE=Cuadrante.crear(1);
@@ -645,5 +645,48 @@ XXX..XXXXXX..XXX........................
             matrix[6,4] = true;
             Assert.Equal(test5,matrix.GetFinalResult().LimitedMatrix.ToString());
         }
+        
+        [Fact]
+        public void InsertarCuadrantesEnAlmacen(){
+            var almacen = new Almacen(16,0.6);
+
+            // es un still, no evoluciona más
+            var m = new bool[][]{
+                new bool[]{false,false,false,false},
+                new bool[]{false,true,true,false},
+                new bool[]{false,true,true,false},
+                new bool[]{false,false,false,false}
+            };
+            var c = Cuadrante.crear(m);
+            almacen.add(c,c);
+
+            var f = almacen.get(c);
+            Assert.Equal(f,c);
+
+        }
+
+        [Fact]
+        public void IterateGlider(){
+            //var rle = new Rle();
+            //rle.Load(@"Patterns/glider.rle");
+            //var matrix = rle.GetMatrix();
+            var matrix = new bool[][]{
+                new bool[]{false,false,false,false},
+                new bool[]{false,true,true,true},
+                new bool[]{false,false,false,false},
+                new bool[]{false,false,false,false}
+            };
+            var cuadrante = Cuadrante.crear(matrix);
+            Console.WriteLine($"Nivel: {cuadrante.nivel}");
+            while(!(cuadrante.isCentrado() && cuadrante.getCuadranteCentral().isCentrado())){
+                cuadrante = cuadrante.expandir();
+            }
+            cuadrante.print();
+            Console.WriteLine($"Nivel: {cuadrante.nivel}");
+            cuadrante = cuadrante.generacionEtapa4();
+            cuadrante.print();
+        }
     }
+
+
 }
