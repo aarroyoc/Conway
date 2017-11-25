@@ -31,11 +31,11 @@
     }
 
     protected int index(Cuadrante c){
-        return c.GetHashCode() % capacity;
+        return Math.Abs(c.GetHashCode()) % capacity;
     }
 
     protected int salto(Cuadrante c){
-        int s = c.GetHashCode() / capacity;
+        int s = Math.Abs(c.GetHashCode()) / capacity;
         return (s % 2 == 0) ? s+1 : s;
     }
 
@@ -58,8 +58,12 @@
     public Cuadrante get(Cuadrante key){
         int i = index(key);
         int d = salto(key);
-        while(almacen[i]!=null && (almacen[i].Item1 == null || !almacen[i].Item1.Equals(key) )){
-            i = (i+d) % capacity;
+        try{
+            while(almacen[i]!=null && (almacen[i].Item1 == null || !almacen[i].Item1.Equals(key) )){
+                i = (i+d) % capacity;
+            }
+        }catch(Exception e){
+            Console.WriteLine($"Capacity: {capacity}\tIndex: {i}\tSalto: {d}");
         }
         var item = almacen[i];
         /*if(item == null || item.Item2.nivel != key.nivel)

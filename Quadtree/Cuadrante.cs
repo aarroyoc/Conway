@@ -479,7 +479,7 @@ class Cuadrante{
         if (this.nw==null){
             return (int)this.celdasVivas;
         }
-        return nw.GetHashCode()+11*this.ne.GetHashCode()+101*this.sw.GetHashCode()+1007*this.se.GetHashCode();
+        return 2*nw.GetHashCode()+11*this.ne.GetHashCode()+101*this.sw.GetHashCode()+1007*this.se.GetHashCode()+5*this.nivel;
     }
 
     
