@@ -1,27 +1,38 @@
 using  System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Collections;
 
 namespace Quadtree{
 class Cuadrante{
     public static Almacen almacen;
     public readonly int nivel;
     public readonly long celdasVivas;
+        public readonly int hash;
+        public static ArrayList  cuadrantesVacios;
 
+        
     public readonly Cuadrante nw,ne, sw,se;
 
     public Cuadrante res;
     protected Cuadrante(int valor){
         //Crea un cuadrante de nivel 0 
         if (Cuadrante.almacen==null){
-            Cuadrante.almacen=new Almacen(16,0.6);
+            Cuadrante.almacen=new Almacen(1024,0.6);
         }
+        if (cuadrantesVacios == null)
+            {
+                cuadrantesVacios = new ArrayList();
+            }
 
 
 
         if (valor==1 || valor==0){
              this.nivel=0;
             this.celdasVivas=valor;
+                this.hash = GetHashCode();
+               
+                
         }  
         else{
             //TODO: Poner excepción
@@ -30,11 +41,16 @@ class Cuadrante{
     }
 
     protected Cuadrante(Cuadrante nw, Cuadrante ne, Cuadrante sw, Cuadrante se){
-        //TODO: Verificar que nw, ne, sw, se tienen el mismo nivel 
+       
         if (Cuadrante.almacen==null){
-            Cuadrante.almacen=new Almacen(16,0.6);
+            Cuadrante.almacen=new Almacen(1024,0.6);
         }
-        if (nw.nivel==ne.nivel && ne.nivel==sw.nivel && sw.nivel==se.nivel){
+            if (cuadrantesVacios == null)
+            {
+                cuadrantesVacios = new ArrayList();
+            }
+
+            if (nw.nivel==ne.nivel && ne.nivel==sw.nivel && sw.nivel==se.nivel){
         this.nw=nw;
         this.ne=ne;
         this.sw=sw;
@@ -42,8 +58,10 @@ class Cuadrante{
 
         this.nivel=nw.nivel+1;
         this.celdasVivas=nw.celdasVivas+ne.celdasVivas+sw.celdasVivas+se.celdasVivas;
-
-        }else{
+          
+             this.hash = GetHashCode();
+            }
+            else{
              throw new System.ArgumentException("Los cuadrantes no tienen el mismo nivel." );
         }
         
@@ -58,6 +76,17 @@ class Cuadrante{
 
         return (centro.celdasVivas==this.celdasVivas);
 
+    }
+
+    public Boolean isDobleCentrado(){
+        //Devuelve true si está centrado en el cuadrante central del cuadrante central
+        
+        if (this.nw.celdasVivas==this.nw.se.celdasVivas && this.ne.celdasVivas==this.ne.sw.celdasVivas && this.sw.celdasVivas==this.sw.ne.celdasVivas
+        && this.se.celdasVivas==this.se.nw.celdasVivas
+        ){
+            return true;
+        }
+            return false;
     }
      public Cuadrante expandir(){
       
@@ -132,18 +161,23 @@ class Cuadrante{
             return this.generacion2();
         }
         if (this.res!=null){
+         
             return this.res;
         }
-
+        if (this.celdasVivas == 0)
+            {
+                this.res = this.nw;
+                return this.nw;
+            }
    
           
         Cuadrante[] lista= this.divideEn9CuadradosEtapa4();
 
         
-        Cuadrante uno= buscarSiguiente(lista[0],lista[1],lista[3],lista[4]);
-        Cuadrante dos= buscarSiguiente(lista[1],lista[2],lista[4],lista[5]);
-        Cuadrante tres= buscarSiguiente(lista[3],lista[4],lista[6],lista[7]);
-        Cuadrante cuatro=buscarSiguiente(lista[4],lista[5],lista[7],lista[8]);
+        Cuadrante uno= Cuadrante.crear(lista[0],lista[1],lista[3],lista[4]).generacionEtapa4();
+        Cuadrante dos= Cuadrante.crear(lista[1],lista[2],lista[4],lista[5]).generacionEtapa4();
+        Cuadrante tres= Cuadrante.crear(lista[3],lista[4],lista[6],lista[7]).generacionEtapa4();
+        Cuadrante cuatro=Cuadrante.crear(lista[4],lista[5],lista[7],lista[8]).generacionEtapa4();
 
         Cuadrante generado=Cuadrante.crear(uno,dos,tres,cuatro);
         this.res=generado; 
@@ -151,9 +185,10 @@ class Cuadrante{
         
 
         
-        return generado; //TODO
+        return generado; 
 
     }
+    
 
     public Cuadrante[] divideEn9CuadradosEtapa4(){
         Cuadrante[] lista=new Cuadrante[9];
@@ -221,26 +256,52 @@ class Cuadrante{
    
 
     }
-    //Se puede mantener la referencia de todos las casillas vivas y todas las muertas en solo dos Cuadrantes?   
+      
     public static Cuadrante crear(int valor){
-        //TODO
-        //if valor==unico
-        return new Cuadrante(valor);
+        
+         Cuadrante temp=new Cuadrante(valor);
 
-        //else
-        //return copia
+         Cuadrante get= almacen.get(temp); 
+        if (get==null){
+           almacen.add(temp,temp);
+            return temp;
+          }
+        if (get.nw==null && get.ne==null && get.sw==null && get.se==null){
+        return get;
+        }
+        else{
+            throw new ArgumentException("Hash table no ha devuelto el cuadrante correcto");
+           
+        }
+      
 
 
     }
 
     public static Cuadrante crear(Cuadrante nw, Cuadrante ne, Cuadrante sw, Cuadrante se){
-        //TODO
-        //if valor==unico
-        return new Cuadrante( nw, ne,  sw, se);
+      
+        Cuadrante temp=new Cuadrante( nw, ne,  sw, se);
 
-        //else
-        //return copia
+        Cuadrante get= almacen.get(temp); 
+        if (get==null){
+            almacen.add(temp,temp);
+            return temp;
+        }
 
+         if (get.nw==temp.nw && get.ne==temp.ne&& get.sw==temp.sw && get.se==temp.se){
+        return get;
+         }else{
+        Console.WriteLine($"Hash table ha fallado con un tablero de nivel  {temp.nivel }. Hash temp={temp.GetHashCode()} Hash get={get.GetHashCode()}");
+        temp.print();
+        Console.WriteLine("              ");
+        get.print();
+         return temp;
+        Console.WriteLine($"El cuadrante que vamos a crear (Hash={temp.GetHashCode()}):");
+        temp.print();
+        Console.WriteLine($"El cuadrante que ha sacado  del hash table (Hash={temp.GetHashCode()}):");
+        get.print();
+         throw new ArgumentException("Hash table no ha devuelto el cuadrante correcto en Cuadrante.crear de 4 parámetros");
+         }
 
     }
 
@@ -249,7 +310,7 @@ class Cuadrante{
         for(var i=0;i<m.Length;i++){
             matrix[i] = new Cuadrante[m.Length];
             for(var j=0;j<m.Length;j++){
-                matrix[i][j]=new Cuadrante(Convert.ToInt32(m[i][j]));
+                matrix[i][j]=Cuadrante.crear(Convert.ToInt32(m[i][j]));
             }
         }
 
@@ -265,7 +326,7 @@ class Cuadrante{
                     var ne = matrix[j][i+1];
                     var sw = matrix[j+1][i];
                     var se = matrix[j+1][i+1];
-                    buffer[j/2][i/2] = new Cuadrante(nw,ne,sw,se);
+                    buffer[j/2][i/2] = Cuadrante.crear(nw,ne,sw,se);
                 }
             }
             matrix = buffer;
@@ -273,18 +334,21 @@ class Cuadrante{
         return matrix[0][0];
     }
     public Cuadrante generacion2() { 
-        // ¿ Se pierde información? TODO
-        // Si solo necesitamos los 4 puntos centrales, se puede reducir para que solo calcule
-        //esos puntos=
+    
         if (this.res!=null){
             return this.res;
         }
         if (nivel>2){
-            return this.generacion();
+            return this.generacionEtapa4();
         }
+            if (this.celdasVivas == 0)
+            {
+                this.res = this.nw;
+                return this.nw;
+            }
 
-        //Console.WriteLine("Se ha ejecutado generación nivel 2");
-                Cuadrante nw2=nw.se;
+            //Console.WriteLine("Se ha ejecutado generación nivel 2");
+            Cuadrante nw2=nw.se;
                 Cuadrante ne2=ne.sw;
                 Cuadrante sw2=sw.ne;
                 Cuadrante se2=se.nw;
@@ -350,6 +414,7 @@ class Cuadrante{
                 
             
         Cuadrante central=Cuadrante.crear(nw2,ne2,sw2,se2);
+        this.res=central;
         return central; 
            
         }
@@ -425,7 +490,7 @@ class Cuadrante{
         temp=Cuadrante.crear(this.ne.sw,this.ne.se,this.se.nw,this.se.ne);
         lista[5]=temp.getCuadranteCentral();
         lista[6]=this.sw.getCuadranteCentral();
-        temp=Cuadrante.crear(this.sw.ne,this.se.nw,this.sw.se,this.se.sw); //ANOTAR ESTE ERROR PARA DIVIDEEN9CUADRADOSETAPA4
+        temp=Cuadrante.crear(this.sw.ne,this.se.nw,this.sw.se,this.se.sw); 
         lista[7]=temp.getCuadranteCentral();
         lista[8]=this.se.getCuadranteCentral();
 
@@ -452,11 +517,36 @@ class Cuadrante{
 
     }
     public static Cuadrante crearVacio(int nivel){
-        if (nivel==0){
-             return Cuadrante.crear(0);
+            Cuadrante vacio;
+       
+            if (cuadrantesVacios == null)
+            {
+                cuadrantesVacios = new ArrayList();
+            }
+        if (nivel < cuadrantesVacios.Count)
+            {
+               vacio =(Cuadrante) cuadrantesVacios[nivel];
+                if (vacio.nivel==nivel && vacio.celdasVivas == 0)
+                {
+                    return vacio;
+                }
+                else
+                {
+                    vacio.print();
+                    throw  new ArgumentException("Ha habido un error al generar un cuadrante vacio");
+                }
+            }
+
+
+         if (nivel==0){
+                vacio= Cuadrante.crear(0); ;
+                Cuadrante.cuadrantesVacios.Add(vacio);
+                return vacio;
 
         }
-         return Cuadrante.crear(Cuadrante.crearVacio(nivel-1),Cuadrante.crearVacio(nivel-1),Cuadrante.crearVacio(nivel-1),Cuadrante.crearVacio(nivel-1));
+            vacio=Cuadrante.crear(Cuadrante.crearVacio(nivel - 1), Cuadrante.crearVacio(nivel - 1), Cuadrante.crearVacio(nivel - 1), Cuadrante.crearVacio(nivel - 1));
+            Cuadrante.cuadrantesVacios.Add(vacio);
+            return vacio;
 
 
     }
@@ -469,8 +559,14 @@ class Cuadrante{
         {
             return false;
         }
+        Cuadrante obj2=(Cuadrante) obj;
+        if (this.nivel==0){
+            return obj2.celdasVivas==this.celdasVivas;
+        }
         
-            return this.GetHashCode()==obj.GetHashCode();
+        return (this.nivel == obj2.nivel && this.nw==obj2.nw && this.ne==obj2.ne && this.sw==obj2.sw && this.se==obj2.se);
+
+            
     
     }
     
@@ -479,7 +575,14 @@ class Cuadrante{
         if (this.nw==null){
             return (int)this.celdasVivas;
         }
-        return 2*nw.GetHashCode()+11*this.ne.GetHashCode()+101*this.sw.GetHashCode()+1007*this.se.GetHashCode()+5*this.nivel;
+       //Solucionar los que tienen hashes igual a 0
+       
+        if (hash != 0)
+            {
+                return hash;
+            }
+
+          return 2*this.nw.hash+11*this.ne.hash+101*this.sw.hash+1007*this.se.hash+5*this.nivel;
     }
 
     

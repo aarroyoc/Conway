@@ -4,7 +4,8 @@ using Conway.Matrix;
 using Quadtree;
 using System;
 using Conway.GUI;
-
+using System.Diagnostics;
+using System.Numerics;
 namespace Conway.Test {
     public class Test{
                     string glider=@"........................X...........
@@ -166,29 +167,68 @@ XXX..XXXXXX..XXX........................
         Console.WriteLine("Finalizando segundo test Generacion etapa 4");
 
     }
-    [Fact] 
-    public void segundoTestGeneracionEtapa4(){
+    
+       [Fact] 
+    public static void segundoTestGeneracionEtapa4(){
         ConwayCanvas conway=new ConwayCanvas();
-       
-
-          File.Rle testmatrix = new File.Rle("Patterns/3enginecordership.rle");
+            
+          
+         File.Vaca testmatrix = new File.Vaca("../../../edna.txt");
+        //File.Rle testmatrix = new File.Rle("../../../gosperglidergun.rle");
         bool[][] matrix=testmatrix.GetMatrix();
-        Console.WriteLine("Iniciando segundo test Generacion etapa 4");
         Cuadrante test=Cuadrante.crear(matrix);
-        Console.WriteLine("Antes de expandir");
-        test.print(); 
-     
+       
+       test.print();
+            double iteraciones = 0;
+            Cuadrante centro;
+        Cuadrante temp;
+        int expandiendo=0;
+        bool flag=false;
+        var sw = Stopwatch.StartNew();
+        for (int i=0;i<3;i++){
+            Console.WriteLine(!(test.getCuadranteCentral().isCentrado() && test.isCentrado()));
+            while(!(test.getCuadranteCentral().isCentrado() && test.isCentrado())){
+               
+                Console.WriteLine("El bucle a empezado a ejecutarse");
+                 
 
-        
-        test=test.expandir();
-        test=test.expandir();
+                   
+                        test=test.expandir();
+                     test.print();
+                   
+
+                Console.WriteLine("El buce ha acabado de ejecutarse. Estado " + test.getCuadranteCentral().isCentrado());
+            }
+
+                
+                //Console.WriteLine("APUNTO DE ITERAR");
+                // temp=test.getCuadranteCentral();
+                //Console.WriteLine("Numero de celulas totales: " + test.celdasVivas);
+                //Console.WriteLine("Celulas en el central: " + temp.celdasVivas);
+                //centro=temp.getCuadranteCentral();
+                //Console.WriteLine("Celulas en el central del central" + centro.celdasVivas);
+
+                //Console.WriteLine("Estado:" +test.getCuadranteCentral().isCentrado());
+                //Console.WriteLine("estado del centor: " +temp.isCentrado());
+
+                iteraciones +=(long) Math.Pow(2,test.nivel-2);
+          test=test.generacionEtapa4();
+                test.print();
+                Console.WriteLine($"Acaba de iterar  nivel= {test.nivel+1}  iteraciones {iteraciones} celulasVivas={test.celdasVivas} tiempo={sw.Elapsed.TotalMilliseconds}");
+          Console.WriteLine("Celulas vivas despues de iterar:" +test.celdasVivas);
+        }
+          sw.Stop();
+            
+  
            Console.WriteLine("Nivel:" +test.nivel);
-        test=test.generacionEtapa4();
+      
         
-        test.print();
+       // test.print();
+        Console.WriteLine("Nivel de iteraciones totales:  " + iteraciones);
          Console.WriteLine("Acabando test etapa 4");
         Console.WriteLine("Nivel final:" +test.nivel);
         Console.WriteLine("Finalizando segundo test Generacion etapa 4");
+        Console.WriteLine($"Ha tardado {sw.Elapsed.TotalMilliseconds} milisegundos en iterar");
 
     }
     

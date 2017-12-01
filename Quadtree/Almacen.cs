@@ -2,17 +2,7 @@
  using System;
  using Quadtree;
 
-    enum EstadoCelda {
-        CeldaVacia,
-        CeldaBorrada,
-        CeldaOcupada
-    };
-  class Item : Tuple<Cuadrante,Cuadrante> {
-      public Item(Cuadrante key, Cuadrante value) : base(key,value)
-      {
 
-      }
-  }
   class Almacen{
     //private Dictionary<Cuadrante,Cuadrante> almacen;
     private Item[] almacen;
@@ -54,28 +44,19 @@
             }
         }
     }
-
-    public Cuadrante get(Cuadrante key){
+   
+        public Cuadrante get(Cuadrante key){
         int i = index(key);
         int d = salto(key);
-        try{
+
             while(almacen[i]!=null && (almacen[i].Item1 == null || !almacen[i].Item1.Equals(key) )){
                 i = (i+d) % capacity;
             }
-        }catch(Exception e){
-            Console.WriteLine($"Capacity: {capacity}\tIndex: {i}\tSalto: {d}");
-        }
-        var item = almacen[i];
-        /*if(item == null || item.Item2.nivel != key.nivel)
-            return null;*/
-        /*if(item.Item2.nw.GetHashCode() != key.nw.GetHashCode())
-            return null;
-        if(item.Item2.ne.GetHashCode() != key.ne.GetHashCode())
-            return null;
-        if(item.Item2.sw.GetHashCode() != key.sw.GetHashCode())
-            return null;
-        if(item.Item2.se.GetHashCode() != key.se.GetHashCode())
-            return null;*/
+
+         var item = almacen[i];
+       
+           
+        
         return item?.Item2;
     }
 
@@ -96,3 +77,14 @@
     }
 
 }
+    enum EstadoCelda {
+        CeldaVacia,
+        CeldaBorrada,
+        CeldaOcupada
+    };
+  class Item : Tuple<Cuadrante,Cuadrante> {
+      public Item(Cuadrante key, Cuadrante value) : base(key,value)
+      {
+
+      }
+  }
