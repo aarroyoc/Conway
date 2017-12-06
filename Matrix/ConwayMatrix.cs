@@ -14,6 +14,18 @@ namespace Conway.Matrix {
             this.OffsetY = 0;
         }
 
+        public ConwayMatrix(bool[][] m){
+            matrix = new List<List<bool>>();
+            this.OffsetX = 0;
+            this.OffsetY = 0;
+            for(var i=0;i<m.Length;i++){
+                for(var j=0;j<m[i].Length;j++){
+                    this[i,j] = m[i][j];
+                }
+            }
+
+        }
+
         public int Iterations = 0;
 
         public int OffsetX = 0;

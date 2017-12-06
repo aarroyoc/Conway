@@ -586,7 +586,7 @@ class Cuadrante{
     }
 
     public bool[][] GetMatrix(){
-        var n = (int)MathPow(2,this.nivel);
+        var n = (int)Math.Pow(2,this.nivel);
         var matrix = new bool[n][];
         for(var i=0;i<n;i++){
             matrix[i] = new bool[n];
