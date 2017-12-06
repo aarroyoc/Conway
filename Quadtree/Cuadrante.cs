@@ -585,6 +585,18 @@ class Cuadrante{
           return 2*this.nw.hash+11*this.ne.hash+101*this.sw.hash+1007*this.se.hash+5*this.nivel;
     }
 
+    public bool[][] GetMatrix(){
+        var n = (int)MathPow(2,this.nivel);
+        var matrix = new bool[n][];
+        for(var i=0;i<n;i++){
+            matrix[i] = new bool[n];
+            for(var j=0;j<n;j++){
+                matrix[i][j] = getPixel(j,i) == 1;
+            }
+        }
+        return matrix;
+    }
+
     
 }
 }

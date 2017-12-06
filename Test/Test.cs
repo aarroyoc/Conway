@@ -563,7 +563,6 @@ XXX..XXXXXX..XXX........................
         }
 
         [Fact]
-
         public void ConwayMatrixToBoolMatrix()
         {
             string test=@"0000000000000000000000001000000000000000000000000000000000000000
@@ -725,6 +724,37 @@ XXX..XXXXXX..XXX........................
             Console.WriteLine($"Nivel: {cuadrante.nivel}");
             cuadrante = cuadrante.generacionEtapa4();
             cuadrante.print();
+        }
+
+        [Fact]
+        public void BoolMatrixToConwayMatrix()
+        {
+            string test = @"...X
+.X.X
+....
+....
+";
+            var matrix = new bool[][]{
+                new bool[]{false,false,false,true},
+                new bool[]{false,true,false,true},
+                new bool[]{false,false,false,false},
+                new bool[]{false,false,false,false}
+            };
+            var conway = new ConwayMatrix(matrix);
+            Assert.Equal(test,conway.ToString());
+        }
+
+        [Fact]
+        public void CuadranteToMatrix()
+        {
+            var matrix = new bool[][]{
+                new bool[]{false,false,true,true},
+                new bool[]{true,true,false,false},
+                new bool[]{true,false,true,false},
+                new bool[]{false,true,false,true}
+            };
+            var c = Cuadrante.crear(matrix);
+            Assert.Equal(matrix,c.GetMatrix());
         }
     }
 

@@ -1,10 +1,11 @@
 /* Arroyo Calle, Adrián
 Bazaco Velasco, Daniel*/
-﻿using System;
+using System;
 using System.Diagnostics;
 using Microsoft.Extensions.CommandLineUtils;
 using Avalonia;
 using Conway.Matrix;
+using Quadtree;
 
 namespace Conway
 {
@@ -27,6 +28,7 @@ namespace Conway
             app.OnExecute(()=>{
                 // procesar entrada de comandos
                 try{
+                    // algoritmo de Quadtree
                     if(!inputFile.HasValue())
                         throw new Exception("Please, specify an input file");
                     if(!System.IO.File.Exists(inputFile.Value()))
@@ -37,22 +39,27 @@ namespace Conway
 
                     // TODO: ser capaz de detectar el formato correcto
                     
-                    ConwayMatrix matrix = null;
+                    bool[][] matrix = null;
                     try{
-                        matrix = new File.Rle(inputFile.Value()).ConwayMatrix;
+                        matrix = new File.Rle(inputFile.Value()).GetMatrix();
                     }catch(Exception){
-                        matrix = new File.Vaca(inputFile.Value()).ConwayMatrix;
+                        matrix = new File.Vaca(inputFile.Value()).GetMatrix();
                     };
                     if(matrix == null)
                         throw new Exception("File format error");
-                    Console.WriteLine($"{matrix}");
+                    Cuadrante cuadrante = Cuadrante.crear(matrix);
+                    Console.WriteLine($"{cuadrante}");
                     var sw = Stopwatch.StartNew();
                     for(var i=0;i<iter;i++){
-                        matrix.Iterate();
+                        while(!(cuadrante.isCentrado() && cuadrante.getCuadranteCentral().isCentrado())){
+                            cuadrante = cuadrante.expandir();
+                        }
+                        cuadrante = cuadrante.generacionEtapa4();
                     }
                     sw.Stop();
 
-                    var final = matrix.GetFinalResult();
+                    var conway = new ConwayMatrix(cuadrante.GetMatrix());
+                    var final = conway.GetFinalResult();
                     // report final
                     Console.WriteLine($"{iter} iteraciones");
                     Console.WriteLine($"{final.CeldasVivas} celdas vivas");
@@ -75,7 +82,7 @@ namespace Conway
                     Console.WriteLine($"WARNING: {e.Message}");
                     Console.WriteLine("Starting UI");
 
-                    // arrancar gui
+                    // arrancar gui (algoritmo de ConwayMatrix)
                     AppBuilder.Configure<App>().UsePlatformDetect().Start<GUI.MainWindow>();
                } 
                return 0;
