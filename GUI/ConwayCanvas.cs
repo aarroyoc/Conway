@@ -222,18 +222,7 @@ namespace Conway.GUI{
             }
             else
             {
-                if (cuadrante.nivel == newMatrix.nivel)
-                {
-
-               
-                Console.WriteLine($"filaIni: {filaIni}, filaEnd:{filaEnd}, columIni:{columIni}, columEnd{columEnd}");
-                Console.WriteLine($"Tamaño del cuadrante inferior: {tamanoCuadrante}. X={x} Y={y}");
-                    Console.WriteLine($"Tamaño de ESTE CUADRANTE: {Math.Pow(2, cuadrante.nivel)}"); 
-                Console.WriteLine($"y + tamanoCuadrante > filaEnd: {y + tamanoCuadrante > filaEnd}");
-                Console.WriteLine($"y + tamanoCuadrante > filaIni) {y + tamanoCuadrante > filaIni}");
-                Console.WriteLine($"x + tamanoCuadrante > columEnd: {x + tamanoCuadrante > columEnd}");
-                Console.WriteLine($"x + tamanoCuadrante > columIni) {x + tamanoCuadrante > columIni}");
-                }
+                
                 if (!(x + 2*tamanoCuadrante < filaIni) && (x<=filaEnd+tamanoCuadrante) && !(y + 2*tamanoCuadrante < columIni) && (y <= columEnd+tamanoCuadrante))
                 { //El 2* tamanoCuadrante y el  x<=filaEnd+ "tamanoCuadrante" es para dejar una cota de error.
                     dibujaCuadrante(context, x, y, cuadrante.nw, filaIni, filaEnd, columIni, columEnd,origenX,origenY);
@@ -241,20 +230,7 @@ namespace Conway.GUI{
                     dibujaCuadrante(context, x, y + tamanoCuadrante, cuadrante.sw, filaIni, filaEnd, columIni, columEnd, origenX, origenY);
                     dibujaCuadrante(context, x + tamanoCuadrante, y + tamanoCuadrante, cuadrante.se, filaIni, filaEnd, columIni, columEnd, origenX, origenY);
                 }
-               
-                //PROBLEMA: !(x + tamanoCuadrante > columEnd). Los cuadrantes se escriben en nivel descendiente, por tanto al descartar
-                // el nivel superior, perdemos los inferiores, y algunos de los inferiores SI deberían imprimirse
-                if (!(x  > columEnd) && x + tamanoCuadrante >= columIni)
-                {
-                    
-                }
-                if (!(y  > filaEnd) && y + tamanoCuadrante>= filaIni)
-                {
-                   
-                }
-                if(!(x  > columEnd) && x + tamanoCuadrante > columIni && !(y > filaEnd) && y + tamanoCuadrante >= filaIni) { 
-                  
-                }
+        
             }
             
 

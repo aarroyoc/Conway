@@ -189,26 +189,26 @@ namespace Conway.GUI
 
         private void GoUp(object sender, RoutedEventArgs e)
         {
-            conway.Move(-1,0);
+            conway.Move(0,-1);
             this.Renderer.AddDirty(conway);
             this.Renderer.Dispose();
         }
         private void GoDown(object sender, RoutedEventArgs e)
         {
-            conway.Move(1,0);
+            conway.Move(0,1);
             this.Renderer.AddDirty(conway);
             this.Renderer.Dispose();
 
         }
         private void GoLeft(object sender, RoutedEventArgs e)
         {
-            conway.Move(0,-1);
+            conway.Move(-1,0);
             this.Renderer.AddDirty(conway);
             this.Renderer.Dispose();
         }
         private void GoRight(object sender, RoutedEventArgs e)
         {
-            conway.Move(0,1);
+            conway.Move(1,0);
             this.Renderer.AddDirty(conway);
             this.Renderer.Dispose();
         }
