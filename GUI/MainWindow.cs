@@ -48,13 +48,13 @@ namespace Conway.GUI
         {
             InitializeComponent();
             conway = new ConwayCanvas();
-            conway.PointerPressed += ClickStart;
-            conway.PointerMoved += ClickRenderCanvas;
-            conway.PointerReleased += ClickEnd;
+            //conway.PointerPressed += ClickStart;
+            //conway.PointerMoved += ClickRenderCanvas;
+            //conway.PointerReleased += ClickEnd;
             panel = this.Find<StackPanel>("panel");
             panel.Children.Add(conway);
             boton = this.Find<Button>("exec");
-            boton.Click += OnClick;
+            //boton.Click += OnClick;
             next = this.Find<Button>("next");
             next.Click += NextStep;
             nuevo = this.Find<Button>("new");
@@ -62,7 +62,7 @@ namespace Conway.GUI
             load = this.Find<Button>("load");
             load.Click += LoadPattern;
             save = this.Find<Button>("save");
-            save.Click += SavePattern;
+            //save.Click += SavePattern;
 
             this.speedSelector=this.Find<DropDown>("speedSelector");
        
@@ -80,7 +80,7 @@ namespace Conway.GUI
             alive = this.Find<TextBlock>("alive");
 
             iterButton = this.Find<Button>("iter-n-do");
-            iterButton.Click += IterN;
+            //iterButton.Click += IterN;
             iterBox = this.Find<TextBox>("iter-n");
             iterBox.TextInput += TextIter;
             iterBlock = this.Find<TextBlock>("iter-time");
@@ -105,7 +105,7 @@ namespace Conway.GUI
 
         }
 
-
+        /*
         private void OnClick(object sender, RoutedEventArgs e)
         {
             if(this.ThreadAlive || !conway.HasMatrix()){
@@ -125,18 +125,18 @@ namespace Conway.GUI
                 boton.Content = "Parar";
             }
         }
-
+      */
         private void NextStep(object sender, RoutedEventArgs e)
         {
             if(!this.ThreadAlive && conway.HasMatrix()){
-                conway.Iterate();
+                conway.IterateEtapa4();
                 iterations.Text =$"Iteraciones: {conway.Iterations}";
                 alive.Text = $"Celdas vivas: {conway.LiveCells}";
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();
             }
         }
-
+        /*
         private void IterN(object sender, RoutedEventArgs e)
         {
             if(!this.ThreadAlive && conway.HasMatrix())
@@ -172,7 +172,7 @@ namespace Conway.GUI
         {
             this.ClickEnabled = false;
         }
-
+          */
         private void MoveKey(object sender, KeyEventArgs e)
         {
             switch(e.Key){
@@ -225,19 +225,20 @@ namespace Conway.GUI
                 Filters = new List<FileDialogFilter>() {filter},
             };
             var files = await dlg.ShowAsync(this);
-            try{
-                var file = files[0];
-                conway.LoadFile(file);
-                iterations.Text =$"Iteraciones: {conway.Iterations}";
+            //try{
+              var file = files[0];
+              conway.LoadFileCuadrante(file);
+               iterations.Text =$"Iteraciones: {conway.Iterations}";
                 alive.Text = $"Celdas vivas: {conway.LiveCells}";
+                Console.WriteLine("LoadPattern ha concluido");
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();
-            }catch(Exception){
-                
-            }
+           // }catch(Exception hola){
+              
+            //}
         }
 
-        private async void SavePattern(object sender, RoutedEventArgs e)
+        /*private async void SavePattern(object sender, RoutedEventArgs e)
         {
             if(!conway.HasMatrix())
                 return;
@@ -257,14 +258,15 @@ namespace Conway.GUI
             }
             conway.SaveFile(file);
 
-        }
+        } */
 
         private void NewPattern(object sender, RoutedEventArgs e)
         {
-            conway.New();
+            conway.expandir();
+           /* conway.New();
             alive.Text = $"Celdas vivas: {0}";
             this.Renderer.AddDirty(conway);
-            this.Renderer.Dispose();
+            this.Renderer.Dispose(); */
         }
 
         private void OnClosed(object sender, EventArgs e)

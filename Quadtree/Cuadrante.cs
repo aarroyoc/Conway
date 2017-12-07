@@ -4,7 +4,7 @@ using System.Threading;
 using System.Collections;
 
 namespace Quadtree{
-class Cuadrante{
+public class Cuadrante{
     public static Almacen almacen;
     public readonly int nivel;
     public readonly long celdasVivas;

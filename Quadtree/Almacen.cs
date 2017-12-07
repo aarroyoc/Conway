@@ -3,7 +3,7 @@
  using Quadtree;
 
 
-  class Almacen{
+  public class Almacen{
     //private Dictionary<Cuadrante,Cuadrante> almacen;
     private Item[] almacen;
     private int capacity;
