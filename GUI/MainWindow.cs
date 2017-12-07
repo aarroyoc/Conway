@@ -54,7 +54,7 @@ namespace Conway.GUI
             panel = this.Find<StackPanel>("panel");
             panel.Children.Add(conway);
             boton = this.Find<Button>("exec");
-            //boton.Click += OnClick;
+            boton.Click += OnClick;
             next = this.Find<Button>("next");
             next.Click += NextStep;
             nuevo = this.Find<Button>("new");
@@ -105,7 +105,7 @@ namespace Conway.GUI
 
         }
 
-        /*
+        
         private void OnClick(object sender, RoutedEventArgs e)
         {
             if(this.ThreadAlive || !conway.HasMatrix()){
@@ -125,12 +125,18 @@ namespace Conway.GUI
                 boton.Content = "Parar";
             }
         }
-      */
+      
         private void NextStep(object sender, RoutedEventArgs e)
         {
             if(!this.ThreadAlive && conway.HasMatrix()){
                 conway.IterateEtapa4();
-                iterations.Text =$"Iteraciones: {conway.Iterations}";
+                long iterationNum = conway.Iterations;
+                if (iterationNum == -1){
+                    iterations.Text = $"Iteraciones: Desbordamiento";
+                }
+                else { 
+                iterations.Text = $"Iteraciones: {iterationNum}";
+                }
                 alive.Text = $"Celdas vivas: {conway.LiveCells}";
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();

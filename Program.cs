@@ -6,6 +6,7 @@ using Microsoft.Extensions.CommandLineUtils;
 using Avalonia;
 using Conway.Matrix;
 using Quadtree;
+using Conway.Test;
 
 namespace Conway
 {
@@ -16,7 +17,8 @@ namespace Conway
             Console.WriteLine("Conway - Game of Life");
             var app = new CommandLineApplication();
 
-            
+           
+
             app.Name = "Conway";
             app.HelpOption("-?|-h|--help");
             app.VersionOption("-v|--version","Conway 1.0.0");
@@ -36,6 +38,8 @@ namespace Conway
                     if(!iterations.HasValue())
                         throw new Exception("Please, specify a number of iterations");
                     var iter = Int32.Parse(iterations.Value());
+
+
 
                     // TODO: ser capaz de detectar el formato correcto
                     

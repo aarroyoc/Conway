@@ -23,7 +23,10 @@ namespace Conway.GUI {
         {
             var sw = Stopwatch.StartNew();
             while(window.ThreadAlive){
-                //canvas.Iterate();
+                lock (canvas.newMatrix)
+                {
+                canvas.Iterate();
+                }
                 window.Renderer.Dispose();
                 window.Renderer.AddDirty(canvas);
                 Dispatcher.UIThread.InvokeAsync(new Action(
@@ -33,9 +36,14 @@ namespace Conway.GUI {
                         window.alive.Text = $"Celdas vivas: {canvas.LiveCells}";
                     }
                 ));
-                if(this.speed != 0)
-                    Thread.Sleep(this.speed*50);
-                if(n>0)
+                if(this.speed != 0) { 
+                    Thread.Sleep((this.speed+2)*5); 
+                }
+                else
+                {
+                    Thread.Sleep(5); //Esto es para evitar que parpadee el tablero por la diferencia de velocidad entre iterar e imprimir
+                }
+                if (n>0)
                     n--;
                 if(n==0)
                     break;

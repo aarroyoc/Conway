@@ -22,12 +22,16 @@ namespace Conway.GUI{
  
 
 
-        private Cuadrante newMatrix=null;
-
+        public Cuadrante newMatrix=null;
+        private long iterations;
+        private Boolean tooManyIterations = false;
+       
         private int last_x = -1;
         private int last_y = -1;
 
         private long desp_x = 0;
+
+       
         private long desp_y = 0;
 
         public ConwayCanvas()
@@ -45,35 +49,33 @@ namespace Conway.GUI{
         public void LoadFileCuadrante(string file)
         {
             bool[][] tempMatrix=null;
-            //try
+            try
             {
-                tempMatrix = new File.Vaca(file).GetMatrix();
-                //tempMatrix = new File.Rle(file).GetMatrix();
+              
+                tempMatrix = new File.Rle(file).GetMatrix();
             }
-            //catch (Exception)
+            catch (Exception)
             {
-                /*try
+                try
                 {
+                    
                     tempMatrix = new File.Vaca(file).GetMatrix();
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Adivina, si, algo ha ido mal");
-                } */
+                    Console.WriteLine("Ha habido un error al cargar el archivo"); //TODO: Cambiar por otra excepción o mensaje
+                } 
             };
 
             Cuadrante temp = Cuadrante.crear(tempMatrix);
 
-             if(temp == null)
-            {
-                Console.WriteLine("Ha habido un error al cargar el fichero");
-            }
-            else
-            {
-                Console.WriteLine("Todo ha ido bien, new Matrix deberia tener la nueva referencia");
-            }
+         
+            this.iterations = 0;
+            this.tooManyIterations = false;
             this.newMatrix = temp;
-            temp.print();
+            desp_x = 0;
+            desp_y = 0;
+      
           
         }
        /* public void LoadFile(string file)
@@ -105,7 +107,7 @@ namespace Conway.GUI{
 
 
 
-            Console.WriteLine("Ha empezado a dibujar el cuadrado");
+           
             if(this.newMatrix != null)
             {
                 //lock(this.ready){
@@ -116,8 +118,10 @@ namespace Conway.GUI{
                    
 
               
-                Console.WriteLine("Ha empezado a dibujar el cuadrado");
+             
+               
                 dibujaCuadrante(context, 0,0, this.newMatrix,this.desp_x,this.desp_x+2*blocks_h,desp_y,desp_y+2*blocks_w,-desp_x,-desp_y);
+               
                 for (int i = 0; i <blocks_w; i++)
                 {
                     var rect = new Rect(i*TILE_WIDTH, 0, 1, this.Height);
@@ -128,7 +132,7 @@ namespace Conway.GUI{
                     var rect = new Rect(0, i*TILE_HEIGHT, this.Width, 1);
                     context.FillRectangle(Brushes.Black, rect);
                 }
-                Console.WriteLine("Ha TERMINADO  DE dibujar el cuadrado");
+               
 
                 //context.FillRectangle(Brushes.Black, new Rect(this.Width - 1, 0, 1, this.Height));
                 //.FillRectangle(Brushes.Black, new Rect(0, this.Height - 1, this.Width, 1)); 
@@ -190,11 +194,40 @@ namespace Conway.GUI{
                 Console.WriteLine($"El nuevo desplazamiento es: {desp_x}. Tamaño del cuadrante: {newMatrix.nivel}");
                // newMatrix.print();
             }
-            desp_x -= (long)Math.Pow(2, newMatrix.nivel - 2); //Baja un nivel al generar, el desplazamiento disminuye
-            desp_y -= (long)Math.Pow(2, newMatrix.nivel - 2);
-            
+            long pow = (long)Math.Pow(2, newMatrix.nivel - 2);
+            desp_x -= pow; //Baja un nivel al generar, el desplazamiento disminuye
+            desp_y -= pow;
+
+            this.iterations += pow;
+            if (this.iterations < 0)
+            {
+                this.tooManyIterations = true;
+            }
             newMatrix = newMatrix.generacionEtapa4();
             Console.WriteLine($"Se ha genrado, el nuevo desplazamiento es: {desp_x}. Tamaño del cuadrante {newMatrix.nivel}");
+        }
+        internal void Iterate()
+        {
+            while (!(newMatrix.isCentrado() && newMatrix.getCuadranteCentral().isCentrado()))
+            {
+                Console.WriteLine("SE esta expandiendo la matriz");
+                newMatrix = newMatrix.expandir();
+                desp_x += (long)Math.Pow(2, newMatrix.nivel - 2);
+                desp_y += (long)Math.Pow(2, newMatrix.nivel - 2);
+                Console.WriteLine($"El nuevo desplazamiento es: {desp_x}. Tamaño del cuadrante: {newMatrix.nivel}");
+                // newMatrix.print();
+            }
+            long pow = (long)Math.Pow(2, newMatrix.nivel - 2);
+            desp_x -= pow; //Baja un nivel al generar, el desplazamiento disminuye
+            desp_y -= pow;
+
+            this.iterations += 1;
+            if (this.iterations < 0)
+            {
+                this.tooManyIterations = true;
+            }
+            newMatrix = newMatrix.generacion();
+           
         }
 
         internal bool HasMatrix()
@@ -204,21 +237,26 @@ namespace Conway.GUI{
 
         private void dibujaCuadrante(DrawingContext context,long x,long y,Cuadrante cuadrante,long filaIni,long filaEnd, long columIni, long columEnd,long origenX,long origenY)
         {
-            /** X e Y se inicializan siempre a 0. Se usan solo durante la recursión **/
+            /** X e Y se inicializan siempre a 0. Se usan solo durante la recursión
+             * 
+             * filaIni,filaEnd,columIni y columEnd sirven para delimitar la parte del cuadrante que se imprime. No es muy preciso
+             * pero funciona.
+             * 
+             * **/
+            if (cuadrante.celdasVivas == 0)
+            {
+                return;
+            }
             long tamanoCuadrante =(long) Math.Pow(2, cuadrante.nivel-1); //Al hacer -1 cojo el tamaño del cuadrante de nivel inferior
             if (cuadrante.nivel == 0)
             {
-                if (cuadrante.celdasVivas == 0)
-                {
-                    
-                  
-                }
-                else
+                if (cuadrante.celdasVivas ==1 )
                 {
                     var rect = new Rect((origenX + x) * TILE_WIDTH + 1, (origenY + y) * TILE_HEIGHT + 1, TILE_WIDTH - 1, TILE_HEIGHT - 1);
                     context.FillRectangle(Brushes.Black, rect);
-         
+
                 }
+               
             }
             else
             {
@@ -261,8 +299,12 @@ namespace Conway.GUI{
             desp_y += y;
         }
 
-        public int Iterations { get{
-            return 4; //TODO
+        public long Iterations { get{
+                if (tooManyIterations == true)
+                {
+                    return -1;
+                }
+            return this.iterations; //TODO
         }
         }
 
