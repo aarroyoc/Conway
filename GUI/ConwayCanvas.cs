@@ -23,7 +23,7 @@ namespace Conway.GUI{
 
 
         public Cuadrante newMatrix=null;
-        private long iterations;
+        private long iterations=0;
         private Boolean tooManyIterations = false;
         private Boolean tooManyCells = false;
        
@@ -167,17 +167,17 @@ namespace Conway.GUI{
                 this.tooManyCells = true;
             }
             newMatrix = newMatrix.generacionEtapa4();
-            Console.WriteLine($"Se ha genrado, el nuevo desplazamiento es: {desp_x}. Tamaño del cuadrante {newMatrix.nivel}");
+           
         }
         internal void Iterate()
         {
             while (!(newMatrix.isCentrado() && newMatrix.getCuadranteCentral().isCentrado()))
             {
-                Console.WriteLine("SE esta expandiendo la matriz");
+              
                 newMatrix = newMatrix.expandir();
                 desp_x += (long)Math.Pow(2, newMatrix.nivel - 2);
                 desp_y += (long)Math.Pow(2, newMatrix.nivel - 2);
-                Console.WriteLine($"El nuevo desplazamiento es: {desp_x}. Tamaño del cuadrante: {newMatrix.nivel}");
+              
                 // newMatrix.print();
             }
             long pow = (long)Math.Pow(2, newMatrix.nivel - 2);

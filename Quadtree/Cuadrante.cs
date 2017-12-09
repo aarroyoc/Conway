@@ -79,16 +79,7 @@ public class Cuadrante{
 
     }
 
-    public Boolean isDobleCentrado(){
-        //Devuelve true si está centrado en el cuadrante central del cuadrante central
-        
-        if (this.nw.celdasVivas==this.nw.se.celdasVivas && this.ne.celdasVivas==this.ne.sw.celdasVivas && this.sw.celdasVivas==this.sw.ne.celdasVivas
-        && this.se.celdasVivas==this.se.nw.celdasVivas
-        ){
-            return true;
-        }
-            return false;
-    }
+   
      public Cuadrante expandir(){
       
         Cuadrante vacio=crearVacio(this.nivel-1);
@@ -500,7 +491,7 @@ public class Cuadrante{
             this.resEtapa2 = generado;
         return generado; 
     }
-    public  Cuadrante[] divideEn9Cuadrados(){ //TODO: Poner a privado cuando acabe los test
+    public  Cuadrante[] divideEn9Cuadrados(){ 
         Cuadrante[] lista=new Cuadrante[9];
         lista[0]=this.nw.getCuadranteCentral();
         Cuadrante temp=Cuadrante.crear(this.nw.ne,this.ne.nw,this.nw.se,this.ne.sw);
@@ -602,18 +593,7 @@ public class Cuadrante{
 
         public bool[][] GetMatrix()
         {
-            /*  
-          var n = (int)Math.Pow(2,this.nivel);
-          var matrix = new bool[n][];
-          for(var i=0;i<n;i++){
-              matrix[i] = new bool[n];
-              for(var j=0;j<n;j++){
-                  matrix[i][j] = getPixel(j,i) == 1;
-              }
-          }
-        
-              return matrix; */
-
+            
             var n = (int)Math.Pow(2, this.nivel);
             var matrix = new bool[n][];
             for (var i = 0; i < n; i++)
@@ -622,16 +602,7 @@ public class Cuadrante{
             }
 
             this.GetMatrixRecursivo(0, 0, this,  matrix);
-            for (int i = 0; i < n; i++)
-            {
-                for(int j = 0; j < n; j++)
-                {
-                    Console.Write(matrix[i][j]);
-
-                }
-                Console.WriteLine("");
-                
-            }
+     
             return matrix;
             
         }

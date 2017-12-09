@@ -54,10 +54,14 @@ namespace Conway
                     Cuadrante cuadrante = Cuadrante.crear(matrix);
                     Console.WriteLine($"{cuadrante}");
                     var sw = Stopwatch.StartNew();
-                    for(var i=0;i<iter;i++){
+
+                    long Iterations = 0;
+                    while(Iterations<iter && Iterations >= 0)
+                    { 
                         while(!(cuadrante.isCentrado() && cuadrante.getCuadranteCentral().isCentrado())){
                             cuadrante = cuadrante.expandir();
                         }
+                        Iterations += (long)Math.Pow(2, cuadrante.nivel-2);
                         cuadrante = cuadrante.generacionEtapa4();
                     }
                     sw.Stop();
@@ -65,7 +69,7 @@ namespace Conway
                     var conway = new ConwayMatrix(cuadrante.GetMatrix());
                     var final = conway.GetFinalResult();
                     // report final
-                    Console.WriteLine($"{iter} iteraciones");
+                    Console.WriteLine($"{Iterations} iteraciones");
                     Console.WriteLine($"{final.CeldasVivas} celdas vivas");
                     Console.WriteLine($"Dimensiones: {final.LimitedMatrix.Width} x {final.LimitedMatrix.Height}");
                     Console.WriteLine($"Tiempo: {sw.Elapsed.TotalMilliseconds} ms");

@@ -180,10 +180,9 @@ XXX..XXXXXX..XXX........................
        
        
             double iteraciones = 0;
-            Cuadrante centro;
-        Cuadrante temp;
-        int expandiendo=0;
-        bool flag=false;
+           
+     
+      
         var sw = Stopwatch.StartNew();
         for (int i=0;i<30;i++){
             Console.WriteLine(!(test.getCuadranteCentral().isCentrado() && test.isCentrado()));

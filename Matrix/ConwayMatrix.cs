@@ -14,6 +14,7 @@ namespace Conway.Matrix
             matrix = new List<List<bool>>();
             this.OffsetX = 0;
             this.OffsetY = 0;
+          
         }
 
         public ConwayMatrix(bool[][] m)
@@ -21,15 +22,15 @@ namespace Conway.Matrix
             matrix = new List<List<bool>>();
             this.OffsetX = 0;
             this.OffsetY = 0;
+
             for (var i = 0; i < m.Length; i++)
             {
                 for (var j = 0; j < m[i].Length; j++)
                 {
-                    Console.WriteLine($"Esto se ha ejecutado m[i][j]={m[i][j]}");
                     this[i, j] = m[i][j];
                 }
-            }
 
+            }
         }
 
         public int Iterations = 0;
@@ -42,6 +43,7 @@ namespace Conway.Matrix
         {
             get
             {
+             
                 return this.matrix[0].Count;
             }
         }
@@ -224,6 +226,7 @@ namespace Conway.Matrix
 
             limitedMatrix.SetSize(x2 - x1 + 1, y2 - y1 + 1);
 
+           
             int x = 0;//Establecen las coordenadas de la nueva matriz
             int y = 0;
 
@@ -240,7 +243,7 @@ namespace Conway.Matrix
                 }
                 x++;
             }
-
+           
             return limitedMatrix;
         }
 
@@ -290,6 +293,15 @@ namespace Conway.Matrix
 
 
             data.CeldasVivas = celdasVivas;
+           
+            if (filaMinima>filaMaxima | columnaMinima > columnaMaxima) //En este caso el tablero es unidimensional 
+            {
+                ConwayMatrix empty = new ConwayMatrix();
+                empty[0, 0] = false;
+                data.LimitedMatrix = empty;
+                return data;
+            }
+          
             data.LimitedMatrix = this.LimitMatrix(filaMinima, columnaMinima, filaMaxima, columnaMaxima);
 
 
