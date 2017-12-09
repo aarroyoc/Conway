@@ -16,7 +16,7 @@ namespace Conway.GUI {
             this.canvas = canvas;
             this.window = window;
             this.speed=speed;
-            this.n = n;
+            this.n = n; //Número de veces que itera
             
         }
         public void Iterate()
@@ -37,11 +37,11 @@ namespace Conway.GUI {
                     }
                 ));
                 if(this.speed != 0) { 
-                    Thread.Sleep((this.speed+2)*5); 
+                    Thread.Sleep((this.speed)*5); 
                 }
                 else
                 {
-                    Thread.Sleep(5); //Esto es para evitar que parpadee el tablero por la diferencia de velocidad entre iterar e imprimir
+                    Thread.Sleep(4); //Esto es para evitar que parpadee el tablero por la diferencia de velocidad entre iterar e imprimir
                 }
                 if (n>0)
                     n--;

@@ -25,6 +25,7 @@ namespace Conway.Matrix
             {
                 for (var j = 0; j < m[i].Length; j++)
                 {
+                    Console.WriteLine($"Esto se ha ejecutado m[i][j]={m[i][j]}");
                     this[i, j] = m[i][j];
                 }
             }

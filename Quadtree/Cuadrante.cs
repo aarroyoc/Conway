@@ -110,44 +110,83 @@ public class Cuadrante{
                 throw new System.ArgumentException($"Coordenadas x,y no nulas: ({x},{y}) " );
             }
         else{
-
-          
-            
              if (x<numCasillas/2){
                  if (y<numCasillas/2){
                      
                      return Cuadrante.crear(this.nw.setPixel(x,y,estado),ne,sw,se);
-                    //return this.nw.setPixel(x,y,estado);
                  }
                  else{
                     return Cuadrante.crear(this.nw,this.ne,this.sw.setPixel(x,y-(numCasillas/2),estado),se);
-                     //return this.sw.setPixel(x,y-(numCasillas/2),estado);
                  }
 
              }else{
-                 if (y<numCasillas/2){
-                      return Cuadrante.crear(this.nw,this.ne.setPixel(x-(numCasillas/2),y,estado),sw,se);
-                     //return this.ne.setPixel(x-(numCasillas/2),y,estado);
-                 }else{
-                    return Cuadrante.crear(this.nw,this.ne,this.sw,this.se.setPixel(x-(numCasillas/2),y-(numCasillas/2),estado));
-                     //return this.se.setPixel(x-(numCasillas/2),y-(numCasillas/2),estado);
-
-                
-
-                 }
-
-
+                    if (y < numCasillas / 2)
+                    {
+                        return Cuadrante.crear(this.nw, this.ne.setPixel(x - (numCasillas / 2), y, estado), sw, se);
+                    }
+                    else
+                    {
+                        return Cuadrante.crear(this.nw, this.ne, this.sw, this.se.setPixel(x - (numCasillas / 2), y - (numCasillas / 2), estado));   
+                    }
+            
              }
-
 
         }
 
-
-
-
     }
-    // buscar o crear cuadrante
-    private Cuadrante buscarSiguiente(Cuadrante nw, Cuadrante ne, Cuadrante sw, Cuadrante se){
+        public Cuadrante setPixelInverso(long x, long y)
+        {
+            //Invierte el estado 
+            if (this.nivel == 0)
+            {
+                if (this.celdasVivas == 0)
+                {
+                    return Cuadrante.crear(1);
+                }
+                else
+                {
+                    return Cuadrante.crear(0);
+                }
+                
+            }
+            long numCasillas = (int)Math.Pow(2, nivel); //no es el número de casillas sino la posició máxima: Para 2 es 3: 00, 01, 02, 03 
+            if (x > numCasillas - 1 || y > numCasillas - 1 || x < 0 || y < 0)
+            {
+                throw new System.ArgumentException($"Coordenadas x,y no nulas: ({x},{y}) ");
+            }
+            else
+            {
+                if (x < numCasillas / 2)
+                {
+                    if (y < numCasillas / 2)
+                    {
+
+                        return Cuadrante.crear(this.nw.setPixelInverso(x, y), ne, sw, se);
+                    }
+                    else
+                    {
+                        return Cuadrante.crear(this.nw, this.ne, this.sw.setPixelInverso(x, y - (numCasillas / 2)), se);
+                    }
+
+                }
+                else
+                {
+                    if (y < numCasillas / 2)
+                    {
+                        return Cuadrante.crear(this.nw, this.ne.setPixelInverso(x - (numCasillas / 2), y), sw, se);
+                    }
+                    else
+                    {
+                        return Cuadrante.crear(this.nw, this.ne, this.sw, this.se.setPixelInverso(x - (numCasillas / 2), y - (numCasillas / 2)));
+                    }
+
+                }
+
+            }
+
+        }
+        // buscar o crear cuadrante
+        private Cuadrante buscarSiguiente(Cuadrante nw, Cuadrante ne, Cuadrante sw, Cuadrante se){
         var c = Cuadrante.crear(nw,ne,sw,se);
         var next = almacen.get(c);
         if(next!=null){
@@ -417,19 +456,6 @@ public class Cuadrante{
     
        
 
-     
-    //Metodo temporal, borrarlo antes de entregar la práctica TODO
-    public void print(){
-        
-        long numCasillas = (int)Math.Pow(2,nivel);
-        for (int i=0;i<numCasillas;i++){
-            for (int j=0;j<numCasillas;j++){
-                Console.Write(this.getPixel(j,i));
-            }
-            Console.WriteLine();
-
-        }
-    }
 
     public override String ToString(){
         String str = "";
@@ -491,14 +517,7 @@ public class Cuadrante{
         lista[7]=temp.getCuadranteCentral();
         lista[8]=this.se.getCuadranteCentral();
 
-        /* 
-        Console.WriteLine("Dividiendo esto en 9 cuadrados:");
-        //this.print();
-        Console.WriteLine("Se ha dividido en 9 cuadrados, son estos:");
-        for (int i=0;i<9;i++){
-            Console.WriteLine("imprimiento el cuadrado " + i);
-            lista[i].print();
-        }*/
+      
         return lista;
     }
 
@@ -529,7 +548,7 @@ public class Cuadrante{
                 }
                 else
                 {
-                    vacio.print();
+                   
                     throw  new ArgumentException("Ha habido un error al generar un cuadrante vacio");
                 }
             }
@@ -581,17 +600,58 @@ public class Cuadrante{
             
     }
 
-    public bool[][] GetMatrix(){
-        var n = (int)Math.Pow(2,this.nivel);
-        var matrix = new bool[n][];
-        for(var i=0;i<n;i++){
-            matrix[i] = new bool[n];
-            for(var j=0;j<n;j++){
-                matrix[i][j] = getPixel(j,i) == 1;
+        public bool[][] GetMatrix()
+        {
+            /*  
+          var n = (int)Math.Pow(2,this.nivel);
+          var matrix = new bool[n][];
+          for(var i=0;i<n;i++){
+              matrix[i] = new bool[n];
+              for(var j=0;j<n;j++){
+                  matrix[i][j] = getPixel(j,i) == 1;
+              }
+          }
+        
+              return matrix; */
+
+            var n = (int)Math.Pow(2, this.nivel);
+            var matrix = new bool[n][];
+            for (var i = 0; i < n; i++)
+            {
+                matrix[i] = new bool[n];
             }
+
+            this.GetMatrixRecursivo(0, 0, this,  matrix);
+            for (int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < n; j++)
+                {
+                    Console.Write(matrix[i][j]);
+
+                }
+                Console.WriteLine("");
+                
+            }
+            return matrix;
+            
         }
-        return matrix;
-    }
+
+        private void GetMatrixRecursivo(long x, long y, Cuadrante cuadrante, bool[][] matrix)
+        {
+            if (cuadrante.nivel == 0)
+            {
+             
+                matrix[y][x] = cuadrante.celdasVivas == 1;
+                return;
+            }
+           
+            long tamanoCuadrante = (long)Math.Pow(2, cuadrante.nivel - 1); //Al hacer -1 cojo el tamaño del cuadrante de nivel inferior
+
+            this.GetMatrixRecursivo( x, y, cuadrante.nw,  matrix);
+            this.GetMatrixRecursivo(x + tamanoCuadrante, y, cuadrante.ne, matrix);
+            this.GetMatrixRecursivo( x, y + tamanoCuadrante, cuadrante.sw,  matrix);
+            this.GetMatrixRecursivo( x + tamanoCuadrante, y + tamanoCuadrante, cuadrante.se, matrix);
+        }
 
     
 }

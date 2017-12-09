@@ -25,6 +25,7 @@ namespace Conway.GUI{
         public Cuadrante newMatrix=null;
         private long iterations;
         private Boolean tooManyIterations = false;
+        private Boolean tooManyCells = false;
        
         private int last_x = -1;
         private int last_y = -1;
@@ -39,13 +40,18 @@ namespace Conway.GUI{
 
         }
 
-   
-
-        public void New()
+        public void SaveFile(string file)
         {
-           // this.matrix = new ConwayMatrix();
-            //this.ready = new ConwayMatrix();
+            var vaca = new Vaca();
+            var conway = new ConwayMatrix(newMatrix.GetMatrix());
+            var final = conway.GetFinalResult();
+
+            vaca.ConwayMatrix = final.LimitedMatrix;
+            vaca.Save(file);
         }
+
+
+       
         public void LoadFileCuadrante(string file)
         {
             bool[][] tempMatrix=null;
@@ -69,7 +75,7 @@ namespace Conway.GUI{
 
             Cuadrante temp = Cuadrante.crear(tempMatrix);
 
-         
+            this.tooManyCells = false;
             this.iterations = 0;
             this.tooManyIterations = false;
             this.newMatrix = temp;
@@ -78,30 +84,7 @@ namespace Conway.GUI{
       
           
         }
-       /* public void LoadFile(string file)
-        {
-            ConwayMatrix matrix = null;
-            try{
-                matrix = new File.Rle(file).ConwayMatrix;
-            }catch(Exception){
-                try{
-                    matrix = new File.Vaca(file).ConwayMatrix;
-                }catch(Exception){
-
-                }
-            };
-            this.matrix = matrix;
-            this.ready = (ConwayMatrix)this.matrix.Clone();
-        } */
-
-        /*public void SaveFile(string file)
-        {
-            var vaca = new Vaca();
-            vaca.ConwayMatrix = matrix;
-            vaca.Save(file);
-        }
-        */
-        // zoom, deslizador, velocidad, mostrar iteraciones
+      
         public override void Render(DrawingContext context){
 
 
@@ -133,23 +116,6 @@ namespace Conway.GUI{
                     context.FillRectangle(Brushes.Black, rect);
                 }
                
-
-                //context.FillRectangle(Brushes.Black, new Rect(this.Width - 1, 0, 1, this.Height));
-                //.FillRectangle(Brushes.Black, new Rect(0, this.Height - 1, this.Width, 1)); 
-                /*
-                for(var i=0;i<blocks_w;i++){
-                    for(var j=0;j<blocks_h;j++){
-                        if(this.ready[j+this.ready.OffsetX+desp_x,i+this.ready.OffsetY+desp_y]){
-
-                        }else{
-                            var rect = new Rect(i*TILE_WIDTH+1,j*TILE_HEIGHT+1,TILE_WIDTH-1,TILE_HEIGHT-1);
-                            context.FillRectangle(Brushes.White,rect);
-                        }
-                    }
-                }
-                context.FillRectangle(Brushes.Black,new Rect(this.Width-1,0,1,this.Height));
-                context.FillRectangle(Brushes.Black,new Rect(0,this.Height-1,this.Width,1));*/
-                //}
             }
             else{
                 var title = new FormattedText{
@@ -172,14 +138,7 @@ namespace Conway.GUI{
 
             }
         }
-        internal void expandir()
-        {
-            newMatrix.print();
-            newMatrix = newMatrix.expandir();
-            desp_x += (long)Math.Pow(2, newMatrix.nivel - 2);
-            desp_y += (long)Math.Pow(2, newMatrix.nivel - 2);
-            newMatrix.print();
-        }
+       
         internal void IterateEtapa4()
         {
 
@@ -202,6 +161,10 @@ namespace Conway.GUI{
             if (this.iterations < 0)
             {
                 this.tooManyIterations = true;
+            }
+            if (this.newMatrix.celdasVivas < 0)
+            {
+                this.tooManyCells = true;
             }
             newMatrix = newMatrix.generacionEtapa4();
             Console.WriteLine($"Se ha genrado, el nuevo desplazamiento es: {desp_x}. Tamaño del cuadrante {newMatrix.nivel}");
@@ -274,24 +237,43 @@ namespace Conway.GUI{
 
 
         }
-        /*public void OnClick(object sender, PointerEventArgs e)
+
+        internal void NewPattern()
         {
-            if(this.matrix == null || this.ready == null)
+            this.newMatrix = Cuadrante.crearVacio(6);
+            this.iterations = 0;
+            this.tooManyIterations = false;
+            this.tooManyCells = false;
+        }
+
+        public void OnClick(object sender, PointerEventArgs e)
+        {
+            if (this.newMatrix == null)
                 return;
             int x = (int)e.GetPosition(this).X / TILE_WIDTH;
             int y = (int)e.GetPosition(this).Y / TILE_HEIGHT;
             
             if(x == last_x && y == last_y)
                 return;
-            lock(this.matrix){
-                this.matrix[y+this.matrix.OffsetX+desp_x,x+this.matrix.OffsetY+desp_y] = !this.matrix[y+this.matrix.OffsetX+desp_x,x+this.matrix.OffsetY+desp_y];
+
+            long tamanoCuadrante = (long)Math.Pow(2, this.newMatrix.nivel);
+            Console.WriteLine($"Coordenadas de donde se ha pulsado: x={this.desp_x + x},y={this.desp_y + y}");
+            
+            while (this.desp_x+x<0 || this.desp_y < 0 ||this.desp_x+x>tamanoCuadrante || this.desp_y+y>tamanoCuadrante)
+            {
+                this.newMatrix = this.newMatrix.expandir();
+                desp_x += (long)Math.Pow(2, newMatrix.nivel - 2);
+                desp_y += (long)Math.Pow(2, newMatrix.nivel - 2);
+                tamanoCuadrante *= 2;
+                Console.WriteLine($"Esta expandiendo muuucho. {this.desp_x+x} {this.desp_y+y}. TamanoCuadrante: {tamanoCuadrante}");
+
             }
-            lock(this.ready){
-                this.ready[y+this.ready.OffsetX+desp_x,x+this.ready.OffsetY+desp_y] = !this.ready[y+this.ready.OffsetX+desp_x,x+this.ready.OffsetY+desp_y];
-            }
+
+            this.newMatrix = this.newMatrix.setPixelInverso(this.desp_x+x, this.desp_y+y);
+           
             last_x = x;
             last_y = y;
-        }*/
+        }
 
         public void Move(int x, int y)
         {
@@ -304,25 +286,20 @@ namespace Conway.GUI{
                 {
                     return -1;
                 }
-            return this.iterations; //TODO
+            return this.iterations; 
         }
         }
 
         public long LiveCells {
             get{
-              
+              if (tooManyCells == true)
+                {
+                    return -1;
+                }
                 return newMatrix.celdasVivas;
             }
         }
 
-        /*public void Iterate(){
-            lock(this.matrix){
-                this.matrix.Iterate();
-                lock(this.ready){
-                    this.ready = (ConwayMatrix)this.matrix.Clone();
-                }
-            }
-        }*/
         public ISolidColorBrush RandomColor(){
             var r = new Random().Next(0,5);
             var color = new ISolidColorBrush []{Brushes.Red,Brushes.Blue,Brushes.Green,Brushes.Yellow,Brushes.Purple};

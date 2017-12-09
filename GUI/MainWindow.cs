@@ -48,9 +48,9 @@ namespace Conway.GUI
         {
             InitializeComponent();
             conway = new ConwayCanvas();
-            //conway.PointerPressed += ClickStart;
-            //conway.PointerMoved += ClickRenderCanvas;
-            //conway.PointerReleased += ClickEnd;
+            conway.PointerPressed += ClickStart;
+            conway.PointerMoved += ClickRenderCanvas;
+            conway.PointerReleased += ClickEnd;
             panel = this.Find<StackPanel>("panel");
             panel.Children.Add(conway);
             boton = this.Find<Button>("exec");
@@ -62,7 +62,7 @@ namespace Conway.GUI
             load = this.Find<Button>("load");
             load.Click += LoadPattern;
             save = this.Find<Button>("save");
-            //save.Click += SavePattern;
+            save.Click += SavePattern;
 
             this.speedSelector=this.Find<DropDown>("speedSelector");
        
@@ -80,7 +80,7 @@ namespace Conway.GUI
             alive = this.Find<TextBlock>("alive");
 
             iterButton = this.Find<Button>("iter-n-do");
-            //iterButton.Click += IterN;
+            iterButton.Click += IterN;
             iterBox = this.Find<TextBox>("iter-n");
             iterBox.TextInput += TextIter;
             iterBlock = this.Find<TextBlock>("iter-time");
@@ -137,12 +137,20 @@ namespace Conway.GUI
                 else { 
                 iterations.Text = $"Iteraciones: {iterationNum}";
                 }
-                alive.Text = $"Celdas vivas: {conway.LiveCells}";
+                long celulasVivas = conway.LiveCells;
+                if (celulasVivas == -1)
+                {
+                    alive.Text = $"Celdas vivas: Desbordamiento";
+                }
+                else {
+                 alive.Text = $"Celdas vivas: {conway.LiveCells}";
+                }
+
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();
             }
         }
-        /*
+        
         private void IterN(object sender, RoutedEventArgs e)
         {
             if(!this.ThreadAlive && conway.HasMatrix())
@@ -178,7 +186,7 @@ namespace Conway.GUI
         {
             this.ClickEnabled = false;
         }
-          */
+          
         private void MoveKey(object sender, KeyEventArgs e)
         {
             switch(e.Key){
@@ -221,7 +229,18 @@ namespace Conway.GUI
 
         private async void LoadPattern(object sender, RoutedEventArgs e)
         {
-            var filter = new FileDialogFilter{
+
+            if (this.ThreadAlive || !conway.HasMatrix()) //Si le das a cargar patrón y  se estaba ejecutando el oto, se para.
+            {
+                this.ThreadAlive = false;
+                if (thread != null)
+                    thread.Join();
+                boton.Content = "Ejecutar"; 
+            }
+
+
+
+                var filter = new FileDialogFilter{
                 Extensions = new List<string>() {"rle","vaca"},
                 Name = "Patrones",
             };
@@ -231,7 +250,7 @@ namespace Conway.GUI
                 Filters = new List<FileDialogFilter>() {filter},
             };
             var files = await dlg.ShowAsync(this);
-            //try{
+            try{
               var file = files[0];
               conway.LoadFileCuadrante(file);
                iterations.Text =$"Iteraciones: {conway.Iterations}";
@@ -239,12 +258,12 @@ namespace Conway.GUI
                 Console.WriteLine("LoadPattern ha concluido");
                 this.Renderer.AddDirty(conway);
                 this.Renderer.Dispose();
-           // }catch(Exception hola){
+            }catch(Exception ){
               
-            //}
+            }
         }
 
-        /*private async void SavePattern(object sender, RoutedEventArgs e)
+        private async void SavePattern(object sender, RoutedEventArgs e)
         {
             if(!conway.HasMatrix())
                 return;
@@ -263,16 +282,16 @@ namespace Conway.GUI
                 file += ".vaca";
             }
             conway.SaveFile(file);
+            
 
-        } */
+        } 
 
         private void NewPattern(object sender, RoutedEventArgs e)
         {
-            conway.expandir();
-           /* conway.New();
-            alive.Text = $"Celdas vivas: {0}";
-            this.Renderer.AddDirty(conway);
-            this.Renderer.Dispose(); */
+            conway.NewPattern();
+            iterations.Text = $"Iteraciones: {conway.Iterations}";
+            alive.Text = $"Celdas vivas: {conway.LiveCells}";
+
         }
 
         private void OnClosed(object sender, EventArgs e)

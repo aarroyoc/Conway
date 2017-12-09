@@ -140,7 +140,7 @@ XXX..XXXXXX..XXX........................
         Console.WriteLine("Iniciando segundo test Generacion etapa 2");
         Cuadrante test=Cuadrante.crear(matrix);
         Console.WriteLine("Antes de expandir");
-        test.print(); 
+       
      
          
           test=test.expandir();
@@ -161,7 +161,7 @@ XXX..XXXXXX..XXX........................
 
         
         Console.WriteLine("EXPANDIDO ********************************+++++++++++");
-        test.print();
+       
          Console.WriteLine("Acabando test etapa 2");
         Console.WriteLine("Nivel final:" +test.nivel);
         Console.WriteLine("Finalizando segundo test Generacion etapa 4");
@@ -173,19 +173,19 @@ XXX..XXXXXX..XXX........................
         ConwayCanvas conway=new ConwayCanvas();
             
           
-         File.Vaca testmatrix = new File.Vaca("../../../edna.txt");
-        //File.Rle testmatrix = new File.Rle("../../../gosperglidergun.rle");
+        // File.Vaca testmatrix = new File.Vaca("../../../edna.txt");
+        File.Rle testmatrix = new File.Rle("../../../gosperglidergun.rle");
         bool[][] matrix=testmatrix.GetMatrix();
         Cuadrante test=Cuadrante.crear(matrix);
        
-       test.print();
+       
             double iteraciones = 0;
             Cuadrante centro;
         Cuadrante temp;
         int expandiendo=0;
         bool flag=false;
         var sw = Stopwatch.StartNew();
-        for (int i=0;i<3;i++){
+        for (int i=0;i<30;i++){
             Console.WriteLine(!(test.getCuadranteCentral().isCentrado() && test.isCentrado()));
             while(!(test.getCuadranteCentral().isCentrado() && test.isCentrado())){
                
@@ -194,7 +194,7 @@ XXX..XXXXXX..XXX........................
 
                    
                         test=test.expandir();
-                     test.print();
+                     
                    
 
                 Console.WriteLine("El buce ha acabado de ejecutarse. Estado " + test.getCuadranteCentral().isCentrado());
@@ -213,7 +213,7 @@ XXX..XXXXXX..XXX........................
 
                 iteraciones +=(long) Math.Pow(2,test.nivel-2);
           test=test.generacionEtapa4();
-                test.print();
+               
                 Console.WriteLine($"Acaba de iterar  nivel= {test.nivel+1}  iteraciones {iteraciones} celulasVivas={test.celdasVivas} tiempo={sw.Elapsed.TotalMilliseconds}");
           Console.WriteLine("Celulas vivas despues de iterar:" +test.celdasVivas);
         }
@@ -248,17 +248,17 @@ XXX..XXXXXX..XXX........................
         
         Cuadrante test=Cuadrante.crear(matrix);
         Console.WriteLine("Antes de expandir");
-        test.print(); 
+       
         Console.WriteLine("Nivel:" +test.nivel);
         Console.WriteLine("Empezando test etapa 2 básico");
         
         test=test.expandir();
         test=test.expandir();
         Console.WriteLine("Antes de empezar a generar");
-        test.print();
+        
         test=test.generacion();
         
-        test.print();
+       
      Console.WriteLine("Acabando test etapa  2 básico");
      Console.WriteLine("Nivel final:" +test.nivel);
     }
@@ -279,14 +279,14 @@ XXX..XXXXXX..XXX........................
         
         Cuadrante test=Cuadrante.crear(matrix);
         Console.WriteLine("Antes de expandir");
-        test.print(); 
+       
         Console.WriteLine("Nivel:" +test.nivel);
         Console.WriteLine("Empezando test etapa 4");
         
         test=test.expandir();
         test=test.generacionEtapa4();
         
-        test.print();
+    
      Console.WriteLine("Acabando test etapa 4");
      Console.WriteLine("Nivel final:" +test.nivel);
     }
@@ -315,9 +315,7 @@ XXX..XXXXXX..XXX........................
         Cuadrante test=Cuadrante.crear(matrix);
         //test=test.expandir();
         Cuadrante gen=test.generacion2();
-        test.print();
-
-        gen.print();
+      
         Assert.Equal(1,gen.getPixel(0,0));
         Assert.Equal(1,gen.getPixel(0,1));
         Assert.Equal(1,gen.getPixel(1,0));
@@ -504,15 +502,14 @@ XXX..XXXXXX..XXX........................
 
             Cuadrante primeraExpansion=uno.expandir();
               Cuadrante segundaExpansion=primeraExpansion.expandir();
-            uno.print();
+           
             
             segundaExpansion=segundaExpansion.setPixel(5,3,1);
             Cuadrante generado=segundaExpansion.generacion();
-            primeraExpansion.print();
-            segundaExpansion.print();
+          
            
             Assert.True(segundaExpansion.isCentrado());
-            generado.print();
+           
             //uno.expandir().generacion().print();
 
 
@@ -720,10 +717,10 @@ XXX..XXXXXX..XXX........................
             while(!(cuadrante.isCentrado() && cuadrante.getCuadranteCentral().isCentrado())){
                 cuadrante = cuadrante.expandir();
             }
-            cuadrante.print();
+          
             Console.WriteLine($"Nivel: {cuadrante.nivel}");
             cuadrante = cuadrante.generacionEtapa4();
-            cuadrante.print();
+          
         }
 
         [Fact]
