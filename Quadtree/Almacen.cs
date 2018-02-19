@@ -3,7 +3,7 @@
  using Quadtree;
 
 
-  class Almacen{
+public class Almacen{
     //private Dictionary<Cuadrante,Cuadrante> almacen;
     private Item[] almacen;
     private int capacity;
@@ -21,11 +21,11 @@
     }
 
     protected int index(Cuadrante c){
-        return Math.Abs(c.GetHashCode()) % capacity;
+        return Math.Abs(c.getHash()) % capacity;
     }
 
     protected int salto(Cuadrante c){
-        int s = Math.Abs(c.GetHashCode()) / capacity;
+        int s = Math.Abs(c.getHash()) / capacity;
         return (s % 2 == 0) ? s+1 : s;
     }
 
@@ -44,7 +44,23 @@
             }
         }
     }
-   
+    public Cuadrante get(Cuadrante nw,Cuadrante ne,Cuadrante sw,Cuadrante se) 
+    { 
+        int hash = Math.Abs(Cuadrante.getHash(nw, ne, sw, se)); 
+        int i = hash % capacity; 
+        int s = hash / capacity; 
+        int d = (s % 2 == 0) ? s + 1 : s; 
+ 
+        Item temp = almacen[i]; //Dejar el item1 o quitarlo? 
+        while (temp!=null && (temp.Item1 == null || !(temp.Item1.nw==nw && temp.Item1.ne==ne && temp.Item1.sw==sw && temp.Item1.se==se ))) 
+        { 
+            i = (i + d) % capacity; 
+            
+            temp = almacen[i]; 
+        } 
+        var item = almacen[i]; 
+        return item?.Item2; 
+    } 
         public Cuadrante get(Cuadrante key){
         int i = index(key);
         int d = salto(key);

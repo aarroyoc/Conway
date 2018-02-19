@@ -4,35 +4,29 @@ using System.Threading;
 using System.Collections;
 
 namespace Quadtree{
-class Cuadrante{
+public class Cuadrante{
     public static Almacen almacen;
     public readonly int nivel;
     public readonly long celdasVivas;
-        public readonly int hash;
-        public static ArrayList  cuadrantesVacios;
+    public static ArrayList cuadrantesVacios;
 
         
     public readonly Cuadrante nw,ne, sw,se;
 
-    public Cuadrante res;
+    public Cuadrante res,resEtapa2;
     protected Cuadrante(int valor){
         //Crea un cuadrante de nivel 0 
         if (Cuadrante.almacen==null){
             Cuadrante.almacen=new Almacen(1024,0.6);
         }
         if (cuadrantesVacios == null)
-            {
-                cuadrantesVacios = new ArrayList();
-            }
-
-
+        {
+            cuadrantesVacios = new ArrayList();
+        }
 
         if (valor==1 || valor==0){
-             this.nivel=0;
+            this.nivel=0;
             this.celdasVivas=valor;
-                this.hash = GetHashCode();
-               
-                
         }  
         else{
             //TODO: Poner excepción
@@ -45,24 +39,21 @@ class Cuadrante{
         if (Cuadrante.almacen==null){
             Cuadrante.almacen=new Almacen(1024,0.6);
         }
-            if (cuadrantesVacios == null)
-            {
-                cuadrantesVacios = new ArrayList();
-            }
+        if (cuadrantesVacios == null)
+        {
+            cuadrantesVacios = new ArrayList();
+        }
 
-            if (nw.nivel==ne.nivel && ne.nivel==sw.nivel && sw.nivel==se.nivel){
-        this.nw=nw;
-        this.ne=ne;
-        this.sw=sw;
-        this.se=se;
+        if (nw.nivel==ne.nivel && ne.nivel==sw.nivel && sw.nivel==se.nivel){
+            this.nw=nw;
+            this.ne=ne;
+            this.sw=sw;
+            this.se=se;
 
-        this.nivel=nw.nivel+1;
-        this.celdasVivas=nw.celdasVivas+ne.celdasVivas+sw.celdasVivas+se.celdasVivas;
-          
-             this.hash = GetHashCode();
-            }
-            else{
-             throw new System.ArgumentException("Los cuadrantes no tienen el mismo nivel." );
+            this.nivel=nw.nivel+1;
+            this.celdasVivas=nw.celdasVivas+ne.celdasVivas+sw.celdasVivas+se.celdasVivas;
+        }else{
+            throw new System.ArgumentException("Los cuadrantes no tienen el mismo nivel." );
         }
         
        
@@ -279,30 +270,18 @@ class Cuadrante{
     }
 
     public static Cuadrante crear(Cuadrante nw, Cuadrante ne, Cuadrante sw, Cuadrante se){
-      
-        Cuadrante temp=new Cuadrante( nw, ne,  sw, se);
-
-        Cuadrante get= almacen.get(temp); 
+        Cuadrante get= almacen.get(nw,ne,sw,se); 
         if (get==null){
+            Cuadrante temp = new Cuadrante(nw,ne,sw,se);
             almacen.add(temp,temp);
             return temp;
         }
 
-         if (get.nw==temp.nw && get.ne==temp.ne&& get.sw==temp.sw && get.se==temp.se){
-        return get;
-         }else{
-        Console.WriteLine($"Hash table ha fallado con un tablero de nivel  {temp.nivel }. Hash temp={temp.GetHashCode()} Hash get={get.GetHashCode()}");
-        temp.print();
-        Console.WriteLine("              ");
-        get.print();
-         return temp;
-        Console.WriteLine($"El cuadrante que vamos a crear (Hash={temp.GetHashCode()}):");
-        temp.print();
-        Console.WriteLine($"El cuadrante que ha sacado  del hash table (Hash={temp.GetHashCode()}):");
-        get.print();
-         throw new ArgumentException("Hash table no ha devuelto el cuadrante correcto en Cuadrante.crear de 4 parámetros");
-         }
-
+        if (get.nw==nw && get.ne==ne&& get.sw==sw && get.se==se){
+            return get;
+        }else{
+            throw new ArgumentException("Hash table no ha devuelto el cuadrante correcto en Cuadrante.crear de 4 parámetros");
+        }
     }
 
     public static Cuadrante crear(bool[][] m){
@@ -452,8 +431,13 @@ class Cuadrante{
         if (nivel==2){
             return this.generacion2();
         }
-        if (this.res!=null){
-            return this.res;
+        if (this.celdasVivas == 0)
+        { 
+            this.resEtapa2 = this.nw; 
+            return this.nw; 
+        } 
+        if (this.resEtapa2!=null){ 
+            return this.resEtapa2;
         }
 
    
@@ -461,10 +445,6 @@ class Cuadrante{
         Cuadrante[] lista= this.divideEn9Cuadrados();
 
         Cuadrante uno= Cuadrante.crear(lista[0],lista[1],lista[3],lista[4]).generacion();
-        //Console.WriteLine("Se va a generar el 1:");
-        // Cuadrante.crear(lista[0],lista[1],lista[3],lista[4]).print();
-       // Console.WriteLine("Se ha generado el 1, y su resultado es: ****************");
-       // uno.print();
         Cuadrante dos= Cuadrante.crear(lista[1],lista[2],lista[4],lista[5]).generacion();
         Cuadrante tres= Cuadrante.crear(lista[3],lista[4],lista[6],lista[7]).generacion();
         Cuadrante cuatro=Cuadrante.crear(lista[4],lista[5],lista[7],lista[8]).generacion();
@@ -474,8 +454,8 @@ class Cuadrante{
 
         
 
-        
-        return generado; //TODO
+        this.resEtapa2 = generado;
+        return generado;
     }
     public  Cuadrante[] divideEn9Cuadrados(){ //TODO: Poner a privado cuando acabe los test
         Cuadrante[] lista=new Cuadrante[9];
@@ -494,14 +474,6 @@ class Cuadrante{
         lista[7]=temp.getCuadranteCentral();
         lista[8]=this.se.getCuadranteCentral();
 
-        /* 
-        Console.WriteLine("Dividiendo esto en 9 cuadrados:");
-        //this.print();
-        Console.WriteLine("Se ha dividido en 9 cuadrados, son estos:");
-        for (int i=0;i<9;i++){
-            Console.WriteLine("imprimiento el cuadrado " + i);
-            lista[i].print();
-        }*/
         return lista;
     }
 
@@ -570,19 +542,17 @@ class Cuadrante{
     
     }
     
-    public override int GetHashCode()
+    public static int getHash(Cuadrante nw, Cuadrante ne,Cuadrante sw, Cuadrante se) 
+    { 
+        return 2 * nw.GetHashCode() + 11 *ne.GetHashCode() + 101 * sw.GetHashCode() + 1007 * se.GetHashCode()+ 5 * (nw.nivel+1); 
+    } 
+    public  int getHash()
     {
         if (this.nw==null){
             return (int)this.celdasVivas;
         }
-       //Solucionar los que tienen hashes igual a 0
-       
-        if (hash != 0)
-            {
-                return hash;
-            }
 
-          return 2*this.nw.hash+11*this.ne.hash+101*this.sw.hash+1007*this.se.hash+5*this.nivel;
+        return 2 * this.nw.GetHashCode() + 11 * this.ne.GetHashCode() + 101 * this.sw.GetHashCode() + 1007 * this.se.GetHashCode() + 5 * this.nivel;
     }
 
     public bool[][] GetMatrix(){
