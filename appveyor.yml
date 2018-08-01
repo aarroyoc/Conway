@@ -18,7 +18,7 @@ build_script:
   - ps: dotnet publish ./Conway.csproj
 after_build:
   # For once the build has completed
-  - ps: 7z a Conway.zip %APPVEYOR_BUILD_FOLDER%\Conway\bin\Debug\netcoreapp2.1\publish\*
+  - cmd: 7z a Conway.zip %APPVEYOR_BUILD_FOLDER%\Conway\bin\Debug\netcoreapp2.1\publish\*
 artifacts:
  - path: Conway.zip
    name: Conway 
