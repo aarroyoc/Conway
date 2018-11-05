@@ -24,7 +24,6 @@ namespace Conway.GUI {
             var sw = Stopwatch.StartNew();
             while(window.ThreadAlive){
                 canvas.Iterate();
-                window.Renderer.Dispose();
                 window.Renderer.AddDirty(canvas);
                 Dispatcher.UIThread.InvokeAsync(new Action(
                     delegate()

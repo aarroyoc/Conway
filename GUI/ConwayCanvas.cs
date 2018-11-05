@@ -90,7 +90,7 @@ namespace Conway.GUI{
                 }
             }else{
                 var title = new FormattedText{
-                    Typeface = new Typeface(null,20),   
+                    Typeface = new Typeface("Arial",20),
                     Text = "¡Bienvenido a Conway!"
                 };
                 var width = title.Measure().Width;
@@ -99,14 +99,14 @@ namespace Conway.GUI{
                 context.DrawText(Brushes.Black,point,title);
 
                 var text = new FormattedText{
-                    Typeface = new Typeface(null,14),
+                    Typeface = new Typeface("Arial",14),
                     Text = "Selecciona un patrón para dar comienzo al juego de la vida"
                 };
                 var w = text.Measure().Width;
                 var h = text.Measure().Height;
                 var p = new Point(this.Width/2 - w/2,this.Height/2 + 40);
                 context.DrawText(Brushes.Black,p,text);
-
+                
             }
         }
 

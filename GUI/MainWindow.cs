@@ -87,6 +87,7 @@ namespace Conway.GUI
 
             this.KeyDown += MoveKey;
             this.Closed += OnClosed;
+            this.Renderer.AddDirty(conway);
 
             //conway.LoadFile("Patterns/3enginecordership.rle"); //Temporal, para que pueda ejeutarlo en Fedora
         }
@@ -114,9 +115,7 @@ namespace Conway.GUI
                     thread.Join();
                 boton.Content = "Ejecutar";
             }else{
-                this.Renderer.Dispose();
                 this.Renderer.AddDirty(conway);
-
                 this.ThreadAlive = true;
                 int selectedSpeed=Int32.Parse((String)this.speedSelector.GetValue(DropDown.SelectionBoxItemProperty));
                 var iterate = new IterateThread(conway,this,selectedSpeed);
@@ -133,7 +132,6 @@ namespace Conway.GUI
                 iterations.Text =$"Iteraciones: {conway.Iterations}";
                 alive.Text = $"Celdas vivas: {conway.LiveCells}";
                 this.Renderer.AddDirty(conway);
-                this.Renderer.Dispose();
             }
         }
 
@@ -164,7 +162,6 @@ namespace Conway.GUI
                 this.conway.OnClick(sender,e);
                 alive.Text = $"Celdas vivas: {conway.LiveCells}";
                 this.Renderer.AddDirty(conway);
-                this.Renderer.Dispose();
             }
         }
 
@@ -191,26 +188,21 @@ namespace Conway.GUI
         {
             conway.Move(-1,0);
             this.Renderer.AddDirty(conway);
-            this.Renderer.Dispose();
         }
         private void GoDown(object sender, RoutedEventArgs e)
         {
             conway.Move(1,0);
             this.Renderer.AddDirty(conway);
-            this.Renderer.Dispose();
-
         }
         private void GoLeft(object sender, RoutedEventArgs e)
         {
             conway.Move(0,-1);
             this.Renderer.AddDirty(conway);
-            this.Renderer.Dispose();
         }
         private void GoRight(object sender, RoutedEventArgs e)
         {
             conway.Move(0,1);
             this.Renderer.AddDirty(conway);
-            this.Renderer.Dispose();
         }
 
         private async void LoadPattern(object sender, RoutedEventArgs e)
@@ -231,7 +223,6 @@ namespace Conway.GUI
                 iterations.Text =$"Iteraciones: {conway.Iterations}";
                 alive.Text = $"Celdas vivas: {conway.LiveCells}";
                 this.Renderer.AddDirty(conway);
-                this.Renderer.Dispose();
             }catch(Exception){
                 
             }
@@ -264,7 +255,6 @@ namespace Conway.GUI
             conway.New();
             alive.Text = $"Celdas vivas: {0}";
             this.Renderer.AddDirty(conway);
-            this.Renderer.Dispose();
         }
 
         private void OnClosed(object sender, EventArgs e)
