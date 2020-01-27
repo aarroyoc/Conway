@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Conway">
+        Title="Conway"
+        x:Class="Conway.GUI.MainWindow">
 
 <DockPanel Name="Root">
     <Grid>
@@ -29,19 +30,19 @@
             </StackPanel>
             <Separator Margin="10"/>
             <TextBlock>Selector de velocidad: </TextBlock>
-              <DropDown Name="speedSelector" SelectedIndex="0" >
-                <DropDownItem> 0</DropDownItem>
-                <DropDownItem> 1</DropDownItem>
-                <DropDownItem> 2</DropDownItem>
-                <DropDownItem> 3</DropDownItem>
-                <DropDownItem> 4</DropDownItem>
-                <DropDownItem> 5</DropDownItem>
-                <DropDownItem> 6</DropDownItem>
-                <DropDownItem> 7</DropDownItem>
-                <DropDownItem> 8</DropDownItem>
-                <DropDownItem> 9</DropDownItem>
-                <DropDownItem> 10</DropDownItem>
-            </DropDown>
+              <ComboBox Name="speedSelector" SelectedIndex="0" >
+                <ComboBoxItem> 0</ComboBoxItem>
+                <ComboBoxItem> 1</ComboBoxItem>
+                <ComboBoxItem> 2</ComboBoxItem>
+                <ComboBoxItem> 3</ComboBoxItem>
+                <ComboBoxItem> 4</ComboBoxItem>
+                <ComboBoxItem> 5</ComboBoxItem>
+                <ComboBoxItem> 6</ComboBoxItem>
+                <ComboBoxItem> 7</ComboBoxItem>
+                <ComboBoxItem> 8</ComboBoxItem>
+                <ComboBoxItem> 9</ComboBoxItem>
+                <ComboBoxItem> 10</ComboBoxItem>
+            </ComboBox>
              <Separator Margin="10"/>
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock Name="iterations">Iteraciones: 0</TextBlock>

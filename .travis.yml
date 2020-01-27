@@ -1,9 +1,8 @@
 language: csharp
 mono: none
-dotnet: 2.1
+dotnet: 3.0
 dist: trusty
 install:
  - dotnet restore
 script:
  - dotnet build
- - dotnet xunit

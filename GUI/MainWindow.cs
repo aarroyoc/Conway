@@ -39,7 +39,7 @@ namespace Conway.GUI
         ConwayCanvas conway;
         Thread thread;
 
-        DropDown speedSelector;
+        ComboBox speedSelector;
 
         public bool ThreadAlive = false;
         private bool ClickEnabled = false;
@@ -64,7 +64,7 @@ namespace Conway.GUI
             save = this.Find<Button>("save");
             save.Click += SavePattern;
 
-            this.speedSelector=this.Find<DropDown>("speedSelector");
+            this.speedSelector=this.Find<ComboBox>("speedSelector");
        
             up = this.Find<Button>("up");
             up.Click += GoUp;
@@ -87,6 +87,7 @@ namespace Conway.GUI
 
             this.KeyDown += MoveKey;
             this.Closed += OnClosed;
+            this.PropertyChanged += HandleResize;
             this.Renderer.AddDirty(conway);
 
             //conway.LoadFile("Patterns/3enginecordership.rle"); //Temporal, para que pueda ejeutarlo en Fedora
@@ -97,12 +98,15 @@ namespace Conway.GUI
             AvaloniaXamlLoader.Load(this);
         }
 
-        protected override void HandleResized(Size size)
+        private void HandleResize(object sender, AvaloniaPropertyChangedEventArgs args)
         {
-            base.HandleResized(size);
-            conway.Width = size.Width * 0.8 - 20;
-            conway.Height = size.Height - 20;
-            this.Renderer.AddDirty(conway);
+            if(args.Property.Name == "ClientSize")
+            {
+                var size = this.ClientSize;
+                conway.Width = size.Width * 0.8 - 20;
+                conway.Height = size.Height - 20;
+                this.Renderer.AddDirty(conway);
+            }
 
         }
 
@@ -117,7 +121,7 @@ namespace Conway.GUI
             }else{
                 this.Renderer.AddDirty(conway);
                 this.ThreadAlive = true;
-                int selectedSpeed=Int32.Parse((String)this.speedSelector.GetValue(DropDown.SelectionBoxItemProperty));
+                int selectedSpeed=Int32.Parse((String)this.speedSelector.GetValue(ComboBox.SelectionBoxItemProperty));
                 var iterate = new IterateThread(conway,this,selectedSpeed);
                 thread = new Thread(iterate.Iterate);
                 thread.Start();
@@ -142,7 +146,7 @@ namespace Conway.GUI
                 int n = 0;
                 if(Int32.TryParse(iterBox.Text, out n)){
                     this.ThreadAlive = true;
-                    int selectedSpeed=Int32.Parse((String)this.speedSelector.GetValue(DropDown.SelectionBoxItemProperty));
+                    int selectedSpeed=Int32.Parse((String)this.speedSelector.GetValue(ComboBox.SelectionBoxItemProperty));
                     var iterate = new IterateThread(conway,this,selectedSpeed,n);
                     thread = new Thread(iterate.Iterate);
                     thread.Start();

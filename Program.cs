@@ -83,7 +83,7 @@ namespace Conway
                     Console.WriteLine("Starting UI");
 
                     // arrancar gui (algoritmo de ConwayMatrix)
-                    AppBuilder.Configure<App>().UseSkia().UseGtk3().Start<GUI.MainWindow>();
+                    AppBuilder.Configure<App>().UseSkia().UseX11().Start<GUI.MainWindow>();
                } 
                return 0;
             });
